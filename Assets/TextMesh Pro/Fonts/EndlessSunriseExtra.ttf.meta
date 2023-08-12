@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: fb8d7900596361040b7b68eba0b94f88
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Endless Sunrise
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 90c892ba1b307d3469595401218ead92, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
