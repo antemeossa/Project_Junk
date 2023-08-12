@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public Utils Utils;
     public RecipeManager RM;
     public PlayerController PC;
+    public EconomyManager EconomyManager;
 
     public currentModeType currentMode;
 

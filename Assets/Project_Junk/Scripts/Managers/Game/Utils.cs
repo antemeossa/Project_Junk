@@ -15,6 +15,10 @@ public class Utils : MonoBehaviour
 
     private currentModeType previousMode;
 
+    public void showErrorMessage(string errorText)
+    {
+
+    }
 
     #region CameraOperations
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DroneManager : MonoBehaviour
+public class ResearchNode_Stats : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
