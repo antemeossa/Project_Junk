@@ -5,4 +5,10 @@ using UnityEngine;
 public class ResearchNode_Recipe : MonoBehaviour
 {
     public CraftRecipe recipe;
+
+    public void applyResearch()
+    {
+
+
+    }
 }

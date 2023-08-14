@@ -20,7 +20,9 @@ public class GameManager : MonoBehaviour
     public Utils Utils;
     public RecipeManager RM;
     public PlayerController PC;
+    public UI_Manager UI_M;
     public EconomyManager EconomyManager;
+    public DroneManager DroneManager;
 
     public currentModeType currentMode;
 

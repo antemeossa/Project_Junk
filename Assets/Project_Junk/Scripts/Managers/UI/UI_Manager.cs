@@ -44,11 +44,23 @@ public class UI_Manager : MonoBehaviour
     public void activateSmallDetailsPanel()
     {
 
-        buildingScr = playerController.getSelectedBuilding.GetComponent<BuildingScript>();
+
         recipeListPanel.GetComponent<UI_RecipeList>().setList(playerController.getSelectedBuilding);
         smallDetailsPanel.GetComponent<UI_SmallDetails>().setSmallDetailsPanel(playerController.getSelectedBuilding);
         smallDetailsPanel.SetActive(true);
         focusedOnBuilding = true;
+
+    }
+
+    public void updateSmallDetailsPanel()
+    {
+        if (playerController.getSelectedBuilding != null && smallDetailsPanel.activeInHierarchy)
+        {
+
+            smallDetailsPanel.GetComponent<UI_SmallDetails>().setSmallDetailsPanel(playerController.getSelectedBuilding);
+
+            Debug.Log("in");
+        }
 
     }
 
@@ -76,7 +88,7 @@ public class UI_Manager : MonoBehaviour
             recipeListPanel.SetActive(false);
         }
 
-    }    
+    }
 
     public void switchBuildPanel()
     {
@@ -91,7 +103,7 @@ public class UI_Manager : MonoBehaviour
         {
             buildPanel.SetActive(true);
             deactivateSmallDetailsPanel();
-            GameManager.currentMode=currentModeType.BuildMode;
+            GameManager.currentMode = currentModeType.BuildMode;
 
         }
     }
@@ -106,8 +118,8 @@ public class UI_Manager : MonoBehaviour
         BS_M.buildConnector();
     }
 
-    
-    
+
+
     public void setBuildPanel(GameObject btn)
     {
         GameObject obj;
@@ -138,7 +150,7 @@ public class UI_Manager : MonoBehaviour
 
     public void activateStoragePanel()
     {
-        
+
         storagePanel.SetActive(true);
         storagePanel.GetComponent<UI_StorageDetails>().setSelectedStorage(playerController.getSelectedBuilding);
         storagePanel.GetComponent<UI_StorageDetails>().createGrid();

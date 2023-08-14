@@ -21,8 +21,8 @@ public class BuildingScript : MonoBehaviour
     
     private int intakeOccupied = 0, outtakeOccupied = 0;
 
-
-    private FactoryScript factory;
+    [SerializeField]
+    private GameObject factory;
     private CraftRecipe selectedRecipe;
 
     [SerializeField]
@@ -34,7 +34,7 @@ public class BuildingScript : MonoBehaviour
 
     private void Start()
     {
-        factory = transform.parent.transform.parent.GetComponent<FactoryScript>();
+        factory = transform.parent.gameObject;
        
 
     }
@@ -127,7 +127,7 @@ public class BuildingScript : MonoBehaviour
     public GameObject getIntakeConnectorTransform { get { return connectedIntakes[getIntakeOccupied]; } }
     public GameObject getOuttakeConnectorTransform { get { return connectedOuttake; } }
 
-    public GameObject getBuildingFactory { get { return factory.gameObject.transform.GetChild(0).gameObject; } }
+    public GameObject getBuildingFactory { get { return factory; } }
     #endregion
 
 }

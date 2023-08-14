@@ -56,13 +56,15 @@ public class PlayerController : MonoBehaviour
 
                     unselectBuilding();
                     selectedBuilding = hit.transform.gameObject;
-                    BS_M.setCurrentFactory(selectedBuilding.GetComponent<BuildingScript>().getBuildingFactory);
-                    selectedBuilding.GetComponent<Renderer>().material.color = Color.cyan;
+                    
+                    
                     if (selectedBuilding.GetComponent<BuildingScript>() != null)
                     {
+                        BS_M.setCurrentFactory(selectedBuilding.transform.parent.gameObject);
                         if (selectedBuilding.GetComponent<StorageScript>() == null)
                         {
                             UI_M.activateSmallDetailsPanel();
+
                         }
                         else
                         {
@@ -81,11 +83,7 @@ public class PlayerController : MonoBehaviour
                     if (selectedBuilding == null && !EventSystem.current.IsPointerOverGameObject())
                     {
                         selectedBuilding = hit.transform.gameObject;
-
-
-                        selectedBuilding.GetComponent<Renderer>().material.color = Color.cyan;
-
-
+                        BS_M.setCurrentFactory(selectedBuilding.transform.parent.gameObject);
                         if (selectedBuilding.GetComponent<StorageScript>() == null)
                         {
                             UI_M.activateSmallDetailsPanel();
@@ -112,7 +110,7 @@ public class PlayerController : MonoBehaviour
                 if (selectedBuilding != null && !EventSystem.current.IsPointerOverGameObject() && !UI_M.getIsFocusedOnBuilding)
                 {
                     unselectBuilding();
-                }
+               }
             }
         }
     }
@@ -127,6 +125,12 @@ public class PlayerController : MonoBehaviour
             UI_M.deactivateStoragePanel();
             UI_M.deactivateSmallDetailsPanel();
 
+        }
+
+        if(BS_M.getCurrentFactory != null)
+        {
+            BS_M.getCurrentFactory.transform.parent.GetComponent<SelectableObject>().deselectIt();
+            BS_M.setCurrentFactory(null);
         }
 
 

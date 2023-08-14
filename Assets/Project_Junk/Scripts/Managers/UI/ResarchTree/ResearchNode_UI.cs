@@ -23,7 +23,7 @@ public class ResearchNode_UI : MonoBehaviour
         researchName.text = name;
         researchDesc.text = desc;
         researchCost.text = "COST: " + cost;
-        researchTime.text = time + "Seconds";
+        researchTime.text = time + " Seconds";
         researchImg.sprite = img;
 
         switch (researchLvl)

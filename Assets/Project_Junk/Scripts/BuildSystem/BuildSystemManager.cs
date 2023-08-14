@@ -198,7 +198,7 @@ public class BuildSystemManager : MonoBehaviour
                 placeableObj = prefab_BP.GetComponent<PlaceableObject>();
                 if (GM.currentMode == currentModeType.BuildMode)
                 {
-                    if (placeableObj.getCanBuild)
+                    if (placeableObj.checkCanBuild())
                     {
 
                         obj = Instantiate(prefab_Built, prefab_BP.transform.position, prefab_BP.transform.rotation);
@@ -260,7 +260,34 @@ public class BuildSystemManager : MonoBehaviour
     #region Getters/Setters
 
     public GameObject getCurrentFactory { get { return currentFactory; } }
-    public void setCurrentFactory(GameObject obj) { currentFactory = obj; }
+    public void setCurrentFactory(GameObject obj) { 
+        if(currentFactory == null)
+        {
+            currentFactory = obj;
+            currentFactory.transform.parent.GetComponent<SelectableObject>().selectIt();
+        }
+        else
+        {
+            if (currentFactory != obj)
+            {
+                currentFactory.transform.parent.GetComponent<SelectableObject>().deselectIt();
+                currentFactory = obj;
+                if(currentFactory != null)
+                {
+                    currentFactory.transform.parent.GetComponent<SelectableObject>().selectIt();
+                }
+                
+            }
+            else if (currentFactory == obj)
+            {
+                if (currentFactory != null)
+                {
+                    currentFactory.transform.parent.GetComponent<SelectableObject>().selectIt();
+                }
+            }
+        }
+        
+    }
 
     #endregion
 

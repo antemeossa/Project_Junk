@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ForceFieldMat
+  m_Shader: {fileID: -6465566751694194690, guid: c6cdfd27873eebe4094b1f66e3614d44, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _EdgeNoiseSubgraph_b71b658513934838b440d8734bcf6fbb_ElectricImg_2781433198_Texture2D:
+        m_Texture: {fileID: 2800000, guid: d2ad49d5da3fe0c43a33aca04dae79fa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FillTexture:
+        m_Texture: {fileID: 2800000, guid: a70b7446d4836fd4a904bb69fec2b310, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScanLineTextur:
+        m_Texture: {fileID: 2800000, guid: 331d8c51fdeba9d47b1b1a792b087070, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BUILTIN_QueueControl: 0
+    - _BUILTIN_QueueOffset: 0
+    - _RimPower: 2
+    - _RimPulseRate: 5
+    - _ScanSize: 5.64
+    - _ScanSizeHorizontal: 5.59
+    - _ScanSizeVertical: 10
+    - _TileMoveSpeed: 0.2
+    - _TileMoveSpeedHorizontal: -0.1
+    - _TileMoveSpeedVertical: -0.1
+    m_Colors:
+    - _FillOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _FillTiling: {r: 25, g: 25, b: 0, a: 0}
+    - _RimColor: {r: 0, g: 4, b: 3.579636, a: 1}
+    - _RimPowerRange: {r: 0, g: 3, b: 0, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &6069585576127815887
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 0

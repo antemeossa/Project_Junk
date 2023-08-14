@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class ResearchNode_Stats : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void applyResearch()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
     }
 }

@@ -21,13 +21,13 @@ public class PlaceableObject : MonoBehaviour
     private Renderer rnd;
     private BoxCollider col;
     private GameObject hoveredObject;
-    private bool canBuild, colliding, isOnFactory, isConnecting;
+    private bool canBuild, colliding, isOnFactory, isConnecting, outOfBorder;
 
     private Ray ray;
 
     private Vector3 connectionPoint = new Vector3();
 
-    
+
 
 
     private void Start()
@@ -65,31 +65,37 @@ public class PlaceableObject : MonoBehaviour
         rotateObject();
     }
 
-    
-    private void checkCanBuild()
+
+    public bool checkCanBuild()
     {
-        if (!buildingType.Equals(buildingTypesEnum.Connector))
+        if (buildingType.Equals(buildingTypesEnum.Connector))
         {
             if (isOnFactory && hoveredObject != null && !colliding)
             {
                 canBuild = true;
+                return canBuild;
             }
             else
             {
                 canBuild = false;
+                return canBuild;
             }
         }
         else
         {
-            if (isOnFactory && !colliding)
+            if (isOnFactory && !colliding && !outOfBorder)
             {
                 canBuild = true;
+                return canBuild;
             }
             else
             {
                 canBuild = false;
+                return canBuild;
             }
         }
+
+
     }
     #region movement
 
@@ -101,20 +107,20 @@ public class PlaceableObject : MonoBehaviour
             Vector3 snapPos;
             if (!isConnecting)
             {
-                snapPos = new Vector3(setFloor(pos.x, BS_M.gridSizeX ), height, endpointPos.z);
+                snapPos = new Vector3(setFloor(pos.x, BS_M.gridSizeX), height, endpointPos.z);
             }
             else
             {
                 snapPos = connectionPoint;
             }
-            
+
             obj.transform.position = snapPos;
         }
         else if (x == 2)
         {
 
             Vector3 pos = getMouseWorldPosition();
-            Vector3 snapPos = new Vector3(endpointPos.x, height, setFloor(pos.z, BS_M.gridSizeY ));
+            Vector3 snapPos = new Vector3(endpointPos.x, height, setFloor(pos.z, BS_M.gridSizeY));
             obj.transform.position = snapPos;
         }
         else if (x == 0)
@@ -130,7 +136,7 @@ public class PlaceableObject : MonoBehaviour
     private void normalMovement()
     {
         Vector3 pos = getMouseWorldPosition();
-        Vector3 snapPos = new Vector3(setFloor(pos.x, BS_M.gridSizeX),  105, setFloor(pos.z, BS_M.gridSizeY));
+        Vector3 snapPos = new Vector3(setFloor(pos.x, BS_M.gridSizeX), 105, setFloor(pos.z, BS_M.gridSizeY));
         transform.position = snapPos;
     }
     public Vector3 getMouseWorldPosition()
@@ -142,14 +148,6 @@ public class PlaceableObject : MonoBehaviour
             {
                 isOnFactory = true;
                 BS_M.setCurrentFactory(raycastHit.transform.gameObject);
-                if (isOnFactory && !colliding)
-                {
-                    canBuild = true;
-                }
-                else
-                {
-                    canBuild = false;
-                }
                 return raycastHit.point;
             }
             else
@@ -202,17 +200,23 @@ public class PlaceableObject : MonoBehaviour
             hoveredObject = other.gameObject;
 
             connectionPoint = transform.position;
-            if(other.GetComponent<BuildingScript>() != null)
+            if (other.GetComponent<BuildingScript>() != null)
             {
                 if (other.GetComponent<BuildingScript>().getBuildingType.Equals(buildingType))
                 {
                     isConnecting = true;
                 }
-            }         
-            
+            }
+
         }
 
-        
+        if (other.gameObject.CompareTag("Border"))
+        {
+            outOfBorder = true;
+
+        }
+
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -229,15 +233,17 @@ public class PlaceableObject : MonoBehaviour
             }
             if (hoveredObject != null)
             {
-               // BS_M.resetHighlights();
+                // BS_M.resetHighlights();
                 //hoveredObject.GetComponent<Renderer>().material.color = Color.white;
                 hoveredObject = null;
             }
         }
 
-        if (other.gameObject.CompareTag("Factory"))
+
+
+        if (other.gameObject.CompareTag("Border"))
         {
-            colliding = true;
+            outOfBorder = false;
         }
     }
 
@@ -248,6 +254,13 @@ public class PlaceableObject : MonoBehaviour
             colliding = true;
             hoveredObject = other.gameObject;
         }
+
+        if (other.gameObject.CompareTag("Border"))
+        {
+            outOfBorder = true;
+        }
+
+
     }
 
     #endregion
@@ -256,7 +269,7 @@ public class PlaceableObject : MonoBehaviour
     {
         if (buildingType != buildingTypesEnum.Connector)
         {
-            if (canBuild)
+            if (checkCanBuild())
             {
                 rnd.material.color = Color.green;
             }

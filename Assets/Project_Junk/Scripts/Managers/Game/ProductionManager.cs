@@ -36,6 +36,7 @@ public class ProductionManager : MonoBehaviour
     private void cycleCompletedAction()
     {
         massProduce();   
+        GameManager.Instance.UI_M.updateSmallDetailsPanel();
     }
 
     public void setAllBuildingsInWorld()

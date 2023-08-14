@@ -66,7 +66,6 @@ public class InventoryScript : MonoBehaviour
         else
         {
             inventory.Add(type, amount);
-            Debug.Log(amount);
         }
 
     }

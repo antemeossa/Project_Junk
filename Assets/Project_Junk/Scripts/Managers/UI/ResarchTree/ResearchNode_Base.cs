@@ -20,7 +20,7 @@ public class ResearchNode_Base : MonoBehaviour
     
     public void unlockNode()
     {
-        if(GameManager.Instance.EconomyManager.currentMoney >= researchCost)
+        if(GameManager.Instance.EconomyManager.currentMoney >= researchCost && !isUnlocked)
         {
             StartCoroutine(researchTimeCounter());
         }
@@ -39,6 +39,7 @@ public class ResearchNode_Base : MonoBehaviour
         }
         GetComponent<ResearchNode_UI>().getResearchSlider.SetActive(false);
         GetComponent<ResearchNode_UI>().unlockMaterial();
+        applyUpgrade();
         isUnlocked = true;
     }
 
@@ -48,8 +49,24 @@ public class ResearchNode_Base : MonoBehaviour
         return researchPerc;
     }
 
-    public void setUIDetails()
+    private void applyUpgrade()
     {
-
+        if(GetComponent<ResearchNode_Drone>() != null)
+        {
+            GetComponent<ResearchNode_Drone>().applyResearch();
+        }else if(GetComponent<ResearchNode_Recipe>() != null)
+        {
+            GetComponent<ResearchNode_Recipe>().applyResearch();
+        }
+        else if(GetComponent<ResearchNode_Stats>() != null)
+        {
+            GetComponent<ResearchNode_Stats>().applyResearch();
+        }
+        else if(GetComponent<ResearchNode_Building>() != null)
+        {
+            GetComponent<ResearchNode_Building>().applyResearch();
+        }
     }
+
+    
 }

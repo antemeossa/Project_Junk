@@ -32,7 +32,7 @@ public class ImprovedConnectorScript : MonoBehaviour
     {
         BS_M = GetComponent<BuildSystemManager>();
         connectorPointerTmp = Instantiate(connectorPointer, new Vector3(0, 105, 0), Quaternion.identity);
-        connectorParentTmp = Instantiate(connectorParent);
+        //connectorParentTmp = Instantiate(connectorParent);
         mousePosition = connectorPointerTmp.GetComponent<PlaceableObject>().getMouseWorldPosition();
         connectorStarted = false;
         connectorFinished = false;
@@ -44,6 +44,7 @@ public class ImprovedConnectorScript : MonoBehaviour
     private void OnDisable()
     {
         clearTempNodes();
+        Destroy(connectorPointerTmp.gameObject);
     }
     private void Start()
     {
@@ -64,7 +65,8 @@ public class ImprovedConnectorScript : MonoBehaviour
 
         InputActions();
 
-
+        Debug.Log("Start Building: " + startBuilding);
+        Debug.Log("End Building: " + endBuilding);
     }
 
     private void InputActions()
@@ -77,36 +79,45 @@ public class ImprovedConnectorScript : MonoBehaviour
                 startBuilding = connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding;
                 connectorStarted = true;
                 connectorFinished = false;
+                connectorParentTmp = Instantiate(connectorParent);
+
             }
             else if (connectorStarted && !connectorFinished)
             {
                 startPos = new Vector3(connectorPointerTmp.transform.position.x, startPos.y, connectorPointerTmp.transform.position.z);
                 if (connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding != null && connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding.GetComponent<BuildingScript>().canConnectIn(startBuilding.GetComponent<BuildingScript>().getBuildingType))
                 {
+
                     lineMousePos = mousePosition;
-                    connectorParentTmp = Instantiate(connectorParent);
-                    spawnLine();
-                    spawnedNodesPerm[spawnedNodesPerm.Count - 1].GetComponent<improvedConnectorNodeScript>().switchToInput();
+                    //GameObject connectorParentFac = Instantiate(connectorParent);                    
+                    //spawnedNodesPerm[spawnedNodesPerm.Count - 1].GetComponent<improvedConnectorNodeScript>().switchToInput();
                     connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding.GetComponent<BuildingScript>().addIntakeBuilding(startBuilding);
                     endBuilding = connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding;
                     startBuilding.GetComponent<BuildingScript>().addOuttakeBuilding(endBuilding);
-                    connectorParentTmp.transform.name = "Connector_" + connectorCount;
-                    connectorParentTmp.transform.SetParent(BS_M.getCurrentFactory.transform.parent.GetComponent<FactoryScript>().getAllConnectorsTransform, true);
                     connectorParentTmp.GetComponent<TransferItemsScript>().setFacilities(startBuilding, endBuilding);
+                    connectorParentTmp.transform.name = "Connector_" + connectorCount;
+                    connectorParentTmp.transform.SetParent(BS_M.getCurrentFactory.transform.parent.GetComponent<FactoryScript>().getAllConnectorsTransform, true);                    
                     connectorFinished = true;
-                    connectorStarted = false;
-                    clearTempNodes();
+                    connectorStarted = false;                    
                     connectorCount++;
-                    connectorParentTmp.GetComponent<ConnectorPlacementDropDown>().setPlaceableConnectorList();
-                    spawnedNodesPerm.Clear();
-                    spawnedNodesTemp.Clear();
+                    spawnLine();
+                    makeTurns(connectorParentTmp, turnIndex);
+                    clearTempNodes();
+                    gameObject.SetActive(false);
+                    GameManager.Instance.currentMode = currentModeType.BuildMode;
+                    
+
+
                 }
                 else
                 {
+                    
                     lineMousePos = mousePosition;
                     spawnLine();
-                    connectorParentTmp.GetComponent<ConnectorPlacementDropDown>().setPlaceableConnectorList();
                     makeTurns(connectorParentTmp, turnIndex);
+                    
+                    
+                    
                 }
 
             }
@@ -117,12 +128,10 @@ public class ImprovedConnectorScript : MonoBehaviour
         {
 
             clearTempNodes();
-
-
             connectorStarted = false;
             connectorFinished = false;
-            Destroy(connectorPointerTmp.gameObject);
-            Destroy(connectorParentTmp);
+            //Destroy(connectorPointerTmp.gameObject);
+            //Destroy(connectorParentTmp);
             BS_M.cancelConnector();
         }
     }
@@ -136,12 +145,12 @@ public class ImprovedConnectorScript : MonoBehaviour
                 Destroy(spawnedNodesTemp[i]);
             }
             spawnedNodesTemp.Clear();
-
+            /*
             for (int i = 0; i < spawnedNodesPerm.Count; i++)
             {
                 Destroy(spawnedNodesPerm[i]);
             }
-            spawnedNodesPerm.Clear();
+            spawnedNodesPerm.Clear();*/
         }
         else if (connectorFinished)
         {
@@ -215,8 +224,7 @@ public class ImprovedConnectorScript : MonoBehaviour
             spawnedNodesPerm.Add(obj);
 
         }
-        directionToObject = tmpLine[tmpLine.Count - 1].transform.position - tmpLine[0].transform.position;
-        Debug.Log(directionToObject);
+        directionToObject = tmpLine[tmpLine.Count - 1].transform.position - tmpLine[0].transform.position;        
         startPos = spawnedNodesPerm[spawnedNodesPerm.Count - 1].transform.position;
     }
 
@@ -293,7 +301,7 @@ public class ImprovedConnectorScript : MonoBehaviour
 
 
         Vector3 nextNodePos = startPos;
-        Vector3 vec = (endPos - startPos).normalized * 9;
+        Vector3 vec = (endPos - startPos).normalized * 6;
 
         if (spawnedNodesTemp.Count != nodeCount && spawnedNodesTemp.Count == 0)
         {

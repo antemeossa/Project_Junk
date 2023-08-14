@@ -22,6 +22,7 @@ public class TransferItemsScript : MonoBehaviour
         if (inFacility != null)
         {
             transferItems();
+            GameManager.Instance.UI_M.updateSmallDetailsPanel();
         }
     }
     public void setFacilities(GameObject outFac, GameObject inFac)
@@ -41,7 +42,7 @@ public class TransferItemsScript : MonoBehaviour
             {
                 if (outFacility.GetComponent<InventoryScript>().getInventory.ContainsKey(selectedRecipe.inputRequirements[i].inputType))
                 {
-                    if(outFacility.GetComponent<BuildingScript>().getBuildingType == buildingTypesEnum.Storage)
+                    if (outFacility.GetComponent<BuildingScript>().getBuildingType == buildingTypesEnum.Storage)
                     {
                         outFacility.GetComponent<StorageScript>().setContainersActive();
                     }
