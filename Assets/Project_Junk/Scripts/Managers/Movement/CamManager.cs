@@ -3,10 +3,130 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using DG.Tweening;
+using UnityEngine.Splines;
 
-
+public enum CameraModeEnum
+{
+    Cinematic,
+    Factory,
+    Explore,
+}
 public class CamManager : MonoBehaviour
 {
+
+
+
+
+
+
+    [Header("Main Variables")]
+    public Transform camHolder;
+    public Camera MainCamera;
+    public CameraModeEnum currentMode = CameraModeEnum.Factory;
+
+    [Header("Factory Mode Variables")]
+    public float movementSpeed_F, zoomSpeed_F;
+    public Vector2 movementBounds_F = new Vector2(0, 0);
+    public Vector2 zoomBounds_F = new Vector2(0, 0);
+    public Vector3 defaultFactoryPosition = new Vector3(0, 0, 0);
+
+    [Header("Explore Mode Variables")]
+    public float movementSpeed_E, zoomSpeed_E;
+    public Vector2 movementBounds_E = new Vector2(0, 0);
+    public Vector2 zoomBounds_E = new Vector2(0, 0);
+    public Vector3 defaultExplorePosition = new Vector3(0, 0, 0);
+
+    private float currentMovementSpeed, currentZoomSpeed;
+    private Vector2 currentMovementBounds;
+    private Vector2 currentZoomBounds;
+
+
+    private void Update()
+    {
+        camInputActions();
+        camMovement();
+    }
+
+    private void camInputActions()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            camTransition(CameraModeEnum.Factory);
+            changeVariables(CameraModeEnum.Factory);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            camTransition(CameraModeEnum.Explore);
+            changeVariables(CameraModeEnum.Explore);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+
+        }
+    }
+    private void changeVariables(CameraModeEnum mode)
+    {
+        currentMode = mode;
+
+        if (mode == CameraModeEnum.Cinematic)
+        {
+
+        }
+        else if (mode == CameraModeEnum.Factory)
+        {
+            currentMovementSpeed = movementSpeed_F;
+            currentZoomSpeed = zoomSpeed_F;
+            currentMovementBounds = movementBounds_F;
+            currentZoomBounds = zoomBounds_F;
+        }
+        else if (mode == CameraModeEnum.Explore)
+        {
+            currentMovementSpeed = movementSpeed_E;
+            currentZoomSpeed = zoomSpeed_E;
+            currentMovementBounds = movementBounds_E;
+            currentZoomBounds = zoomBounds_E;
+        }
+    }
+
+    private void camTransition(CameraModeEnum nextMode)
+    {
+        CameraModeEnum previousMode = currentMode;
+        
+
+        if (previousMode == CameraModeEnum.Factory && nextMode == CameraModeEnum.Explore)
+        {
+            camHolder.DOKill();
+            camHolder.DOMove(defaultExplorePosition, 2);
+        }
+        else if (previousMode == CameraModeEnum.Explore && nextMode == CameraModeEnum.Factory)
+        {
+            camHolder.DOKill();
+            camHolder.DOMove(defaultFactoryPosition, 2);
+        }
+
+
+    }
+
+    private void camMovement()
+    {
+        float horizontalMovement = Input.GetAxis("Horizontal");
+        float verticalMovement = Input.GetAxis("Vertical");
+
+        Vector3 nextPosition = camHolder.transform.position + new Vector3(-horizontalMovement, verticalMovement) * Time.deltaTime * currentMovementSpeed;
+        Vector3 clampedPosition = setBounds(nextPosition);
+        camHolder.transform.position = clampedPosition;
+    }
+
+
+    private Vector3 setBounds(Vector3 position)
+    {
+        
+        float clampedX = Mathf.Clamp(position.x, currentMovementBounds.x, currentMovementBounds.y);
+        float clampedY = Mathf.Clamp(position.x, currentMovementBounds.x, currentMovementBounds.y);
+        return new Vector3(clampedX, clampedY, position.z);
+    }
+
+    /*
     [Header("Movement Settings")]
     [SerializeField]
     private float movementSpeed = 1.0f, movementSmoothness = 5f, rangeX, rangeY;
@@ -34,6 +154,8 @@ public class CamManager : MonoBehaviour
     private Vector3 movementTargetPos, movementInput, zoomTargetPos;
 
     private Vector3 cameraDirection => transform.InverseTransformDirection(camHolder.forward);
+
+    private CameraModeEnum currentCamMode;
 
     
 
@@ -68,16 +190,24 @@ public class CamManager : MonoBehaviour
         handleZoomInput();
         moveCam();
         rotateCam();
-        zoomCam();
+        zoomCam(currentCamMode);
 
-        if (Input.GetKey(KeyCode.Alpha1))
+        
+    }
+
+
+    private void progressionBetweenModes(CameraModeEnum nextCamMode)
+    {
+        CameraModeEnum previousCamMode = currentCamMode;
+        if(nextCamMode != previousCamMode)
         {
-            GameManager.Instance.currentMode = currentModeType.SalvageMode;
-            setCamMode();
-        }else if(Input.GetKey(KeyCode.Alpha2))
-        {
-            GameManager.Instance.currentMode = currentModeType.PlayMode;
-            setCamMode();
+            if(nextCamMode == CameraModeEnum.explore && previousCamMode == CameraModeEnum.factory)
+            {
+
+            }else if(nextCamMode == CameraModeEnum.factory && previousCamMode == CameraModeEnum.explore)
+            {
+
+            }
         }
     }
     private void handleMovementInput()
@@ -105,15 +235,24 @@ public class CamManager : MonoBehaviour
     }
 
     private Vector3 nextTargetPos;
-    private void zoomCam()
+
+    
+    private void zoomCam(CameraModeEnum mode)
     {
-        nextTargetPos = zoomTargetPos + cameraDirection * (zoomInput * zoomSpeed);
-        if (zoomIsInBounds(nextTargetPos))
+        if(mode == CameraModeEnum.factory)
         {
-            zoomTargetPos = nextTargetPos;
+            nextTargetPos = zoomTargetPos + cameraDirection * (zoomInput * zoomSpeed);
+            if (zoomIsInBounds(nextTargetPos))
+            {
+                zoomTargetPos = nextTargetPos;
+            }
+            //camHolder.localPosition = Vector3.Lerp(camHolder.localPosition, nextTargetPos, Time.deltaTime * zoomSmoothness);
+            camHolder.localPosition = nextTargetPos;
+        }else if(mode == CameraModeEnum.explore)
+        {
+
         }
-        //camHolder.localPosition = Vector3.Lerp(camHolder.localPosition, nextTargetPos, Time.deltaTime * zoomSmoothness);
-        camHolder.localPosition = nextTargetPos;
+        
     }
 
     private bool zoomIsInBounds(Vector3 pos)
@@ -174,5 +313,5 @@ public class CamManager : MonoBehaviour
 
         }
     }
-
+    */
 }

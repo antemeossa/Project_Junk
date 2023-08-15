@@ -7,7 +7,7 @@ using UnityEngine;
 public class ProductionManager : MonoBehaviour
 {
     public GameObject factoryParent;
-    public List<GameObject> factoriesList = new List<GameObject>();
+    public List<FactoryScript> factoriesList = new List<FactoryScript>();
     public List<GameObject> allBuildings = new List<GameObject>();
     public int currentCycle, defaultCycle;
     public float cycleTime;
@@ -44,9 +44,9 @@ public class ProductionManager : MonoBehaviour
         allBuildings.Clear();
         for(int i = 0;i < factoriesList.Count; i++)
         {
-            for (int j = 0; j < factoriesList[i].GetComponent<FactoryScript>().getAllBuildingsOnFactory.Count; j++)
+            for (int j = 0; j < factoriesList[i].getAllBuildingsOnFactory.Count; j++)
             {
-                allBuildings.Add(factoriesList[i].GetComponent<FactoryScript>().getAllBuildingsOnFactory[j]);
+                allBuildings.Add(factoriesList[i].getAllBuildingsOnFactory[j]);
             }
         }
     }

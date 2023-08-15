@@ -47,7 +47,7 @@ public class BuildSystemManager : MonoBehaviour
     public GameManager GM;
     public ProductionManager PM;
     public PlayerController PC;
-    public float gridSizeX, gridSizeY;
+    public float gridSizeX, gridSizeY, placementHeight = 200f;
     public List<Building> buildableObjects;
 
     [SerializeField]

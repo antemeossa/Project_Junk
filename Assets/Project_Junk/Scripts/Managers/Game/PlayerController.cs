@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
                 {
 
                     unselectBuilding();
+                    
                     selectedBuilding = hit.transform.gameObject;
                     
                     
@@ -83,7 +84,11 @@ public class PlayerController : MonoBehaviour
                     if (selectedBuilding == null && !EventSystem.current.IsPointerOverGameObject())
                     {
                         selectedBuilding = hit.transform.gameObject;
-                        BS_M.setCurrentFactory(selectedBuilding.transform.parent.gameObject);
+                        if(selectedBuilding.GetComponent<SelectableObject>() != null)
+                        {
+                            selectedBuilding.GetComponent<SelectableObject>().selectIt();
+                        }
+                        hit.transform.gameObject.GetComponent<SelectableObject>().selectIt();
                         if (selectedBuilding.GetComponent<StorageScript>() == null)
                         {
                             UI_M.activateSmallDetailsPanel();
@@ -120,7 +125,10 @@ public class PlayerController : MonoBehaviour
         if (selectedBuilding != null)
         {
 
-            selectedBuilding.GetComponent<Renderer>().material.color = Color.white;
+            if (selectedBuilding.GetComponent<SelectableObject>() != null)
+            {
+                selectedBuilding.GetComponent<SelectableObject>().deselectIt();
+            }
             selectedBuilding = null;
             UI_M.deactivateStoragePanel();
             UI_M.deactivateSmallDetailsPanel();
@@ -167,7 +175,6 @@ public class PlayerController : MonoBehaviour
         {
             if (GM.currentMode.Equals(currentModeType.PlayMode))
             {
-
                 selectBuilding();
             }
             else if (GM.currentMode.Equals(currentModeType.BuildMode))
@@ -193,7 +200,6 @@ public class PlayerController : MonoBehaviour
             else if (GM.currentMode.Equals(currentModeType.ConnectionMode))
             {
                 GM.currentMode = currentModeType.BuildMode;
-                //UI_M.switchBuildPanel();
             }
         }
 

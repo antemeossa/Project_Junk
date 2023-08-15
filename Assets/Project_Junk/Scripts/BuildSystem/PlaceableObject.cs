@@ -26,9 +26,10 @@ public class PlaceableObject : MonoBehaviour
     private Ray ray;
 
     private Vector3 connectionPoint = new Vector3();
+    private float placementHeight;
 
 
-
+    
 
     private void Start()
     {
@@ -47,6 +48,7 @@ public class PlaceableObject : MonoBehaviour
 
         canBuild = true;
         layerMask = 1 << layerNumber;
+        placementHeight = BS_M.placementHeight;
 
 
 
@@ -136,7 +138,7 @@ public class PlaceableObject : MonoBehaviour
     private void normalMovement()
     {
         Vector3 pos = getMouseWorldPosition();
-        Vector3 snapPos = new Vector3(setFloor(pos.x, BS_M.gridSizeX), 105, setFloor(pos.z, BS_M.gridSizeY));
+        Vector3 snapPos = new Vector3(setFloor(pos.x, BS_M.gridSizeX), placementHeight, setFloor(pos.z, BS_M.gridSizeY));
         transform.position = snapPos;
     }
     public Vector3 getMouseWorldPosition()
