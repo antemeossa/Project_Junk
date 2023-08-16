@@ -19,8 +19,12 @@ public class PlaceDownScript : MonoBehaviour
         float y = transform.position.y;
         //transform.position = new Vector3(transform.position.x, y + dropHeight, transform.position.z);
         obj.transform.DOMoveY(y + dropHeight *2, .1f);
-        obj.transform.DOMoveY(y, dropTime, false);
-        GameManager.Instance.Utils.camShake(shakeDuration, shakeStrength);
+        obj.transform.DOMoveY(y, dropTime, false).OnComplete(() =>
+        {
+            GetComponent<BuildingScript>().playPlacementVFX();
+            GameManager.Instance.Utils.camShake(shakeDuration, shakeStrength);
+        });
+        
         //GetComponent<VFXPlayer>().PlayPlacementVFX();
     }
 }

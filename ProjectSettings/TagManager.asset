@@ -8,6 +8,7 @@ TagManager:
   - Factory
   - Merger
   - Border
+  - Landscape
   layers:
   - Default
   - TransparentFX

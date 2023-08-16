@@ -445,6 +445,7 @@ MonoBehaviour:
   outtakeCount: 1
   connectedOuttake: {fileID: 0}
   vfxplayer: {fileID: 5779811003968592487}
+  factory: {fileID: 0}
   connectedIntakes: []
 --- !u!65 &3941116346143267012
 BoxCollider:
@@ -547,7 +548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropHeight: 25
-  dropTime: 2
+  dropTime: 1
   shakeStrength: 0.3
   shakeDuration: 0.75
 --- !u!4 &2149294685570679388 stripped

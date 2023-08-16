@@ -11,6 +11,11 @@ public enum CameraModeEnum
     Factory,
     Explore,
 }
+
+public enum CameraCinematicType
+{
+    MotherShipLanding
+}
 public class CamManager : MonoBehaviour
 {
 
@@ -23,28 +28,81 @@ public class CamManager : MonoBehaviour
     public Transform camHolder;
     public Camera MainCamera;
     public CameraModeEnum currentMode = CameraModeEnum.Factory;
+    public float speedMultiplier = 2;
+    public float rotationSpeed;
 
     [Header("Factory Mode Variables")]
-    public float movementSpeed_F, zoomSpeed_F;
+    public float movementSpeed_F;
+    public float zoomSpeed_F;
+    public float movementSmoothness_F;
+    public float zoomSmoothness_F;
     public Vector2 movementBounds_F = new Vector2(0, 0);
     public Vector2 zoomBounds_F = new Vector2(0, 0);
     public Vector3 defaultFactoryPosition = new Vector3(0, 0, 0);
 
+
     [Header("Explore Mode Variables")]
-    public float movementSpeed_E, zoomSpeed_E;
+    public float movementSpeed_E;
+    public float zoomSpeed_E;
+    public float movementSmoothness_E;
+    public float zoomSmoothness_E;
     public Vector2 movementBounds_E = new Vector2(0, 0);
     public Vector2 zoomBounds_E = new Vector2(0, 0);
     public Vector3 defaultExplorePosition = new Vector3(0, 0, 0);
 
-    private float currentMovementSpeed, currentZoomSpeed;
+    [Header("LandingCinematic")]
+    public Vector3 landingWatchPosition = new Vector3(0, 0, 0);
+
+    [SerializeField] private float currentMovementSpeed;
+    [SerializeField] private MotherShipMovement mothership;
+    private float defaultMovementSpeed, currentZoomSpeed, currentMovementSmoothness, currentZoomSmoothness;
+    private float currentRotationSpeed, currentRotationSmoothness;
     private Vector2 currentMovementBounds;
     private Vector2 currentZoomBounds;
+    private Vector3 nextTargetZoomPos, zoomTargetPos, nextTargetPos;
+    private Quaternion targetRotation;
+    private float targetAngle, currentAngle;
+    private Vector3 cameraDirection => transform.InverseTransformDirection(camHolder.forward);
+    private bool isTransitioning = false;
 
+
+    private void Awake()
+    {
+        
+        
+       
+    }
+    private void Start()
+    {
+        if (!mothership.hasLanded )
+        {
+            camTransition(CameraModeEnum.Cinematic);
+            changeVariables(CameraModeEnum.Cinematic);
+            camHolder.transform.localPosition = landingWatchPosition;
+            StartCoroutine(watchLandingCinematic());
+
+        }
+        else
+        {
+            zoomTargetPos = camHolder.position;
+            targetRotation = camHolder.rotation;
+            targetAngle = camHolder.eulerAngles.y;
+            currentAngle = targetAngle;
+            currentRotationSpeed = 0;
+        }
+       
+    }
 
     private void Update()
     {
-        camInputActions();
-        camMovement();
+        if (mothership.hasLanded || !isTransitioning)
+        {
+            camInputActions();
+            camMovement();
+            zoomAction();
+            rotateCam();
+        }
+        
     }
 
     private void camInputActions()
@@ -63,6 +121,21 @@ public class CamManager : MonoBehaviour
         {
 
         }
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+        {
+            if (!isTransitioning)
+            {
+                currentMovementSpeed += Time.deltaTime + speedMultiplier;
+                currentMovementSpeed = Mathf.Clamp(currentMovementSpeed, defaultMovementSpeed, defaultMovementSpeed * 4);
+            }
+
+        }
+        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
+        {
+            currentMovementSpeed = defaultMovementSpeed;
+        }
+
     }
     private void changeVariables(CameraModeEnum mode)
     {
@@ -74,17 +147,23 @@ public class CamManager : MonoBehaviour
         }
         else if (mode == CameraModeEnum.Factory)
         {
+            defaultMovementSpeed = movementSpeed_F;
             currentMovementSpeed = movementSpeed_F;
             currentZoomSpeed = zoomSpeed_F;
             currentMovementBounds = movementBounds_F;
             currentZoomBounds = zoomBounds_F;
+            currentZoomSmoothness = zoomSmoothness_F;
+            currentMovementSmoothness = movementSmoothness_F;
         }
         else if (mode == CameraModeEnum.Explore)
         {
+            defaultMovementSpeed = movementSpeed_E;
             currentMovementSpeed = movementSpeed_E;
             currentZoomSpeed = zoomSpeed_E;
             currentMovementBounds = movementBounds_E;
             currentZoomBounds = zoomBounds_E;
+            currentZoomSmoothness = zoomSmoothness_E;
+            currentMovementSmoothness = movementSmoothness_E;
         }
     }
 
@@ -92,38 +171,151 @@ public class CamManager : MonoBehaviour
     {
         CameraModeEnum previousMode = currentMode;
         
-
-        if (previousMode == CameraModeEnum.Factory && nextMode == CameraModeEnum.Explore)
+        
+        
+        if(previousMode != CameraModeEnum.Cinematic)
+        {
+            if (previousMode == CameraModeEnum.Factory && nextMode == CameraModeEnum.Explore)
+            {
+                camHolder.DOKill();
+                isTransitioning = true;
+                camHolder.DOLocalMove(defaultExplorePosition, 1).OnComplete(() =>
+                {
+                    zoomTargetPos = defaultExplorePosition;
+                    //camHolder.localPosition = defaultExplorePosition;
+                    isTransitioning = false;
+                });
+            }
+            else if (previousMode == CameraModeEnum.Explore && nextMode == CameraModeEnum.Factory)
+            {
+                camHolder.DOKill();
+                isTransitioning = true;
+                
+                camHolder.DOLocalMove(defaultFactoryPosition, 1).OnComplete(() =>
+                {
+                    camHolder.DOLocalRotate(new Vector3(40, 0, 0), 1).OnComplete(() =>
+                    {
+                        targetAngle = camHolder.eulerAngles.y;
+                        currentAngle = targetAngle;
+                    });
+                    zoomTargetPos = defaultFactoryPosition;
+                    //camHolder.localPosition = defaultFactoryPosition;
+                    isTransitioning = false;
+                }); ;
+            }
+        }
+        else if(previousMode == CameraModeEnum.Cinematic && nextMode == CameraModeEnum.Factory)
         {
             camHolder.DOKill();
-            camHolder.DOMove(defaultExplorePosition, 2);
+            isTransitioning = true;
+            Debug.Log("In");
+            camHolder.DOLocalMove(defaultFactoryPosition, 2).OnComplete(() =>
+            {
+                zoomTargetPos = defaultFactoryPosition;
+                camHolder.DOLocalRotate(new Vector3(40, 0, 0), 1).OnComplete(() =>
+                {
+                    targetAngle = camHolder.eulerAngles.y;
+                    currentAngle = targetAngle;
+                });
+                //camHolder.localPosition = defaultExplorePosition;
+                isTransitioning = false;
+                Debug.Log("transition");
+            });
         }
-        else if (previousMode == CameraModeEnum.Explore && nextMode == CameraModeEnum.Factory)
+        
+
+    }
+
+    IEnumerator watchLandingCinematic()
+    {
+        float t = mothership.landingTime;
+        float currentT = 0;
+
+        
+         
+        while(currentT < t + 1)
         {
-            camHolder.DOKill();
-            camHolder.DOMove(defaultFactoryPosition, 2);
+            currentT += Time.deltaTime;
+            camHolder.LookAt(mothership.gameObject.transform);
+            yield return null;
         }
 
+        currentT = 0;
+
+        while (currentT < mothership.timeAfterLanding)
+        {
+            currentT += Time.deltaTime;
+
+            yield return null;
+        }
+        
+        camTransition(CameraModeEnum.Factory);
+        changeVariables(CameraModeEnum.Factory);
+        zoomTargetPos = camHolder.position;
+        targetRotation = camHolder.rotation;
+        targetAngle = camHolder.eulerAngles.y;
+        currentAngle = targetAngle;
+        currentRotationSpeed = 0;
+        yield return null;
 
     }
 
     private void camMovement()
     {
-        float horizontalMovement = Input.GetAxis("Horizontal");
-        float verticalMovement = Input.GetAxis("Vertical");
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
 
-        Vector3 nextPosition = camHolder.transform.position + new Vector3(-horizontalMovement, verticalMovement) * Time.deltaTime * currentMovementSpeed;
-        Vector3 clampedPosition = setBounds(nextPosition);
-        camHolder.transform.position = clampedPosition;
+        Vector3 right = transform.right * x;
+        Vector3 forward = transform.forward * z;
+
+        Vector3 movementInput = (forward + right).normalized;
+        
+        nextTargetPos = transform.position + movementInput * currentMovementSpeed;
+        Debug.Log(nextTargetPos);
+        setBounds(nextTargetPos);
+        transform.position = setBounds(nextTargetPos);
+
     }
 
-
-    private Vector3 setBounds(Vector3 position)
+    private void zoomAction()
     {
+        float zoomInput = Input.GetAxis("Mouse ScrollWheel");
+
         
-        float clampedX = Mathf.Clamp(position.x, currentMovementBounds.x, currentMovementBounds.y);
-        float clampedY = Mathf.Clamp(position.x, currentMovementBounds.x, currentMovementBounds.y);
-        return new Vector3(clampedX, clampedY, position.z);
+        nextTargetZoomPos = zoomTargetPos + cameraDirection * (zoomInput * currentZoomSpeed);
+        zoomTargetPos = nextTargetZoomPos;
+        camHolder.localPosition = Vector3.Lerp(camHolder.localPosition, nextTargetZoomPos, currentZoomSmoothness);
+
+    }
+
+    private void rotateCam()
+    {
+        handleRotationInput();
+        currentAngle = Mathf.Lerp(currentAngle, -targetAngle, Time.deltaTime * currentRotationSmoothness);
+        //camHolder.rotation = Quaternion.AngleAxis(currentAngle, new Vector3(0,1,0));
+        transform.Rotate(Vector3.up, currentRotationSpeed, Space.World);
+    }
+
+    private void handleRotationInput()
+    {
+        if (Input.GetMouseButton(2))
+        {
+            targetAngle -= Input.GetAxisRaw("Mouse X") * currentRotationSpeed;
+            currentRotationSpeed = rotationSpeed * Input.GetAxisRaw("Mouse X");
+        }
+        else if (Input.GetMouseButtonUp(2))
+        {
+            targetAngle = 0;
+            currentRotationSpeed = 0;
+        }
+    }
+
+    private Vector3 setBounds(Vector3 pos)
+    {
+
+        float clampedX = Mathf.Clamp(pos.x, currentMovementBounds.x, currentMovementBounds.y);
+        float clampedZ = Mathf.Clamp(pos.z, currentMovementBounds.x, currentMovementBounds.y);
+        return new Vector3(clampedX, pos.y, clampedZ);
     }
 
     /*

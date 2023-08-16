@@ -33,7 +33,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GridMat
+  m_Name: NeonGradientMat
   m_Shader: {fileID: -6465566751694194690, guid: 8a0e46dae99b06746b4effd21e9db0ef, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -84,6 +84,6 @@ Material:
     - _Thickness: 0.05
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _DefaultScale: {r: 1, g: 1, b: 0, a: 0}
-    - _Size: {r: 49, g: 49, b: 0, a: 0}
+    - _DefaultScale: {r: 0.25, g: 0.25, b: 0, a: 0}
+    - _Size: {r: 0.1, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []

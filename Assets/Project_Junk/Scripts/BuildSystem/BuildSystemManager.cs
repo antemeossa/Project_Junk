@@ -203,7 +203,7 @@ public class BuildSystemManager : MonoBehaviour
 
                         obj = Instantiate(prefab_Built, prefab_BP.transform.position, prefab_BP.transform.rotation);
                         obj.transform.parent = currentFactory.transform;
-                        obj.GetComponent<BuildingScript>().playPlacementVFX();
+                        //obj.GetComponent<BuildingScript>().playPlacementVFX();
                         Destroy(prefab_BP.gameObject);
                         prefab_BP = null;
                         isBuilding = false;

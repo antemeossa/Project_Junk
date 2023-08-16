@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8633590249427154927
+--- !u!114 &-4919576973986953296
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13,19 +13,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 7
---- !u!114 &-7719015878131028404
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 0
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -33,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GridMat
-  m_Shader: {fileID: -6465566751694194690, guid: 8a0e46dae99b06746b4effd21e9db0ef, type: 3}
+  m_Name: StylizedWaterMat
+  m_Shader: {fileID: -6465566751694194690, guid: bd6e6fc9616154541bb018db2292fcec, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -49,16 +36,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _GridTexture:
-        m_Texture: {fileID: 2800000, guid: 9d0b88dcacff8504da6e728429397392, type: 3}
+    - _SampleTexture2D_6e5ff06dddb84279bce66c472873982e_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: fd938ac8f33d963438dd2a2713885d2e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: 9d0b88dcacff8504da6e728429397392, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_3d03834f3d6941c787cbf46f2c8e9609_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 0fc85e26c526dcc45ba021e266f807ed, type: 3}
+    - _SampleTexture2D_df0db609901049dda6ff836fcda1addd_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: fd938ac8f33d963438dd2a2713885d2e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -75,15 +58,22 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BUILTIN_QueueControl: 0
-    - _BUILTIN_QueueOffset: 0
+    - _DepthTransparency: 0.763
+    - _FoamAmount: 100
+    - _FoamCutOff: 1
+    - _FoamScale: 100
+    - _FoamSpeed: 0.1
+    - _GradientScale: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ScrollSpeed: 0.1
-    - _SpeedX: 0
-    - _Thickness: 0.05
+    - _RefractionMovementSpeed: 0.005
+    - _RefractionScale: 1
+    - _RefractionStrength: 1
+    - _WaterDepth: 750
+    - _WaveMovementSpeed: 0.5
+    - _WaveScale: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _DefaultScale: {r: 1, g: 1, b: 0, a: 0}
-    - _Size: {r: 49, g: 49, b: 0, a: 0}
+    - _DeepWaterColor: {r: 0, g: 0.2096607, b: 0.47058824, a: 1}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShallowWaterColor: {r: 0.3186632, g: 0.7726122, b: 0.8773585, a: 0.2509804}
   m_BuildTextureStacks: []

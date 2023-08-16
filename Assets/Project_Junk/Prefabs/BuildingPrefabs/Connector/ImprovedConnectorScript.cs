@@ -31,12 +31,12 @@ public class ImprovedConnectorScript : MonoBehaviour
     private void OnEnable()
     {
         BS_M = GetComponent<BuildSystemManager>();
-        connectorPointerTmp = Instantiate(connectorPointer, new Vector3(0, 105, 0), Quaternion.identity);
+        connectorPointerTmp = Instantiate(connectorPointer, new Vector3(0, BS_M.placementHeight, 0), Quaternion.identity);
         //connectorParentTmp = Instantiate(connectorParent);
         mousePosition = connectorPointerTmp.GetComponent<PlaceableObject>().getMouseWorldPosition();
         connectorStarted = false;
         connectorFinished = false;
-        startPos = new Vector3(0, 110, 0);
+        startPos = new Vector3(0, BS_M.placementHeight, 0);
         turnIndex = 0;
 
     }
