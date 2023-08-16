@@ -9,10 +9,11 @@ public class MotherShipMovement : MonoBehaviour
     private string mothersShipName;
     private float speed;
     public float landingTime;
-    public GameObject landingGear, forceFieldGuard;
+    public GameObject landingGear, forceFieldGuard, jetEngineVFX;
     public bool hasLanded = false;
     public float landingShakeDuration, timeAfterLanding;
-    public Material forceFieldMat;
+    public Material forceFieldMat, jetEngineMat;
+   
 
     private Color guardColor = new Color(0,0,0,1);
 
@@ -43,6 +44,7 @@ public class MotherShipMovement : MonoBehaviour
             GameManager.Instance.Utils.camShake(5, landingShakeDuration);
             forceFieldGuard.GetComponent<Renderer>().material.DOFade(0, 2);
             StartCoroutine(changeForceFieldOpacity());
+            jetEngineVFX.SetActive(false);
             hasLanded = true;
         });
         GameManager.Instance.Utils.camShake(1, time);
