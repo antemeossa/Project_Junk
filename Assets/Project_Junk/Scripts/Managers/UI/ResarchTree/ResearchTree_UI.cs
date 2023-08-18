@@ -24,7 +24,6 @@ public class ResearchTree_UI : MonoBehaviour
         if (node.GetComponent<ResearchNode_Base>().isUnlockable)
         {
             node.unlockNode();
-            Debug.Log("okay");
         }
         else
         {

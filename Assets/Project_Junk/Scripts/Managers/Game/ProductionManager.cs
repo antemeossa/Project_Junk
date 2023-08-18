@@ -39,15 +39,21 @@ public class ProductionManager : MonoBehaviour
         GameManager.Instance.UI_M.updateSmallDetailsPanel();
     }
 
-    public void setAllBuildingsInWorld()
+    public void addFactory(FactoryScript obj)
+    {
+        factoriesList.Add(obj);
+    }
+
+    public void removeFactory(FactoryScript obj)
+    {
+        factoriesList.Remove(obj);
+    }
+    public void setAllBuildingsInWorld(Transform obj)
     {
         allBuildings.Clear();
-        for(int i = 0;i < factoriesList.Count; i++)
+        for (int i = 0; i < obj.childCount; i++)
         {
-            for (int j = 0; j < factoriesList[i].getAllBuildingsOnFactory.Count; j++)
-            {
-                allBuildings.Add(factoriesList[i].getAllBuildingsOnFactory[j]);
-            }
+            allBuildings.Add(obj.GetChild(i).gameObject);
         }
     }
     private void massProduce()

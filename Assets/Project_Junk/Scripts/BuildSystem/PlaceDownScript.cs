@@ -1,30 +1,103 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlaceDownScript : MonoBehaviour
 {
     [SerializeField]
     private float dropHeight, dropTime, shakeStrength, shakeDuration;
-    
+
+    [SerializeField]
+    private GameObject LOD0;
+
+    [SerializeField]
+    private Material dissolveMat;
+    private Renderer objRenderer;
+
+    [SerializeField]
+    private Material defaultMaterial;
+
+    [SerializeField]
+    [Range(0.0f, 1.0f)]
+    private float buildTime = 1;
+
+    [SerializeField]
+    private List<Material> defaultMaterials = new List<Material>();
 
     private void Start()
     {
-        dropDown(transform.gameObject);
+        objRenderer = LOD0.GetComponent<Renderer>();
+        dissolve(LOD0, (buildTime));
+
+        
+
     }
     public void dropDown(GameObject obj)
     {
         float y = transform.position.y;
-        //transform.position = new Vector3(transform.position.x, y + dropHeight, transform.position.z);
-        obj.transform.DOMoveY(y + dropHeight *2, .1f);
-        obj.transform.DOMoveY(y, dropTime, false).OnComplete(() =>
+
+
+        obj.transform.DOMoveY(y - dropHeight, dropTime, false).OnComplete(() =>
         {
             GetComponent<BuildingScript>().playPlacementVFX();
+            objRenderer.SetMaterials(defaultMaterials);
+            StartCoroutine(changeColor());
             GameManager.Instance.Utils.camShake(shakeDuration, shakeStrength);
+            
         });
-        
-        //GetComponent<VFXPlayer>().PlayPlacementVFX();
+
     }
+
+    public void dissolve(GameObject obj, float t)
+    {
+
+        List<Material> tmpList = new List<Material>();
+
+
+        for (int i = 0; i < defaultMaterials.Count; i++)
+        {
+            tmpList.Add(dissolveMat);
+        }
+
+        objRenderer.SetMaterials(tmpList);
+
+
+        StartCoroutine(dissolveAction(t));
+    }
+
+    IEnumerator dissolveAction(float speed)
+    {
+        float currentT = 0;
+        dissolveMat.SetFloat("_DissolveAmount", 1);
+        while (currentT <= 1)
+        {
+            currentT += Time.deltaTime * speed;
+            dissolveMat.SetFloat("_DissolveAmount", 1 - currentT);
+
+            yield return null;
+        }
+
+        dropDown(transform.gameObject);
+
+
+        yield return null;
+    }
+
+    IEnumerator changeColor()
+    {
+        float currentT = 0;
+
+        while(currentT <= 2)
+        {
+            LOD0.GetComponent<Renderer>().material.color = Color.Lerp(dissolveMat.GetColor("_BaseColor"), Color.white, currentT);
+            currentT += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+
 }
+
+

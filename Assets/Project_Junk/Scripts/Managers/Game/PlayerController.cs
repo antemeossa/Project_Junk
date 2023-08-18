@@ -145,29 +145,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void changeCurrentMode(int i)
-    {
-        switch (i)
-        {
-            case 0:
-                GM.currentMode = currentModeType.PlayMode;
-                break;
-            case 1:
-                GM.currentMode = currentModeType.BuildMode;
-                break;
-            case 2:
-                GM.currentMode = currentModeType.UI_Mode;
-                break;
-            case 3:
-                GM.currentMode = currentModeType.ConnectionMode;
-                break;
-            default:
-                break;
+    
 
-        }
-    }
-
-    public string getCurrentModeString { get { return GM.currentMode.ToString(); } }
+   
 
     private void inputActions()
     {
@@ -205,7 +185,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (GM.currentMode != currentModeType.BuildMode)
+            if (GM.currentMode != currentModeType.BuildMode && GM.currentMode != currentModeType.SalvageMode)
             {
                 if (BS_M.getCurrentFactory != null)
                 {
@@ -234,100 +214,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    private void inputActions1()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            if (GM.currentMode == currentModeType.BuildMode)
-            {
-                UI_M.switchBuildPanel();
-                BS_M.cancelBuildAction();
-            }
-            BS_M.buildConnector();
-
-
-        }
-
-       
-        
-
-       
-
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            UI_M.switchBuildPanel();
-            if (GM.currentMode != currentModeType.BuildMode)
-            {
-                if (GM.currentMode.Equals(currentModeType.ConnectionMode))
-                {
-                    BS_M.buildConnector();
-                }
-                GM.currentMode = currentModeType.BuildMode;
-                unselectBuilding();
-            }
-            else
-            {
-                BS_M.cancelBuildAction();
-                GM.currentMode = currentModeType.PlayMode;
-            }
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (GM.currentMode == currentModeType.BuildMode)
-            {
-                if (BS_M.isBuilding)
-                {
-                    BS_M.buildObject();
-                }
-            }
-            else if (GM.currentMode == currentModeType.PlayMode)
-            {
-                selectBuilding();
-            }
-            else if (GM.currentMode == currentModeType.UI_Mode)
-            {
-
-            }
-            else if (GM.currentMode == currentModeType.ConnectionMode)
-            {
-
-            }
-
-        }
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (GM.currentMode == currentModeType.BuildMode)
-            {
-                BS_M.cancelBuildAction();
-
-            }
-            else if (GM.currentMode == currentModeType.ConnectionMode)
-            {
-                GM.currentMode = currentModeType.PlayMode;
-            }
-
-            if (selectedBuilding != null)
-            {
-                if (selectedBuilding.GetComponent<StorageScript>() == null)
-                {
-                    UI_M.deactivateSmallDetailsPanel();
-                    unselectBuilding();
-                }
-                else
-                {
-                    UI_M.deactivateStoragePanel();
-                    unselectBuilding();
-                }
-
-            }
-        }
-
-
-
-    }
+    
 
     public GameObject getSelectedBuilding { get { return selectedBuilding; } }
 }

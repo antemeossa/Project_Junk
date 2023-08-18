@@ -44,6 +44,7 @@ public class ImprovedConnectorScript : MonoBehaviour
     private void OnDisable()
     {
         clearTempNodes();
+        BS_M.cancelConnector();
         Destroy(connectorPointerTmp.gameObject);
     }
     private void Start()
@@ -65,8 +66,6 @@ public class ImprovedConnectorScript : MonoBehaviour
 
         InputActions();
 
-        Debug.Log("Start Building: " + startBuilding);
-        Debug.Log("End Building: " + endBuilding);
     }
 
     private void InputActions()
@@ -89,35 +88,34 @@ public class ImprovedConnectorScript : MonoBehaviour
                 {
 
                     lineMousePos = mousePosition;
-                    //GameObject connectorParentFac = Instantiate(connectorParent);                    
-                    //spawnedNodesPerm[spawnedNodesPerm.Count - 1].GetComponent<improvedConnectorNodeScript>().switchToInput();
                     connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding.GetComponent<BuildingScript>().addIntakeBuilding(startBuilding);
                     endBuilding = connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding;
                     startBuilding.GetComponent<BuildingScript>().addOuttakeBuilding(endBuilding);
                     connectorParentTmp.GetComponent<TransferItemsScript>().setFacilities(startBuilding, endBuilding);
                     connectorParentTmp.transform.name = "Connector_" + connectorCount;
-                    connectorParentTmp.transform.SetParent(BS_M.getCurrentFactory.transform.parent.GetComponent<FactoryScript>().getAllConnectorsTransform, true);                    
+                    connectorParentTmp.transform.SetParent(BS_M.getCurrentFactory.transform.parent.GetComponent<FactoryScript>().getAllConnectorsTransform, true);
                     connectorFinished = true;
-                    connectorStarted = false;                    
+                    connectorStarted = false;
                     connectorCount++;
                     spawnLine();
                     makeTurns(connectorParentTmp, turnIndex);
                     clearTempNodes();
-                    gameObject.SetActive(false);
+                    spawnedNodesPerm.Clear();
+                    gameObject.GetComponent<ImprovedConnectorScript>().enabled = false;
                     GameManager.Instance.currentMode = currentModeType.BuildMode;
-                    
+                    connectorParentTmp.GetComponent<ConnectorPlacementDropDown>().startPlacement();
 
 
                 }
                 else
                 {
-                    
+
                     lineMousePos = mousePosition;
                     spawnLine();
                     makeTurns(connectorParentTmp, turnIndex);
-                    
-                    
-                    
+
+
+
                 }
 
             }
@@ -126,13 +124,8 @@ public class ImprovedConnectorScript : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-
-            clearTempNodes();
-            connectorStarted = false;
-            connectorFinished = false;
-            //Destroy(connectorPointerTmp.gameObject);
-            //Destroy(connectorParentTmp);
-            BS_M.cancelConnector();
+            destroyPermNodes();
+            gameObject.GetComponent<ImprovedConnectorScript>().enabled = false;
         }
     }
     private void clearTempNodes()
@@ -160,6 +153,23 @@ public class ImprovedConnectorScript : MonoBehaviour
             }
             spawnedNodesTemp.Clear();
         }
+    }
+
+    private void destroyPermNodes()
+    {
+
+        for (int i = 0; i < spawnedNodesPerm.Count; i++)
+        {
+            if (spawnedNodesPerm[i] != null)
+            {
+                Destroy(spawnedNodesPerm[i]);
+
+
+            }
+        }
+        spawnedNodesPerm.Clear();
+
+
     }
 
 
@@ -224,8 +234,10 @@ public class ImprovedConnectorScript : MonoBehaviour
             spawnedNodesPerm.Add(obj);
 
         }
-        directionToObject = tmpLine[tmpLine.Count - 1].transform.position - tmpLine[0].transform.position;        
+        
+        directionToObject = tmpLine[tmpLine.Count - 1].transform.position - tmpLine[0].transform.position;
         startPos = spawnedNodesPerm[spawnedNodesPerm.Count - 1].transform.position;
+        
     }
 
     private int turnIndex = 0;
@@ -372,64 +384,5 @@ public class ImprovedConnectorScript : MonoBehaviour
             }
             setColor();
         }
-
-
-        /*
-        if (spawnedNodesTemp.Count != nodeCount && spawnedNodesTemp.Count == 0)
-        {
-            for (int i = 0; i < nodeCount; i++)
-            {
-                GameObject obj = Instantiate(connectorPointerTmp.GetComponent<PlaceableObject>().getObjectToBuild, nextNodePos, Quaternion.identity);
-                if (checkMovementAxis() == 2)
-                {
-                    obj.transform.rotation = Quaternion.identity;
-                    lineRotation = 0;
-                }
-                else if (checkMovementAxis() == 1)
-                {
-                    obj.transform.Rotate(new Vector3(0, 90, 0));
-                    lineRotation = 90;
-                }
-                spawnedNodesTemp.Add(obj);
-                tempPositions.Add(obj.transform.position);
-
-                nextNodePos += vec;
-            }
-
-        }
-        else if (spawnedNodesTemp.Count != 0 && spawnedNodesTemp.Count != 0)
-        {
-            for (int i = 0; i < spawnedNodesTemp.Count; i++)
-            {
-                Destroy(spawnedNodesTemp[i]);
-            }
-            tempPositions.Clear();
-            spawnedNodesTemp.Clear();
-            for (int i = 0; i < nodeCount; i++)
-            {
-                nextNodePos += vec;
-                GameObject obj = Instantiate(connectorPointerTmp.GetComponent<PlaceableObject>().getObjectToBuild, nextNodePos, Quaternion.identity);
-                if (checkMovementAxis() == 2)
-                {
-                    obj.transform.rotation = Quaternion.identity;
-                    lineRotation = 0;
-                }
-                else if (checkMovementAxis() == 1)
-                {
-                    obj.transform.Rotate(new Vector3(0, 90, 0));
-                    lineRotation = 90;
-                }
-                spawnedNodesTemp.Add(obj);
-                tempPositions.Add(obj.transform.position);
-            }
-            setColor();
-        }*/
     }
-
-
-
-
-
-
-
 }

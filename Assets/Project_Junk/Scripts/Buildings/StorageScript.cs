@@ -38,7 +38,6 @@ public class StorageScript : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(GetComponent<InventoryScript>().getCurrentStorage());
     }
     private void setValues()
     {

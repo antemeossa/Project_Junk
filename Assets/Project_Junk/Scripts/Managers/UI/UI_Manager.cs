@@ -59,7 +59,6 @@ public class UI_Manager : MonoBehaviour
 
             smallDetailsPanel.GetComponent<UI_SmallDetails>().setSmallDetailsPanel(playerController.getSelectedBuilding);
 
-            Debug.Log("in");
         }
 
     }

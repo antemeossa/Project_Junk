@@ -9,6 +9,8 @@ TagManager:
   - Merger
   - Border
   - Landscape
+  - WaterBody
+  - CamBorder
   layers:
   - Default
   - TransparentFX

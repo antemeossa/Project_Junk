@@ -21,7 +21,7 @@ public class ConnectorPlacementDropDown : MonoBehaviour
 
     public void startPlacement()
     {
-        /*
+        
         connectorsList.Clear();
 
         for (int i = 0; i < transform.childCount; i++)
@@ -80,7 +80,7 @@ public class ConnectorPlacementDropDown : MonoBehaviour
                 currentT = 0f;
             }
 
-        }*/
+        }
 
     }
 

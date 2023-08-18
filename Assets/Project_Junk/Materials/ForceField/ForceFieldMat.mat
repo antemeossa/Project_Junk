@@ -53,7 +53,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ScanLineTexture:
-        m_Texture: {fileID: 2800000, guid: fd93eb7c49410d446aca63b76f64fce9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6e1c93995519b884ab4261eb739fe523, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_12060b13a795430799467e44c2ac06f2_Out_0_Texture2D:
@@ -82,10 +82,10 @@ Material:
     - _Cull: 2
     - _CutOff: 0.228
     - _DstBlend: 0
-    - _ElectricFrequency: 1
-    - _ElectricMoveSpeedX: 0.0052
-    - _ElectricMoveSpeedY: 0.0187
-    - _ElectricThickness: 0.093
+    - _ElectricFrequency: 0.495
+    - _ElectricMoveSpeedX: 0.0056
+    - _ElectricMoveSpeedY: 0
+    - _ElectricThickness: 0.19
     - _Frequency: 0.5
     - _Offset: 0.6
     - _QueueControl: 0
@@ -93,12 +93,12 @@ Material:
     - _ReceiveShadows: 1
     - _RimColorChangeTime: 1
     - _RimPulseRate: 1
-    - _ScanSizeHorizontal: 1.52
-    - _ScanSizeVertical: 1.4
+    - _ScanSizeHorizontal: 4.95
+    - _ScanSizeVertical: 6.59
     - _SrcBlend: 1
     - _Surface: 0
     - _Thickness: 0.101
-    - _TileMoveSpeedHorizontal: 0.1
+    - _TileMoveSpeedHorizontal: 0.2
     - _TileMoveSpeedVertical: 0
     - _WorkflowMode: 1
     - _ZTest: 4
@@ -106,13 +106,13 @@ Material:
     - _ZWriteControl: 0
     m_Colors:
     - _CutOff: {r: 0.1, g: 0.8, b: 0, a: 0}
-    - _ElectricColor: {r: 0, g: 73.588066, b: 383.49805, a: 1}
+    - _ElectricColor: {r: 383.49805, g: 18.387323, b: 0, a: 1}
     - _ElectricCutOff: {r: 0.3, g: 0.7, b: 0, a: 0}
-    - _FillTiling: {r: 25, g: 25, b: 0, a: 0}
+    - _FillTiling: {r: 15, g: 15, b: 0, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _RimColor: {r: 3.9999995, g: 0.57153237, b: 0, a: 1}
     - _RimColorA: {r: 0.7328114, g: 0.7372549, b: 0, a: 1}
     - _RimColorB: {r: 0.81960785, g: 0.32302338, b: 0, a: 1}
-    - _RimPowerRange: {r: 0, g: 21.997902, b: 0, a: 0}
+    - _RimPowerRange: {r: 0, g: 20, b: 0, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

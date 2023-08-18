@@ -201,14 +201,14 @@ public class BuildSystemManager : MonoBehaviour
                     if (placeableObj.checkCanBuild())
                     {
 
-                        obj = Instantiate(prefab_Built, prefab_BP.transform.position, prefab_BP.transform.rotation);
+                        obj = Instantiate(prefab_Built, prefab_BP.transform.position + new Vector3(0,20,0), prefab_BP.transform.rotation);
                         obj.transform.parent = currentFactory.transform;
                         //obj.GetComponent<BuildingScript>().playPlacementVFX();
                         Destroy(prefab_BP.gameObject);
                         prefab_BP = null;
                         isBuilding = false;
                         currentFactory.transform.parent.GetComponent<FactoryScript>().updateBuildingList();
-                        PM.setAllBuildingsInWorld();
+                        PM.setAllBuildingsInWorld(currentFactory.transform);
 
                     }
                 }

@@ -30,13 +30,13 @@ public class CamManager : MonoBehaviour
     public CameraModeEnum currentMode = CameraModeEnum.Factory;
     public float speedMultiplier = 2;
     public float rotationSpeed;
-
+    public Transform apexPoint;
     [Header("Factory Mode Variables")]
     public float movementSpeed_F;
     public float zoomSpeed_F;
     public float movementSmoothness_F;
     public float zoomSmoothness_F;
-    public Vector2 movementBounds_F = new Vector2(0, 0);
+    public float movementRadius_F;
     public Vector2 zoomBounds_F = new Vector2(0, 0);
     public Vector3 defaultFactoryPosition = new Vector3(0, 0, 0);
 
@@ -46,7 +46,7 @@ public class CamManager : MonoBehaviour
     public float zoomSpeed_E;
     public float movementSmoothness_E;
     public float zoomSmoothness_E;
-    public Vector2 movementBounds_E = new Vector2(0, 0);
+    public float movementRadius_E;
     public Vector2 zoomBounds_E = new Vector2(0, 0);
     public Vector3 defaultExplorePosition = new Vector3(0, 0, 0);
 
@@ -57,24 +57,25 @@ public class CamManager : MonoBehaviour
     [SerializeField] private MotherShipMovement mothership;
     private float defaultMovementSpeed, currentZoomSpeed, currentMovementSmoothness, currentZoomSmoothness;
     private float currentRotationSpeed, currentRotationSmoothness;
-    private Vector2 currentMovementBounds;
+    private float currentMovementRadius;
     private Vector2 currentZoomBounds;
     private Vector3 nextTargetZoomPos, zoomTargetPos, nextTargetPos;
     private Quaternion targetRotation;
     private float targetAngle, currentAngle;
     private Vector3 cameraDirection => transform.InverseTransformDirection(camHolder.forward);
     private bool isTransitioning = false;
+    private float zoomInput;
 
 
     private void Awake()
     {
-        
-        
-       
+
+
+
     }
     private void Start()
     {
-        if (!mothership.hasLanded )
+        if (!mothership.hasLanded)
         {
             camTransition(CameraModeEnum.Cinematic);
             changeVariables(CameraModeEnum.Cinematic);
@@ -84,13 +85,15 @@ public class CamManager : MonoBehaviour
         }
         else
         {
+            changeVariables(CameraModeEnum.Factory);
+            camTransition(CameraModeEnum.Factory);
             zoomTargetPos = camHolder.position;
             targetRotation = camHolder.rotation;
             targetAngle = camHolder.eulerAngles.y;
             currentAngle = targetAngle;
             currentRotationSpeed = 0;
         }
-       
+
     }
 
     private void Update()
@@ -98,29 +101,39 @@ public class CamManager : MonoBehaviour
         if (mothership.hasLanded || !isTransitioning)
         {
             camInputActions();
-            camMovement();
-            zoomAction();
+            if (camHolder.GetComponent<CamHolderScript>().getIsInBorders)
+            {
+                camMovement();
+                zoomInput = Input.GetAxis("Mouse ScrollWheel");
+                zoomAction();
+            }
+
             rotateCam();
         }
-        
     }
 
     private void camInputActions()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (!isTransitioning)
         {
-            camTransition(CameraModeEnum.Factory);
-            changeVariables(CameraModeEnum.Factory);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            camTransition(CameraModeEnum.Explore);
-            changeVariables(CameraModeEnum.Explore);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                camTransition(CameraModeEnum.Factory);
 
+                GameManager.Instance.currentMode = currentModeType.PlayMode;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                camTransition(CameraModeEnum.Explore);
+
+                GameManager.Instance.currentMode = currentModeType.SalvageMode;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+
+            }
         }
+
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
         {
@@ -140,7 +153,7 @@ public class CamManager : MonoBehaviour
     private void changeVariables(CameraModeEnum mode)
     {
         currentMode = mode;
-
+        apexPoint = mothership.apexPoint;
         if (mode == CameraModeEnum.Cinematic)
         {
 
@@ -150,7 +163,7 @@ public class CamManager : MonoBehaviour
             defaultMovementSpeed = movementSpeed_F;
             currentMovementSpeed = movementSpeed_F;
             currentZoomSpeed = zoomSpeed_F;
-            currentMovementBounds = movementBounds_F;
+            currentMovementRadius = movementRadius_F;
             currentZoomBounds = zoomBounds_F;
             currentZoomSmoothness = zoomSmoothness_F;
             currentMovementSmoothness = movementSmoothness_F;
@@ -160,27 +173,37 @@ public class CamManager : MonoBehaviour
             defaultMovementSpeed = movementSpeed_E;
             currentMovementSpeed = movementSpeed_E;
             currentZoomSpeed = zoomSpeed_E;
-            currentMovementBounds = movementBounds_E;
+            currentMovementRadius = movementRadius_E;
             currentZoomBounds = zoomBounds_E;
             currentZoomSmoothness = zoomSmoothness_E;
             currentMovementSmoothness = movementSmoothness_E;
         }
     }
 
+
     private void camTransition(CameraModeEnum nextMode)
     {
         CameraModeEnum previousMode = currentMode;
-        
-        
-        
-        if(previousMode != CameraModeEnum.Cinematic)
+
+
+
+        if (previousMode != CameraModeEnum.Cinematic)
         {
             if (previousMode == CameraModeEnum.Factory && nextMode == CameraModeEnum.Explore)
             {
                 camHolder.DOKill();
                 isTransitioning = true;
-                camHolder.DOLocalMove(defaultExplorePosition, 1).OnComplete(() =>
+
+                transform.DOMove(defaultExplorePosition, 1).OnComplete(() =>
                 {
+                    camHolder.DOLocalRotate(new Vector3(40, 0, 0), 1).OnComplete(() =>
+                    {
+                        targetAngle = camHolder.eulerAngles.y;
+                        currentAngle = targetAngle;
+
+                    });
+
+                    changeVariables(CameraModeEnum.Explore);
                     zoomTargetPos = defaultExplorePosition;
                     //camHolder.localPosition = defaultExplorePosition;
                     isTransitioning = false;
@@ -190,8 +213,13 @@ public class CamManager : MonoBehaviour
             {
                 camHolder.DOKill();
                 isTransitioning = true;
-                
-                camHolder.DOLocalMove(defaultFactoryPosition, 1).OnComplete(() =>
+
+                //StartCoroutine(lookAtObj(mothership.transform, 2, 1));
+
+
+
+                goBackToBaseTransition(2);
+                transform.DOMove(defaultFactoryPosition, 2).OnComplete(() =>
                 {
                     camHolder.DOLocalRotate(new Vector3(40, 0, 0), 1).OnComplete(() =>
                     {
@@ -199,17 +227,18 @@ public class CamManager : MonoBehaviour
                         currentAngle = targetAngle;
                     });
                     zoomTargetPos = defaultFactoryPosition;
+                    changeVariables(CameraModeEnum.Factory);
+
                     //camHolder.localPosition = defaultFactoryPosition;
                     isTransitioning = false;
                 }); ;
             }
         }
-        else if(previousMode == CameraModeEnum.Cinematic && nextMode == CameraModeEnum.Factory)
+        else if (previousMode == CameraModeEnum.Cinematic && nextMode == CameraModeEnum.Factory)
         {
             camHolder.DOKill();
             isTransitioning = true;
-            Debug.Log("In");
-            camHolder.DOLocalMove(defaultFactoryPosition, 2).OnComplete(() =>
+            transform.DOMove(defaultFactoryPosition, 2, false).OnComplete(() =>
             {
                 zoomTargetPos = defaultFactoryPosition;
                 camHolder.DOLocalRotate(new Vector3(40, 0, 0), 1).OnComplete(() =>
@@ -219,21 +248,59 @@ public class CamManager : MonoBehaviour
                 });
                 //camHolder.localPosition = defaultExplorePosition;
                 isTransitioning = false;
-                Debug.Log("transition");
             });
         }
-        
+
 
     }
 
+    private void goBackToBaseTransition(float t)
+    {
+        if (transform.position.x >= 0 && transform.position.z > 0)
+        {
+            defaultFactoryPosition = new Vector3(100, defaultFactoryPosition.y, 100);
+            transform.DORotate(new Vector3(0, -135, 0), t);
+        }
+        else if (transform.position.x <= 0 && transform.position.z > 0)
+        {
+            defaultFactoryPosition = new Vector3(-100, defaultFactoryPosition.y, 100);
+            transform.DORotate(new Vector3(0, 135, 0), t);
+        }
+        else if (transform.position.x >= 0 && transform.position.z < 0)
+        {
+            defaultFactoryPosition = new Vector3(100, defaultFactoryPosition.y, -100);
+            transform.DORotate(new Vector3(0, -45, 0), t);
+        }
+        else if (transform.position.x <= 0 && transform.position.z < 0)
+        {
+            defaultFactoryPosition = new Vector3(-100, defaultFactoryPosition.y, -100);
+            transform.DORotate(new Vector3(0, 45, 0), t);
+        }
+    }
+    IEnumerator lookAtObj(Transform obj, float t, float speed)
+    {
+        float currentT = 0;
+        Quaternion lookRotation = Quaternion.LookRotation(obj.position - transform.position);
+
+
+        while (currentT < t)
+        {
+
+            currentT += Time.deltaTime;
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, t);
+            yield return null;
+        }
+
+        //camHolder.LookAt(obj);
+    }
     IEnumerator watchLandingCinematic()
     {
         float t = mothership.landingTime;
         float currentT = 0;
 
-        
-         
-        while(currentT < t + 1)
+
+
+        while (currentT < t + 1)
         {
             currentT += Time.deltaTime;
             camHolder.LookAt(mothership.gameObject.transform);
@@ -241,10 +308,12 @@ public class CamManager : MonoBehaviour
         }
 
         currentT = 0;
-
+        camHolder.DOLocalMove(Vector3.zero, mothership.timeAfterLanding);
+        transform.DOMove(defaultFactoryPosition, mothership.timeAfterLanding);
         while (currentT < mothership.timeAfterLanding)
         {
             currentT += Time.deltaTime;
+
 
             yield return null;
         }
@@ -260,31 +329,31 @@ public class CamManager : MonoBehaviour
 
     }
 
+
     private void camMovement()
     {
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
+
         Vector3 right = transform.right * x;
         Vector3 forward = transform.forward * z;
 
         Vector3 movementInput = (forward + right).normalized;
-        
+
         nextTargetPos = transform.position + movementInput * currentMovementSpeed;
-        Debug.Log(nextTargetPos);
-        setBounds(nextTargetPos);
-        transform.position = setBounds(nextTargetPos);
+
+        transform.position = ClampPositionToCircularArea(nextTargetPos, mothership.transform, currentMovementRadius);
+
 
     }
 
     private void zoomAction()
-    {
-        float zoomInput = Input.GetAxis("Mouse ScrollWheel");
-
-        
+    {/*
         nextTargetZoomPos = zoomTargetPos + cameraDirection * (zoomInput * currentZoomSpeed);
         zoomTargetPos = nextTargetZoomPos;
         camHolder.localPosition = Vector3.Lerp(camHolder.localPosition, nextTargetZoomPos, currentZoomSmoothness);
+        transform.position = camHolder.position;*/
 
     }
 
@@ -310,13 +379,33 @@ public class CamManager : MonoBehaviour
         }
     }
 
-    private Vector3 setBounds(Vector3 pos)
+
+
+    public Vector3 ClampPositionToCircularArea(Vector3 position, Transform centerPoint, float radius)
     {
 
-        float clampedX = Mathf.Clamp(pos.x, currentMovementBounds.x, currentMovementBounds.y);
-        float clampedZ = Mathf.Clamp(pos.z, currentMovementBounds.x, currentMovementBounds.y);
-        return new Vector3(clampedX, pos.y, clampedZ);
+        // Calculate the direction from the position to the center point
+        Vector3 offset = position - centerPoint.position;
+        offset.y = 0f; // Ensure the movement is restricted to the horizontal plane
+
+        // Calculate the distance from the center point
+        float distanceFromCenter = offset.magnitude;
+
+        // If the distance exceeds the radius, clamp the position
+        if (distanceFromCenter > radius)
+        {
+            // Calculate the normalized movement direction towards the center point
+            Vector3 normalizedDirection = offset.normalized;
+
+            // Calculate the clamped position within the circular area
+            Vector3 clampedPosition = centerPoint.position + normalizedDirection * radius;
+
+            return new Vector3(clampedPosition.x, transform.position.y, clampedPosition.z);
+        }
+
+        return position; // No need for clamping
     }
+
 
     /*
     [Header("Movement Settings")]

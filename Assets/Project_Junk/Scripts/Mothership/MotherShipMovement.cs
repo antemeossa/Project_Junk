@@ -13,6 +13,7 @@ public class MotherShipMovement : MonoBehaviour
     public bool hasLanded = false;
     public float landingShakeDuration, timeAfterLanding;
     public Material forceFieldMat, jetEngineMat;
+    public Transform apexPoint;
    
 
     private Color guardColor = new Color(0,0,0,1);
@@ -33,21 +34,30 @@ public class MotherShipMovement : MonoBehaviour
 
     public void landMothership(Vector3 landingTarget, float time)
     {
-        forceFieldMat.SetVector("_RimPowerRange", new Vector2(0, 2));
-        landingOperations(landingGear, landingTime / 2);        
-        forceFieldMat.color = guardColor;
-        
-        
-        
-        transform.DOMove(landingTarget, time).OnComplete(() =>
-        {            
-            GameManager.Instance.Utils.camShake(5, landingShakeDuration);
-            forceFieldGuard.GetComponent<Renderer>().material.DOFade(0, 2);
-            StartCoroutine(changeForceFieldOpacity());
+        if (!hasLanded)
+        {
+            forceFieldMat.SetVector("_RimPowerRange", new Vector2(0, 2));
+            forceFieldMat.color = guardColor;
+
+            StartCoroutine(openLandingGear());
+
+            transform.DOMove(landingTarget, time).OnComplete(() =>
+            {
+                GameManager.Instance.Utils.camShake(5, landingShakeDuration);
+                forceFieldGuard.GetComponent<Renderer>().material.DOFade(0, 2);
+                StartCoroutine(changeForceFieldOpacity());
+                jetEngineVFX.SetActive(false);
+                hasLanded = true;
+            });
+            GameManager.Instance.Utils.camShake(1, time);
+        }
+        else
+        {
             jetEngineVFX.SetActive(false);
-            hasLanded = true;
-        });
-        GameManager.Instance.Utils.camShake(1, time);
+            forceFieldGuard.GetComponent<Renderer>().material.DOFade(0, 2);
+            forceFieldMat.SetVector("_RimPowerRange", new Vector2(0, 20));
+        }
+        
 
 
     }
@@ -55,9 +65,25 @@ public class MotherShipMovement : MonoBehaviour
     public void landingOperations(GameObject obj, float time)
     {
         obj.transform.DOScale(1, time);
+        obj.transform.DORotate(new Vector3(0, -180, 0), (time / 4) * 3, RotateMode.Fast); 
 
     }
 
+    IEnumerator openLandingGear()
+    {
+        float currentT = 0f;
+
+        while(currentT < (landingTime / 4))
+        {
+            currentT += Time.deltaTime;
+            yield return null;
+        }
+
+        landingOperations(landingGear , landingTime / 2);
+
+        yield return null;
+
+    }
     IEnumerator changeForceFieldOpacity()
     {
         float currentT = 0;

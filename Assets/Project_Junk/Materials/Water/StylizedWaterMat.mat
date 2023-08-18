@@ -44,6 +44,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: fd938ac8f33d963438dd2a2713885d2e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _WavesNormalTxt:
+        m_Texture: {fileID: 2800000, guid: 1501f08ab913baf4eb05af6f28ab09c2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -61,8 +65,8 @@ Material:
     - _DepthTransparency: 0.763
     - _FoamAmount: 100
     - _FoamCutOff: 1
-    - _FoamScale: 100
-    - _FoamSpeed: 0.1
+    - _FoamScale: 500
+    - _FoamSpeed: 0.5
     - _GradientScale: 0
     - _QueueControl: 0
     - _QueueOffset: 0
