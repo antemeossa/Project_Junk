@@ -31,12 +31,11 @@ public class ImprovedConnectorScript : MonoBehaviour
     private void OnEnable()
     {
         BS_M = GetComponent<BuildSystemManager>();
-        connectorPointerTmp = Instantiate(connectorPointer, new Vector3(0, BS_M.placementHeight, 0), Quaternion.identity);
-        //connectorParentTmp = Instantiate(connectorParent);
+        connectorPointerTmp = Instantiate(connectorPointer, new Vector3(0, 105, 0), Quaternion.identity);
+        startPos = new Vector3(0,105, 0);
         mousePosition = connectorPointerTmp.GetComponent<PlaceableObject>().getMouseWorldPosition();
         connectorStarted = false;
-        connectorFinished = false;
-        startPos = new Vector3(0, BS_M.placementHeight, 0);
+        connectorFinished = false;        
         turnIndex = 0;
 
     }
@@ -49,7 +48,6 @@ public class ImprovedConnectorScript : MonoBehaviour
     }
     private void Start()
     {
-
     }
 
     private void Update()
@@ -65,7 +63,7 @@ public class ImprovedConnectorScript : MonoBehaviour
         }
 
         InputActions();
-
+        
     }
 
     private void InputActions()
@@ -74,7 +72,9 @@ public class ImprovedConnectorScript : MonoBehaviour
         {
             if (!connectorStarted && connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding != null && connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding.GetComponent<BuildingScript>().canConnectOut())
             {
+                
                 startPos = connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding.GetComponent<BuildingScript>().getOuttakeConnectorTransform.transform.position;
+                
                 startBuilding = connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding;
                 connectorStarted = true;
                 connectorFinished = false;
@@ -199,23 +199,14 @@ public class ImprovedConnectorScript : MonoBehaviour
         }
     }
 
-    private bool checkBuidlings(GameObject from, GameObject to)
-    {
-        if (from.GetComponent<BuildingScript>().canConnectOut() && to.GetComponent<BuildingScript>().canConnectIn(startBuilding.GetComponent<BuildingScript>().getBuildingType))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+
 
     List<GameObject> tmpLine = new List<GameObject>();
     private Vector3 directionToObject, previousDirectionToObject;
     Vector3 lineMousePos;
     private void spawnLine()
     {
+        
         tmpLine.Clear();
         previousDirectionToObject = directionToObject;
         for (int i = 0; i < tempPositions.Count; i++)
@@ -232,7 +223,7 @@ public class ImprovedConnectorScript : MonoBehaviour
             }
             obj.transform.SetParent(connectorParentTmp.transform, true);
             spawnedNodesPerm.Add(obj);
-
+            
         }
         
         directionToObject = tmpLine[tmpLine.Count - 1].transform.position - tmpLine[0].transform.position;
@@ -288,30 +279,13 @@ public class ImprovedConnectorScript : MonoBehaviour
     }
 
 
-    private void setColor()
-    {
-        if (canBuild == false)
-        {
-            for (int i = 0; i < spawnedNodesTemp.Count; i++)
-            {
-                spawnedNodesTemp[i].GetComponent<Renderer>().material.color = Color.red;
-            }
-        }
-        else
-        {
-            for (int i = 0; i < spawnedNodesTemp.Count; i++)
-            {
-                spawnedNodesTemp[i].GetComponent<Renderer>().material.color = Color.green;
-            }
-        }
-    }
+   
     private void setNodesPositions(float space)
     {
         float dist = Vector3.Distance(connectorPointerTmp.transform.position, startPos);
         int nodeCount = Mathf.CeilToInt(dist / connectorPointerTmp.transform.localScale.sqrMagnitude) / 2;
 
-
-
+        Debug.Log(lineRotation);
         Vector3 nextNodePos = startPos;
         Vector3 vec = (endPos - startPos).normalized * 6;
 
@@ -369,6 +343,10 @@ public class ImprovedConnectorScript : MonoBehaviour
             {
                 nextNodePos += vec;
                 GameObject obj = Instantiate(connectorPointerTmp.GetComponent<PlaceableObject>().getObjectToBuild, nextNodePos, Quaternion.identity);
+
+
+               
+                
                 if (checkMovementAxis() == 2)
                 {
                     obj.transform.rotation = Quaternion.identity;
@@ -382,7 +360,7 @@ public class ImprovedConnectorScript : MonoBehaviour
                 spawnedNodesTemp.Add(obj);
                 tempPositions.Add(obj.transform.position);
             }
-            setColor();
+            Debug.Log("function Done");
         }
     }
 }

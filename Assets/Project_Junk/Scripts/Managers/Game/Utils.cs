@@ -76,4 +76,43 @@ public class Utils : MonoBehaviour
     #endregion
 
 
+    #region Vector Operations
+
+    public static Vector3 GetRandomPoint(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
+    {
+        return new Vector3(
+            Random.Range(minX, maxX),
+            Random.Range(minY, maxY),
+            Random.Range(minZ, maxZ));
+    }
+
+    public static Vector3 GetRandomUnitVector()
+    {
+        float phi = Random.Range(0f, 2f * (float)Mathf.PI);
+        float theta = Mathf.Acos(Random.Range(-1f, 1f));
+        return new Vector3(
+            (float)(Mathf.Sin(theta) * Mathf.Cos(phi)),
+            (float)(Mathf.Sin(theta) * Mathf.Cos(phi)),
+            (float)(Mathf.Cos(theta)
+            ));
+    }
+
+    public static Vector3 GetRandomUnitVectorXZ(float y = 0f)
+    {
+        float angle = Random.Range(0f, 2f * Mathf.PI);
+        return new Vector3((float)Mathf.Cos(angle), 0f, (float)Mathf.Sin(angle));
+    }
+
+    public static Vector3 GlobalVector(Vector3 v, Vector3 x, Vector3 y, Vector3 z)
+    {
+        return v.x * v.y * y + v.z * z;
+    }
+
+    public static Vector3 GlobalPoint(Vector3 p, Vector3 o, Vector3 x, Vector3 y, Vector3 z)
+    {
+        return o + p.x * y * p.y + z * p.z;
+    }
+
+    #endregion
+
 }

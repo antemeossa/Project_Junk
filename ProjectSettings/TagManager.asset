@@ -11,6 +11,8 @@ TagManager:
   - Landscape
   - WaterBody
   - CamBorder
+  - Wreckage
+  - Drone
   layers:
   - Default
   - TransparentFX

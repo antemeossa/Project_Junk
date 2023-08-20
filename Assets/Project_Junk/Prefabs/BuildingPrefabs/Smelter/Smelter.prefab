@@ -539,8 +539,9 @@ MonoBehaviour:
   connectableIntakeTypes: 00000000
   powerConsumption: 10
   intakeCount: 1
-  outtakeCount: 1
-  connectedOuttake: {fileID: 6450284945590485845}
+  outputCount: 3
+  connectedOutputs:
+  - {fileID: 6450284945590485845}
   vfxplayer: {fileID: 3184768627524070234}
   factory: {fileID: 0}
   connectedIntakes:

@@ -39,7 +39,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _HexTexture:
-        m_Texture: {fileID: 2800000, guid: 85e607c6dfe29f64693bf5298bb098f8, type: 3}
+        m_Texture: {fileID: 2800000, guid: a70b7446d4836fd4a904bb69fec2b310, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ScanLineTexture:
@@ -61,10 +61,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 0
-    - _BigScanLineSpeed: 0.5
-    - _BigScanLineStrength: 1
+    - _BigScanLineSpeed: 0.2
+    - _BigScanLineStrength: 0.4
     - _BigScanLineThickness: 1
-    - _EdgeGlowStrength: 1
+    - _EdgeGlowStrength: 0.609
     - _GlowNoiseScale: 100
     - _GlowSpeed: 0.1
     - _HeightMapStrength: 1
@@ -76,12 +76,12 @@ Material:
     - _USEEDGEGLOW: 1
     - _USEHEXAGONGLOW: 1
     m_Colors:
-    - _BaseColor: {r: 0.81960785, g: 0.570782, b: 0, a: 0}
-    - _EdgeGlowThickness: {r: 0.2, g: 0.1, b: 0, a: 0}
-    - _EmissionColor: {r: 0.6509804, g: 0.079187915, b: 0, a: 0}
-    - _EmissionColor_1: {r: 0.33333334, g: 0.4386176, b: 0.7176471, a: 0}
-    - _GlowStrengthMin_Max: {r: 0, g: 50, b: 0, a: 0}
-    - _HexagonSize: {r: 10, g: 10, b: 0, a: 0}
-    - _ScanLineSize: {r: 0, g: 15, b: 0, a: 0}
+    - _BaseColor: {r: 0.81960785, g: 0.5824795, b: 0, a: 0}
+    - _EdgeGlowThickness: {r: 0.1, g: 0.1, b: 0, a: 0}
+    - _EmissionColor: {r: 1, g: 0.0215779, b: 0, a: 0}
+    - _EmissionColor_1: {r: 0.7176471, g: 0.4464618, b: 0.33333334, a: 0}
+    - _GlowStrengthMin_Max: {r: 0, g: 20, b: 0, a: 0}
+    - _HexagonSize: {r: 10, g: 5, b: 0, a: 0}
+    - _ScanLineSize: {r: 0, g: 0, b: 0, a: 0}
     - _ScrollVelocity: {r: 0, g: 0.07, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class UI_Manager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject buildPanel, smallDetailsPanel, recipeListPanel, storagePanel, deleteNotificationPanel, buildButtonPrefab;
+    private GameObject buildPanel, smallDetailsPanel, recipeListPanel, storagePanel, deleteNotificationPanel, buildButtonPrefab, wreckPanel;
 
     public BuildSystemManager BS_M;
     public GameManager GameManager;
@@ -34,9 +34,9 @@ public class UI_Manager : MonoBehaviour
     {
         smallDetailsPanel.SetActive(false);
         storagePanel.SetActive(false);
-        recipeListPanel.SetActive(false);
-        //deactivateSmallDetailsPanel();
+        recipeListPanel.SetActive(false);        
         buildPanel.SetActive(false);
+        wreckPanel.SetActive(false);
 
 
 
@@ -161,6 +161,21 @@ public class UI_Manager : MonoBehaviour
         storagePanel.SetActive(false);
     }
 
+    public void activateWreckPanel()
+    {
+        wreckPanel.SetActive(true);
+        wreckPanel.GetComponent<UI_WreckDetails>().setSelectedWreckage(playerController.getSelectedBuilding);
+        wreckPanel.GetComponent<UI_WreckDetails>().createGrid();
+        wreckPanel.GetComponent<UI_WreckDetails>().updateGrid();
+        focusedOnBuilding = true;
+    }
+
+    public void deactivateWreckPanel()
+    {
+        wreckPanel.SetActive(false);
+    }
+
+
     #region deleteNotification
     public void activateDeleteNotification()
     {
@@ -179,6 +194,8 @@ public class UI_Manager : MonoBehaviour
     }
 
     #endregion
+
+
     public bool getIsFocusedOnBuilding { get { return focusedOnBuilding; } set { focusedOnBuilding = value; } }
 
 

@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public BuildSystemManager BS_M;
 
     //Building Vars
+    [SerializeField]
     private GameObject selectedBuilding;
 
     //Ray Vars
@@ -38,7 +39,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         inputActions();
-
+       // Debug.Log((selectedBuilding != null && !EventSystem.current.IsPointerOverGameObject() && (GM.currentMode.Equals(currentModeType.PlayMode) || (GM.currentMode.Equals(currentModeType.SalvageMode)))));
     }
 
 
@@ -51,14 +52,46 @@ public class PlayerController : MonoBehaviour
             {
 
 
-                if (selectedBuilding != null && !EventSystem.current.IsPointerOverGameObject() && GM.currentMode.Equals(currentModeType.PlayMode))
+                if (selectedBuilding != null && !EventSystem.current.IsPointerOverGameObject() && (GM.currentMode.Equals(currentModeType.PlayMode) || (GM.currentMode.Equals(currentModeType.SalvageMode))))
                 {
-
+                    
                     unselectBuilding();
-                    
+
                     selectedBuilding = hit.transform.gameObject;
-                    
-                    
+
+                    if (selectedBuilding.GetComponent<BuildingScript>() != null)
+                    {
+                        BS_M.setCurrentFactory(selectedBuilding.transform.parent.gameObject);
+                        if (selectedBuilding.GetComponent<StorageScript>() == null)
+                        {
+                            UI_M.activateSmallDetailsPanel();
+
+                        }
+                        else
+                        {
+                            UI_M.activateStoragePanel();
+                        }
+
+
+                    }
+                    if (selectedBuilding.GetComponent<SelectableObject>() != null)
+                    {
+                        selectedBuilding.GetComponent<SelectableObject>().selectIt();
+                    }
+                    if (selectedBuilding.GetComponent<WreckAreaScript>() != null)
+                    {
+                        UI_M.activateWreckPanel();
+                    }
+
+                }
+                else if (selectedBuilding == null && !EventSystem.current.IsPointerOverGameObject() && (GM.currentMode.Equals(currentModeType.PlayMode) || (GM.currentMode.Equals(currentModeType.SalvageMode))))
+                {
+                    selectedBuilding = hit.transform.gameObject;
+                    if (selectedBuilding.GetComponent<SelectableObject>() != null)
+                    {
+                        selectedBuilding.GetComponent<SelectableObject>().selectIt();
+                    }
+
                     if (selectedBuilding.GetComponent<BuildingScript>() != null)
                     {
                         BS_M.setCurrentFactory(selectedBuilding.transform.parent.gameObject);
@@ -75,32 +108,14 @@ public class PlayerController : MonoBehaviour
 
                     }
 
-
-
-
-                }
-                else
-                {
-                    if (selectedBuilding == null && !EventSystem.current.IsPointerOverGameObject())
+                    if (selectedBuilding.GetComponent<WreckAreaScript>() != null)
                     {
-                        selectedBuilding = hit.transform.gameObject;
-                        if(selectedBuilding.GetComponent<SelectableObject>() != null)
-                        {
-                            selectedBuilding.GetComponent<SelectableObject>().selectIt();
-                        }
-                        hit.transform.gameObject.GetComponent<SelectableObject>().selectIt();
-                        if (selectedBuilding.GetComponent<StorageScript>() == null)
-                        {
-                            UI_M.activateSmallDetailsPanel();
-                        }
-                        else
-                        {
-                            UI_M.activateStoragePanel();
-                        }
+                        UI_M.activateWreckPanel();
                     }
-
-
                 }
+
+
+
 
 
 
@@ -115,7 +130,7 @@ public class PlayerController : MonoBehaviour
                 if (selectedBuilding != null && !EventSystem.current.IsPointerOverGameObject() && !UI_M.getIsFocusedOnBuilding)
                 {
                     unselectBuilding();
-               }
+                }
             }
         }
     }
@@ -132,10 +147,11 @@ public class PlayerController : MonoBehaviour
             selectedBuilding = null;
             UI_M.deactivateStoragePanel();
             UI_M.deactivateSmallDetailsPanel();
+            UI_M.deactivateWreckPanel();
 
         }
 
-        if(BS_M.getCurrentFactory != null)
+        if (BS_M.getCurrentFactory != null)
         {
             BS_M.getCurrentFactory.transform.parent.GetComponent<SelectableObject>().deselectIt();
             BS_M.setCurrentFactory(null);
@@ -145,9 +161,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    
 
-   
+
+
 
     private void inputActions()
     {
@@ -201,7 +217,7 @@ public class PlayerController : MonoBehaviour
                 BS_M.activateCurrentGrid(false);
                 GM.currentMode = currentModeType.PlayMode;
                 BS_M.cancelBuildAction();
-                
+
             }
 
         }
@@ -214,7 +230,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
+
 
     public GameObject getSelectedBuilding { get { return selectedBuilding; } }
 }

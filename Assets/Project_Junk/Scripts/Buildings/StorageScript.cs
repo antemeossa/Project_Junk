@@ -32,8 +32,8 @@ public class StorageScript : MonoBehaviour
     private void Start()
     {
         setValues();
-        setStorageUnits(20);
-        setContainersActive();
+        //setStorageUnits(20);
+        //setContainersActive();
     }
 
     private void Update()

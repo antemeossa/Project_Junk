@@ -8,7 +8,7 @@ public class InventoryScript : MonoBehaviour
     private int maxStorage;
     private int currentStorage;
 
-
+    
     private Dictionary<itemTypes, int> inventory = new Dictionary<itemTypes, int>();
 
 

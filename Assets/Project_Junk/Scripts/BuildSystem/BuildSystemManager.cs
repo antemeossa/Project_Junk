@@ -121,7 +121,7 @@ public class BuildSystemManager : MonoBehaviour
 
     public void buildConnector()
     {
-        
+
         if (transform.GetComponent<ImprovedConnectorScript>() != null)
         {
             connector = transform.GetComponent<ImprovedConnectorScript>();
@@ -191,7 +191,7 @@ public class BuildSystemManager : MonoBehaviour
     {
         PlaceableObject placeableObj;
         GameObject obj;
-        if(isBuilding)
+        if (isBuilding)
         {
             if (prefab_BP.GetComponent<PlaceableObject>() != null && !EventSystem.current.IsPointerOverGameObject())
             {
@@ -200,29 +200,26 @@ public class BuildSystemManager : MonoBehaviour
                 {
                     if (placeableObj.checkCanBuild())
                     {
-
-                        obj = Instantiate(prefab_Built, prefab_BP.transform.position + new Vector3(0,20,0), prefab_BP.transform.rotation);
+                        obj = Instantiate(prefab_Built, prefab_BP.transform.position + new Vector3(0, 20, 0), prefab_BP.transform.rotation);
                         obj.transform.parent = currentFactory.transform;
-                        //obj.GetComponent<BuildingScript>().playPlacementVFX();
                         Destroy(prefab_BP.gameObject);
                         prefab_BP = null;
                         isBuilding = false;
                         currentFactory.transform.parent.GetComponent<FactoryScript>().updateBuildingList();
                         PM.setAllBuildingsInWorld(currentFactory.transform);
-
                     }
                 }
             }
         }
-        
+
     }
 
     public void deleteBuilding(GameObject obj)
     {
-        
-        
+
+
         Destroy(obj.gameObject);
-        
+
     }
 
     public void cancelBuildAction()
@@ -234,14 +231,14 @@ public class BuildSystemManager : MonoBehaviour
         {
             activateCurrentGrid(false);
         }
-        
+
     }
 
     public void activateCurrentGrid(bool activate)
     {
-        if(activate)
+        if (activate)
         {
-            if(currentFactory != null)
+            if (currentFactory != null)
             {
                 currentFactory.GetComponent<Renderer>().enabled = true;
             }
@@ -260,8 +257,9 @@ public class BuildSystemManager : MonoBehaviour
     #region Getters/Setters
 
     public GameObject getCurrentFactory { get { return currentFactory; } }
-    public void setCurrentFactory(GameObject obj) { 
-        if(currentFactory == null)
+    public void setCurrentFactory(GameObject obj)
+    {
+        if (currentFactory == null)
         {
             currentFactory = obj;
             currentFactory.transform.parent.GetComponent<SelectableObject>().selectIt();
@@ -272,11 +270,11 @@ public class BuildSystemManager : MonoBehaviour
             {
                 currentFactory.transform.parent.GetComponent<SelectableObject>().deselectIt();
                 currentFactory = obj;
-                if(currentFactory != null)
+                if (currentFactory != null)
                 {
                     currentFactory.transform.parent.GetComponent<SelectableObject>().selectIt();
                 }
-                
+
             }
             else if (currentFactory == obj)
             {
@@ -286,7 +284,7 @@ public class BuildSystemManager : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
     #endregion

@@ -13,13 +13,13 @@ public class BuildingScript : MonoBehaviour
     [SerializeField]
     private List<buildingTypesEnum> connectableIntakeTypes;
     [SerializeField]
-    private int powerConsumption, intakeCount, outtakeCount;    
+    private int powerConsumption, intakeCount, outputCount;
     [SerializeField]
-    private GameObject connectedOuttake;
+    private List<GameObject> connectedOutputs = new List<GameObject>();
     [SerializeField]
     private VFXPlayer vfxplayer;
-    
-    private int intakeOccupied = 0, outtakeOccupied = 0;
+
+    private int intakeOccupied = 0, outputOccupied = 0;
 
     [SerializeField]
     private GameObject factory;
@@ -27,19 +27,19 @@ public class BuildingScript : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> connectedIntakes = new List<GameObject>();
-    
-    
+
+
 
     #endregion
 
     private void Start()
     {
         factory = transform.parent.gameObject;
-       
+
 
     }
 
-    
+
     public void addIntakeBuilding(GameObject obj)
     {
         connectedIntakes.Add(obj);
@@ -48,10 +48,10 @@ public class BuildingScript : MonoBehaviour
 
     public void addOuttakeBuilding(GameObject obj)
     {
-        connectedOuttake = obj;
-        outtakeOccupied++;
+        connectedOutputs.Add(obj);
+        outputOccupied++;
     }
-   public bool canConnectIn(buildingTypesEnum connectingType)
+    public bool canConnectIn(buildingTypesEnum connectingType)
     {
         bool connect = false;
         if (intakeOccupied + 1 <= intakeCount)
@@ -68,8 +68,9 @@ public class BuildingScript : MonoBehaviour
                     connect = false;
                 }
             }
-            
-        }else 
+
+        }
+        else
         {
             connect = false;
         }
@@ -79,7 +80,7 @@ public class BuildingScript : MonoBehaviour
 
     public bool canConnectOut()
     {
-        if(outtakeOccupied == outtakeCount)
+        if (outputOccupied == outputCount)
         {
             return false;
         }
@@ -89,16 +90,16 @@ public class BuildingScript : MonoBehaviour
         }
     }
 
-    
+
 
 
 
     #region getters and setter
-   
+
     public buildingTypesEnum getBuildingType { get { return buildingType; } }
     public string getCurrentProduction()
     {
-        if(selectedRecipe != null)
+        if (selectedRecipe != null)
         {
             return GameManager.Instance.Utils.enumToString(selectedRecipe.outputProduct.outputType) + "\n" + " x" + selectedRecipe.outputProduct.outputAmount;
         }
@@ -115,17 +116,17 @@ public class BuildingScript : MonoBehaviour
     public CraftRecipe getSelectedRecipe { get { return selectedRecipe; } }
 
     public int getIntakeCount { get { return intakeCount; } }
-    public int getOuttakeCount { get { return outtakeCount; } }
+    public int getOuttakeCount { get { return outputCount; } }
 
     public void setIntakeOccupied(int value) { intakeOccupied += value; }
     public int getIntakeOccupied { get { return intakeOccupied; } }
-    public void setOuttakeOccupied(int value) { outtakeOccupied += value; }
+    public void setOuttakeOccupied(int value) { outputOccupied += value; }
     public void setSelectedRecipe(CraftRecipe recipeToSelect) { selectedRecipe = recipeToSelect; }
     public void setBuildingType(buildingTypesEnum type) { buildingType = type; }
 
     public void playPlacementVFX() { vfxplayer.PlayPlacementVFX(); }
     public GameObject getIntakeConnectorTransform { get { return connectedIntakes[getIntakeOccupied]; } }
-    public GameObject getOuttakeConnectorTransform { get { return connectedOuttake; } }
+    public GameObject getOuttakeConnectorTransform { get { return connectedOutputs[outputOccupied]; } }
 
     public GameObject getBuildingFactory { get { return factory; } }
     #endregion
