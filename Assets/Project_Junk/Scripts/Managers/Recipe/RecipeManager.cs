@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine.UI;
 using System.Linq;
+using Unity.VisualScripting;
 
 
 #region craftItemDetails
@@ -16,6 +17,9 @@ public class CraftRecipe
     public OutputProduct outputProduct;              // The resulting output product    
     public int productionTime;    
     public bool isUnlocked;                          //Check if is unlocked
+    public int price;
+
+    
 }
 
 [System.Serializable]
@@ -23,6 +27,9 @@ public class InputRequirement
 {
     public itemTypes inputType;      // Type of input required
     public int requiredAmount;       // Amount of input required
+    public int cost;
+
+    
 }
 
 [System.Serializable]
@@ -116,6 +123,7 @@ public class RecipeManager : MonoBehaviour
     {
         for (int i = 0; i < craftRecipes.Count; i++)
         {
+
             if (craftRecipes[i].building == productionBuilding.Smelter)
             {
                 smelterRecipesList.Add(craftRecipes[i]);
@@ -129,6 +137,7 @@ public class RecipeManager : MonoBehaviour
         }
     }
 
+  
     public string FormatEnumWithSpaces<T>(T enumValue)
     {
         string enumString = enumValue.ToString();

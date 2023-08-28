@@ -16,7 +16,7 @@ public class ImprovedConnectorScript : MonoBehaviour
     private GameObject startBuilding, endBuilding;
     private int connectorCount = 0;
 
-    private bool connectorStarted, connectorFinished, canBuild = true;
+    private bool connectorStarted, connectorFinished;
 
     [SerializeField]
     private List<GameObject> spawnedNodesTemp = new List<GameObject>();
@@ -285,7 +285,6 @@ public class ImprovedConnectorScript : MonoBehaviour
         float dist = Vector3.Distance(connectorPointerTmp.transform.position, startPos);
         int nodeCount = Mathf.CeilToInt(dist / connectorPointerTmp.transform.localScale.sqrMagnitude) / 2;
 
-        Debug.Log(lineRotation);
         Vector3 nextNodePos = startPos;
         Vector3 vec = (endPos - startPos).normalized * 6;
 
@@ -360,7 +359,6 @@ public class ImprovedConnectorScript : MonoBehaviour
                 spawnedNodesTemp.Add(obj);
                 tempPositions.Add(obj.transform.position);
             }
-            Debug.Log("function Done");
         }
     }
 }

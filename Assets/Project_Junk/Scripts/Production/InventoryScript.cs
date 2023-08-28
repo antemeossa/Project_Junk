@@ -6,18 +6,17 @@ public class InventoryScript : MonoBehaviour
 {
     [SerializeField]
     private int maxStorage;
+    [SerializeField]
     private int currentStorage;
 
-    
+
     private Dictionary<itemTypes, int> inventory = new Dictionary<itemTypes, int>();
 
+    [SerializeField] private List<int> tmpAmounts = new List<int>();
 
 
     private void Start()
     {
-        addItem(itemTypes.ScrapCopper, 200);
-        addItem(itemTypes.ScrapIron, 200);
-
 
 
     }
@@ -92,7 +91,7 @@ public class InventoryScript : MonoBehaviour
             {
                 if (toInventory.getCurrentStorage() + amount > toInventory.getMaxStorage())
                 {
-                    int amountToRemove = toInventory.getMaxStorage() - toInventory.getCurrentStorage();                    
+                    int amountToRemove = toInventory.getMaxStorage() - toInventory.getCurrentStorage();
                     removeItem(type, amountToRemove);
                     currentStorage -= amountToRemove;
                     toInventory.addItem(type, amountToRemove);
@@ -105,10 +104,16 @@ public class InventoryScript : MonoBehaviour
                     toInventory.addItem(type, amount);
                     toInventory.setCurrentStorage(amount);
                 }
-                
+
             }
         }
     }
+
+    
+            
+        
+        
+    
 
     public int getItemCount(itemTypes type)
     {
@@ -143,4 +148,5 @@ public class InventoryScript : MonoBehaviour
     public void setCurrentStorage(int amount) { currentStorage += amount; }
     public int getCurrentStorage() { return currentStorage; }
     public int getMaxStorage() { return maxStorage; }
+    public void setMaxStorage(int amount) {  maxStorage = amount; }
 }

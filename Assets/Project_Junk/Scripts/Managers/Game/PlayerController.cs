@@ -22,37 +22,30 @@ public class PlayerController : MonoBehaviour
     private RaycastHit hit;
 
     //Operation Vars
-    private currentModeType previousMode;
 
 
     private void Start()
     {
-
         GM.currentMode = currentModeType.PlayMode;
-        previousMode = currentModeType.PlayMode;
-
-
-
-
     }
 
     private void Update()
     {
         inputActions();
-       // Debug.Log((selectedBuilding != null && !EventSystem.current.IsPointerOverGameObject() && (GM.currentMode.Equals(currentModeType.PlayMode) || (GM.currentMode.Equals(currentModeType.SalvageMode)))));
+        //Debug.Log((selectedBuilding == null && !EventSystem.current.IsPointerOverGameObject() && (GM.currentMode.Equals(currentModeType.PlayMode) || (GM.currentMode.Equals(currentModeType.SalvageMode)))));
     }
 
 
     private void selectBuilding()
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, 10000f))
         {
             if (hit.transform.gameObject.CompareTag("Selectable"))
             {
+                
 
-
-                if (selectedBuilding != null && !EventSystem.current.IsPointerOverGameObject() && (GM.currentMode.Equals(currentModeType.PlayMode) || (GM.currentMode.Equals(currentModeType.SalvageMode))))
+                if (selectedBuilding != null && !EventSystem.current.IsPointerOverGameObject())
                 {
                     
                     unselectBuilding();
@@ -74,19 +67,27 @@ public class PlayerController : MonoBehaviour
 
 
                     }
+
                     if (selectedBuilding.GetComponent<SelectableObject>() != null)
                     {
                         selectedBuilding.GetComponent<SelectableObject>().selectIt();
                     }
+
                     if (selectedBuilding.GetComponent<WreckAreaScript>() != null)
                     {
                         UI_M.activateWreckPanel();
                     }
 
+                    if(selectedBuilding.GetComponent<MainBuldingScript>() != null)
+                    {
+                        UI_M.activateStoragePanel();
+                    }
+
                 }
-                else if (selectedBuilding == null && !EventSystem.current.IsPointerOverGameObject() && (GM.currentMode.Equals(currentModeType.PlayMode) || (GM.currentMode.Equals(currentModeType.SalvageMode))))
+                else if (selectedBuilding == null && !EventSystem.current.IsPointerOverGameObject())
                 {
                     selectedBuilding = hit.transform.gameObject;
+
                     if (selectedBuilding.GetComponent<SelectableObject>() != null)
                     {
                         selectedBuilding.GetComponent<SelectableObject>().selectIt();
@@ -111,6 +112,10 @@ public class PlayerController : MonoBehaviour
                     if (selectedBuilding.GetComponent<WreckAreaScript>() != null)
                     {
                         UI_M.activateWreckPanel();
+                    }
+                    if (selectedBuilding.GetComponent<MainBuldingScript>() != null)
+                    {
+                        UI_M.activateStoragePanel();
                     }
                 }
 
@@ -145,9 +150,7 @@ public class PlayerController : MonoBehaviour
                 selectedBuilding.GetComponent<SelectableObject>().deselectIt();
             }
             selectedBuilding = null;
-            UI_M.deactivateStoragePanel();
-            UI_M.deactivateSmallDetailsPanel();
-            UI_M.deactivateWreckPanel();
+            UI_M.deactivateAllPanels();
 
         }
 
@@ -169,7 +172,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (GM.currentMode.Equals(currentModeType.PlayMode))
+            if (GM.currentMode.Equals(currentModeType.PlayMode) || GM.currentMode.Equals(currentModeType.SalvageMode))
             {
                 selectBuilding();
             }
@@ -181,7 +184,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            if (GM.currentMode == currentModeType.PlayMode)
+            if (GM.currentMode == currentModeType.PlayMode || GM.currentMode.Equals(currentModeType.SalvageMode))
             {
                 unselectBuilding();
                 UI_M.deactivateSmallDetailsPanel();

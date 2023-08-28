@@ -13,13 +13,11 @@ public class UI_StorageDetails : MonoBehaviour
     private List<CraftRecipe> allItemsList = new List<CraftRecipe>();
     private List<GameObject> spawnedElementsList = new List<GameObject>();
 
-    private bool hasCreated;
 
 
     private void Start()
     {
         allItemsList = GameManager.Instance.getAllRecipes;
-        hasCreated = false;
 
     }
 
@@ -49,14 +47,13 @@ public class UI_StorageDetails : MonoBehaviour
 
             for (int i = 0; i < spawnedElementsList.Count; i++)
             {
-                spawnedElementsList[i].GetComponent<UI_StorageListElement>().setStorageListElement(GameManager.Instance.Utils.enumToString(allItemsList[i].outputProduct.outputType),
+                spawnedElementsList[i].GetComponent<UI_StorageListElement>().setStorageListElement(Utils.enumToString(allItemsList[i].outputProduct.outputType),
                 0,
                 allItemsList[i].img,
                 allItemsList[i]);
             }
 
 
-            hasCreated = true;
         }
         updateGrid();
 

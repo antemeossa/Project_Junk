@@ -27,7 +27,10 @@ public class DroneManager : MonoBehaviour
     public float fighterDroneSpeedMultiplier = 1f;
     public float damage;
     public float armor;
-    
+
+    public int maxDroneAmount;
+    public int useableDroneAmount;
+    public int activeDroneAmount;
     
     
 

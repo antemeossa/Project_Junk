@@ -21,17 +21,24 @@ public class PlaceDownScript : MonoBehaviour
 
     [SerializeField]
     [Range(0.0f, 1.0f)]
-    private float buildTime = 1;
+    public float buildTime = 1;
 
     [SerializeField]
     private List<Material> defaultMaterials = new List<Material>();
 
-    private void Start()
+    private void Awake()
     {
         objRenderer = LOD0.GetComponent<Renderer>();
-        dissolve(LOD0, (buildTime));
+    }
+    private void Start()
+    {
 
-        
+        objRenderer = LOD0.GetComponent<Renderer>();
+        //dissolve(buildTime);
+
+
+
+
 
     }
     public void dropDown(GameObject obj)
@@ -45,12 +52,13 @@ public class PlaceDownScript : MonoBehaviour
             objRenderer.SetMaterials(defaultMaterials);
             StartCoroutine(changeColor());
             GameManager.Instance.Utils.camShake(shakeDuration, shakeStrength);
-            
+            GetComponent<BuildingScript>().placedDown = true;
+
         });
 
     }
 
-    public void dissolve(GameObject obj, float t)
+    public void dissolve(float t)
     {
 
         List<Material> tmpList = new List<Material>();
@@ -89,7 +97,7 @@ public class PlaceDownScript : MonoBehaviour
     {
         float currentT = 0;
 
-        while(currentT <= 2)
+        while (currentT <= 2)
         {
             LOD0.GetComponent<Renderer>().material.color = Color.Lerp(dissolveMat.GetColor("_BaseColor"), Color.white, currentT);
             currentT += Time.deltaTime;

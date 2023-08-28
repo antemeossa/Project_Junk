@@ -54,7 +54,7 @@ public class Utils : MonoBehaviour
 
 
     #region General Operations
-    public string enumToString<T>(T enumValue)
+    public static string enumToString<T>(T enumValue)
     {
         string enumString = enumValue.ToString();
         string formattedString = string.Empty;
@@ -78,6 +78,28 @@ public class Utils : MonoBehaviour
 
     #region Vector Operations
 
+    public static int checkPositonOfObjectXZ(GameObject obj)
+    {
+        Vector3 pos = obj.transform.position;
+
+        if(pos.x > 0 && pos.z > 0)
+        {
+            return 1;
+        }else if (pos.x < 0 && pos.z > 0)
+        {
+            return 2;
+        }else if (pos.x < 0 && pos.z < 0)
+        {
+            return 3;
+        }else if (pos.x > 0 && pos.z < 0)
+        {
+            return 4;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     public static Vector3 GetRandomPoint(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
     {
         return new Vector3(

@@ -12,7 +12,7 @@ public class improvedConnectorNodeScript : MonoBehaviour
     [SerializeField]
     private Mesh turnMesh1, turnMesh2, turnMesh3, turnMesh4;
     private bool canPlace = true, DestroyOnEnd, hasPlaced = false;
-    private bool destroy = false;
+    public bool isTurn = false;
     private int meshIndex;
     private Ray ray;
     private RaycastHit hit;
@@ -39,10 +39,7 @@ public class improvedConnectorNodeScript : MonoBehaviour
 
         swapMeshToTurn(turnMesh1);
         transform.rotation = Quaternion.identity;
-
-
-
-
+        isTurn = true;
 
 
 
@@ -59,7 +56,13 @@ public class improvedConnectorNodeScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Selectable"))
         {
+            Debug.Log("Colliging");
             canPlace = false;
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).GetComponent<Renderer>().material.color = Color.red;
+            }
+            DestroyOnEnd = true;
         }
         else
         {
@@ -73,7 +76,12 @@ public class improvedConnectorNodeScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Selectable"))
         {
+            Debug.Log("Colliging");
             canPlace = false;
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).GetComponent<Renderer>().material.color = Color.red;
+            }
             DestroyOnEnd = true;
         }
         else

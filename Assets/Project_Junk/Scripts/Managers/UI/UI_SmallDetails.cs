@@ -150,7 +150,7 @@ public class UI_SmallDetails : MonoBehaviour
             GameObject obj = Instantiate(currentCraftMaterial, currentCraftTransform.transform, false);
             spawnedRequirementsUIlist.Add(obj);
             
-            obj.GetComponent<UI_StorageListElement>().setStorageListElement(GameManager.Instance.Utils.enumToString(currentCraftMaterialsList[i].outputProduct.outputType),
+            obj.GetComponent<UI_StorageListElement>().setStorageListElement(Utils.enumToString(currentCraftMaterialsList[i].outputProduct.outputType),
                 building.GetComponent<InventoryScript>().getAmountOfSelectedProduct(currentCraftMaterialsList[i].outputProduct.outputType),
                 currentCraftMaterialsList[i].img, currentCraftMaterialsList[i]);
         }

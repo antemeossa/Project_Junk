@@ -15,28 +15,28 @@ public class ResearchNode_Drone : MonoBehaviour
 
     private void increaseStorageCapacity(int capacity)
     {
-        GameManager.Instance.DroneManager.cargoDroneCapacity = capacity;
-        GameManager.Instance.DroneManager.setCargoLimitForCargoDrones();
+        GameManager.Instance.droneManager.cargoDroneCapacity = capacity;
+        GameManager.Instance.droneManager.setCargoLimitForCargoDrones();
     }
 
     private void increaseSpeed(float speed)
     {
-        GameManager.Instance.DroneManager.setSpeedMultipliers(droneType);
+        GameManager.Instance.droneManager.setSpeedMultipliers(droneType);
     }
 
     private void incraseSalvageSpeed(float multiplier)
     {
-        GameManager.Instance.DroneManager.salvageSpeedMultiplier = multiplier;
-        GameManager.Instance.DroneManager.setSalvageSpeed();
+        GameManager.Instance.droneManager.salvageSpeedMultiplier = multiplier;
+        GameManager.Instance.droneManager.setSalvageSpeed();
     }
 
     private void addScanner()
     {
-        GameManager.Instance.DroneManager.addScannerToScrapDrones(true);
+        GameManager.Instance.droneManager.addScannerToScrapDrones(true);
     }
 
     private void addAdvancedScanner()
     {
-        GameManager.Instance.DroneManager.addAdvancedScannerToScrapDrones(true);
+        GameManager.Instance.droneManager.addAdvancedScannerToScrapDrones(true);
     }
 }

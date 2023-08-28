@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -9,7 +10,10 @@ using UnityEngine.UI;
 public class UI_Manager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject buildPanel, smallDetailsPanel, recipeListPanel, storagePanel, deleteNotificationPanel, buildButtonPrefab, wreckPanel;
+    private GameObject buildPanel, smallDetailsPanel, recipeListPanel, storagePanel,
+        deleteNotificationPanel, buildButtonPrefab, wreckPanel, contractsPanel, blackmarketPanel;
+
+    public TextMeshProUGUI currentMoneyText;
 
     public BuildSystemManager BS_M;
     public GameManager GameManager;
@@ -22,6 +26,8 @@ public class UI_Manager : MonoBehaviour
     private StorageScript storageScr;
 
     public List<GameObject> buildButtonsList = new List<GameObject>();
+
+    public int cycle;
     private void Start()
     {
         deactivateAllPanels();
@@ -34,9 +40,11 @@ public class UI_Manager : MonoBehaviour
     {
         smallDetailsPanel.SetActive(false);
         storagePanel.SetActive(false);
-        recipeListPanel.SetActive(false);        
+        recipeListPanel.SetActive(false);
         buildPanel.SetActive(false);
         wreckPanel.SetActive(false);
+        contractsPanel.SetActive(false);
+        blackmarketPanel.SetActive(false);
 
 
 
@@ -117,7 +125,35 @@ public class UI_Manager : MonoBehaviour
         BS_M.buildConnector();
     }
 
+    public void activateContractsPanel()
+    {
+        contractsPanel.SetActive(true);
+    }
 
+    public void deactivateContractsPanel()
+    {
+        contractsPanel.SetActive(false);
+    }
+
+    public void updateContractsPanel()
+    {
+        contractsPanel.GetComponent<UI_ContractPanelScript>().refreshList();
+    }
+
+    public void updateContractsCycle()
+    {
+        contractsPanel.GetComponent<UI_ContractPanelScript>().updateCycleCounter(20 - (cycle % 20));
+    }
+
+    public void activateBlackMarketPanel()
+    {
+        blackmarketPanel.SetActive(true);
+    }
+
+    public void deactivateBlackMarketPanel()
+    {
+        blackmarketPanel.SetActive(false);
+    }
 
     public void setBuildPanel(GameObject btn)
     {
@@ -135,8 +171,8 @@ public class UI_Manager : MonoBehaviour
         for (int i = 0; i < buildButtonsList.Count; i++)
         {
 
-            buildButtonsList[i].name = GameManager.Utils.enumToString(BS_M.buildableObjects[i].buildingType) + "Button";
-            buildButtonsList[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameManager.Utils.enumToString(BS_M.buildableObjects[i].buildingType);
+            buildButtonsList[i].name = Utils.enumToString(BS_M.buildableObjects[i].buildingType) + "Button";
+            buildButtonsList[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Utils.enumToString(BS_M.buildableObjects[i].buildingType);
 
         }
 
@@ -151,11 +187,12 @@ public class UI_Manager : MonoBehaviour
     {
 
         storagePanel.SetActive(true);
-        storagePanel.GetComponent<UI_StorageDetails>().setSelectedStorage(playerController.getSelectedBuilding);
+        storagePanel.GetComponent<UI_StorageDetails>().setSelectedStorage(playerController.getSelectedBuilding.transform.parent.transform.parent.transform.parent.gameObject);
         storagePanel.GetComponent<UI_StorageDetails>().createGrid();
         storagePanel.GetComponent<UI_StorageDetails>().updateGrid();
         focusedOnBuilding = true;
     }
+
     public void deactivateStoragePanel()
     {
         storagePanel.SetActive(false);

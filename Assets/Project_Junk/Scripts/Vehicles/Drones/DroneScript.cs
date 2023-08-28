@@ -22,14 +22,14 @@ public class DroneScript : MonoBehaviour
         switch (droneType)
         {
             case droneTypesEnum.ScrapDrone:
-                this.movementSpeed = GameManager.Instance.DroneManager.baseDroneSpeed * GameManager.Instance.DroneManager.salvageSpeedMultiplier;
+                this.movementSpeed = GameManager.Instance.droneManager.baseDroneSpeed * GameManager.Instance.droneManager.salvageSpeedMultiplier;
                 break;
             case droneTypesEnum.TransportDrone:
-                this.movementSpeed = GameManager.Instance.DroneManager.baseDroneSpeed * GameManager.Instance.DroneManager.cargoDroneSpeedMultiplier;
+                this.movementSpeed = GameManager.Instance.droneManager.baseDroneSpeed * GameManager.Instance.droneManager.cargoDroneSpeedMultiplier;
 
                 break;
             case droneTypesEnum.FighterDrone:
-                this.movementSpeed = GameManager.Instance.DroneManager.baseDroneSpeed * GameManager.Instance.DroneManager.fighterDroneSpeedMultiplier;
+                this.movementSpeed = GameManager.Instance.droneManager.baseDroneSpeed * GameManager.Instance.droneManager.fighterDroneSpeedMultiplier;
 
                 break;
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -18,14 +19,18 @@ public class GameManager : MonoBehaviour
 {
     
     public Utils Utils;
-    public RecipeManager RM;
-    public PlayerController PC;
+    public RecipeManager recipeManager;
+    public PlayerController playerController;
     public UI_Manager UI_M;
-    public EconomyManager EconomyManager;
-    public DroneManager DroneManager;
+    public ProductionManager productionManager;
+    public EconomyManager economyManager;
+    public DroneManager droneManager;
+    public FactionManager factionManager;
+    public WreckageManager wreckageManager;
+    public GameObject mothership;
+    
 
     public currentModeType currentMode;
-
     public static GameManager Instance { get; private set; }
     private void Awake()
     {
@@ -41,10 +46,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if (SaveGameManager.currentSaveData.isSaved)
+        {
+            GetComponent<SaveGameMono>().loadOperationsBuildings();
+            productionManager.setAllBuildingsInWorld(mothership.transform.GetChild(1).GetChild(2).GetChild(3));
+            GetComponent<SaveGameMono>().loadOperationsConnectors();
+            GetComponent<SaveGameMono>().loadOperationsWreckages();
+        }
+        
+    }
+    #region load and save actions
+
     
 
-    public List<CraftRecipe> getAllRecipes { get { return RM.craftRecipes; } }
-    public GameObject getSelectedBuilding { get { return PC.getSelectedBuilding; } }
+
+
+    //Load and Save Events!
+    public event Action onLoadEvent;
+    public event Action onSaveEvent;
+    public void loadGame()
+    {
+        if (onLoadEvent != null)
+        {
+            onLoadEvent();
+        }
+    }
+
+    public void saveGame()
+    {
+        if (onSaveEvent != null)
+        {
+            onSaveEvent();
+        }
+    }
+    #endregion
+
+    public List<CraftRecipe> getAllRecipes { get { return recipeManager.craftRecipes; } }
+    public GameObject getSelectedBuilding { get { return playerController.getSelectedBuilding; } }
 
 
 

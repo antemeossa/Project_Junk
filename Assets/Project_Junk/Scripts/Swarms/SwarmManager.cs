@@ -4,43 +4,64 @@ using UnityEngine;
 
 public class SwarmManager : MonoBehaviour
 {
-    public GameObject dronePrefab;
     public Transform pointA; // Starting point
     public Transform pointB; // Destination point
-    public int numDrones = 5;
+    public Transform takeOffPos;
+    public GameObject mothership;
+    public GameObject salvageTarget;
+    public List<GameObject> drones = new List<GameObject>();
     public float speed;
-    List<GameObject> drones = new List<GameObject>();
+    public float circleHeight;
+    public float circleRadius;
     private void Start()
     {
-        spawnDrones();
         setDroneTargets();
-        startMovement();
+        StartCoroutine(sendDrones());
     }
 
-    public void spawnDrones()
+
+    public void setSwarmManagerDetails(Transform takeoff, GameObject target, GameObject mothership)
     {
-        for (int i = 0; i < numDrones; i++)
-        {
-            GameObject obj = Instantiate(dronePrefab, transform, true) ;
-            drones.Add(obj);
-        }
-    }
 
+        takeOffPos = takeoff;
+        salvageTarget = target;
+        this.mothership = mothership;
+
+    }
     public void setDroneTargets()
-    {
-        for(int i = 0; i < drones.Count; i++)
-        {
-            drones[i].GetComponent<SwarmElement>().pointA = pointA;
-            drones[i].GetComponent <SwarmElement>().pointB = pointB;
-            drones[i].GetComponent<SwarmElement>().setDetails(pointB.position, speed);
-        }
-    }
-
-    public void startMovement()
     {
         for (int i = 0; i < drones.Count; i++)
         {
-            drones[i].GetComponent<SwarmElement>().currentState = SwarmElement.DroneState.Takeoff;
+
+            drones[i].GetComponent<SwarmElement>().setDroneDetails(takeOffPos, salvageTarget, mothership);
         }
+    }
+
+    public void startMovement(int Index)
+    {
+
+        drones[Index].GetComponent<SwarmElement>().currentDroneState = SwarmElement.DroneStates.TakeOff;
+
+    }
+    int droneIndex = 0;
+    IEnumerator sendDrones()
+    {
+        float currentT = 0;
+
+
+        while (currentT < 1)
+        {
+
+            currentT += Time.deltaTime;
+            yield return null;
+        }
+        startMovement(droneIndex);
+        if (droneIndex < drones.Count - 1)
+        {
+            droneIndex++;
+            StartCoroutine(sendDrones());
+        }
+
+        yield return null;
     }
 }

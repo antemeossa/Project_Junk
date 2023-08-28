@@ -15,11 +15,9 @@ public class StorageScript : MonoBehaviour
     private int maxStorage;
     private int currentStorage;
 
-
     public Dictionary<OutputType, int> storedItems = new Dictionary<OutputType, int>();
 
 
-    private int previousStorageUnitCount = 0;
     private List<GameObject> containers = new List<GameObject>();
     [SerializeField]
     private int rowCount, columnCount, containerCapacity;

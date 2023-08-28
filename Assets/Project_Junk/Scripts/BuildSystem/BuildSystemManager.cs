@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
 using TMPro;
+using UnityEditor.Build.Reporting;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -202,6 +203,7 @@ public class BuildSystemManager : MonoBehaviour
                     {
                         obj = Instantiate(prefab_Built, prefab_BP.transform.position + new Vector3(0, 20, 0), prefab_BP.transform.rotation);
                         obj.transform.parent = currentFactory.transform;
+                        obj.GetComponent<PlaceDownScript>().dissolve(obj.GetComponent<PlaceDownScript>().buildTime);
                         Destroy(prefab_BP.gameObject);
                         prefab_BP = null;
                         isBuilding = false;

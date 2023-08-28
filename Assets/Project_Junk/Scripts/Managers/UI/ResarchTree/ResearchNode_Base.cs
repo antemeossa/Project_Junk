@@ -20,7 +20,7 @@ public class ResearchNode_Base : MonoBehaviour
     
     public void unlockNode()
     {
-        if(GameManager.Instance.EconomyManager.currentMoney >= researchCost && !isUnlocked)
+        if(GameManager.Instance.economyManager.currentMoney >= researchCost && !isUnlocked)
         {
             StartCoroutine(researchTimeCounter());
         }

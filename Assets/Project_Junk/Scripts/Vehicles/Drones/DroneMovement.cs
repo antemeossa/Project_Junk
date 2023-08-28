@@ -11,7 +11,6 @@ public class DroneMovement : MonoBehaviour
     [SerializeField]
     private float targetHeight = 10.0f, movementSpeed, ascentSpeed, descentSpeed; // Target height for the drone's flight
    
-    private bool isFlying = false;
 
     private void Start()
     {
@@ -31,7 +30,6 @@ public class DroneMovement : MonoBehaviour
     }
     private IEnumerator MoveToDestination()
     {
-        isFlying = true;
 
         // Take off vertically        
         while (transform.position.y < targetHeight)
@@ -68,7 +66,6 @@ public class DroneMovement : MonoBehaviour
         }
 
         // Reset isFlying flag
-        isFlying = false;
     }
 
 

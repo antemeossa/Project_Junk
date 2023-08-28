@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BuildingScript : MonoBehaviour
@@ -28,17 +29,42 @@ public class BuildingScript : MonoBehaviour
     [SerializeField]
     private List<GameObject> connectedIntakes = new List<GameObject>();
 
+    public int uniqueID;
+    public bool placedDown = false;
 
 
     #endregion
+
+    private void Awake()
+    {
+        
+    }
 
     private void Start()
     {
         factory = transform.parent.gameObject;
 
+        if(uniqueID == 0)
+        {
+            int timestamp = (int)(System.DateTime.UtcNow - new System.DateTime(1970, 1, 1)).TotalSeconds;
+            int randomNum = Random.Range(0, 1000); // You can adjust the range as needed
+            uniqueID = timestamp * 1000 + randomNum;
+        }
+        
+        
+        //Data Operations
+
+        //if there is no id
+
+
 
     }
 
+
+    private void selfDestruct()
+    {
+        Destroy(gameObject);
+    }
 
     public void addIntakeBuilding(GameObject obj)
     {
@@ -101,7 +127,7 @@ public class BuildingScript : MonoBehaviour
     {
         if (selectedRecipe != null)
         {
-            return GameManager.Instance.Utils.enumToString(selectedRecipe.outputProduct.outputType) + "\n" + " x" + selectedRecipe.outputProduct.outputAmount;
+            return Utils.enumToString(selectedRecipe.outputProduct.outputType) + "\n" + " x" + selectedRecipe.outputProduct.outputAmount;
         }
         else
         {
@@ -121,7 +147,12 @@ public class BuildingScript : MonoBehaviour
     public void setIntakeOccupied(int value) { intakeOccupied += value; }
     public int getIntakeOccupied { get { return intakeOccupied; } }
     public void setOuttakeOccupied(int value) { outputOccupied += value; }
-    public void setSelectedRecipe(CraftRecipe recipeToSelect) { selectedRecipe = recipeToSelect; }
+    public void setSelectedRecipe(CraftRecipe recipeToSelect) {
+
+        selectedRecipe = recipeToSelect;
+        GetComponent<BuildingSaveData>().bldData.currentRecipe = Utils.enumToString(recipeToSelect.outputProduct.outputType);
+
+            }
     public void setBuildingType(buildingTypesEnum type) { buildingType = type; }
 
     public void playPlacementVFX() { vfxplayer.PlayPlacementVFX(); }

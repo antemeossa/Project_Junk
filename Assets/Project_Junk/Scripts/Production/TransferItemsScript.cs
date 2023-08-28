@@ -32,6 +32,19 @@ public class TransferItemsScript : MonoBehaviour
         SetSelectedRecipe(inFac.GetComponent<BuildingScript>());
         facilitiesSet = true;
     }
+
+    public void setInFacility( GameObject inFac)
+    {
+        inFacility = inFac;
+        SetSelectedRecipe(inFac.GetComponent<BuildingScript>());
+    }
+
+    public void setOutFacility(GameObject outFac)
+    {
+        outFacility = outFac;        
+    }
+
+
     public void transferItems()
     {
 
@@ -62,4 +75,16 @@ public class TransferItemsScript : MonoBehaviour
         selectedRecipe = facility.getSelectedRecipe;
 
     }
+
+    public int getInFacilityID()
+    {
+        return inFacility.GetComponent<BuildingScript>().uniqueID;
+    }
+
+    public int getOutFacilityID()
+    {
+        return outFacility.GetComponent<BuildingScript>().uniqueID;
+    }
+
+    public void setFacilitiesBool(bool value) { facilitiesSet = value; }
 }

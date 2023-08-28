@@ -7,9 +7,10 @@ using UnityEngine;
 public class ProductionManager : MonoBehaviour
 {
     public GameObject factoryParent;
+    public GameObject connectorParent;
     public List<FactoryScript> factoriesList = new List<FactoryScript>();
     public List<GameObject> allBuildings = new List<GameObject>();
-    public int currentCycle, defaultCycle;
+    public int currentCycle, defaultCycle, cycleCounter = 0;
     public float cycleTime;
     private void Start()
     {
@@ -25,6 +26,18 @@ public class ProductionManager : MonoBehaviour
         if(currentCycle + 1 < defaultCycle)
         {
             currentCycle++;
+            if(cycleCounter < 20)
+            {
+                cycleCounter++;
+                GameManager.Instance.UI_M.cycle = cycleCounter;
+                GameManager.Instance.UI_M.updateContractsCycle();
+            }
+            else
+            {
+                GameManager.Instance.UI_M.updateContractsCycle();
+                GameManager.Instance.UI_M.updateContractsPanel();
+                cycleCounter = 0;
+            }
         }
         else
         {

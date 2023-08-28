@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8096622304525647904}
   - component: {fileID: 6819723464393003472}
-  - component: {fileID: 8540803417782899224}
   - component: {fileID: 2781808117060518203}
+  - component: {fileID: 2988448279827811070}
+  - component: {fileID: 8203713666829710028}
   m_Layer: 0
   m_Name: ScrapDrone
   m_TagString: Drone
@@ -29,7 +30,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.97142, y: 2.4143372, z: -66.24895}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4452625408411201503}
   m_Father: {fileID: 0}
@@ -62,24 +63,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8540803417782899224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6958235264443975524}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f7847974d1b15408cfdff2ab0c01bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPoint: {x: 0, y: 0, z: 0}
-  targetPoint: {x: 0, y: 0, z: 0}
-  targetHeight: 10
-  movementSpeed: 0
-  ascentSpeed: 0
-  descentSpeed: 0
 --- !u!114 &2781808117060518203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,16 +75,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ac4901f34f47284cae8c6247385d8dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointA: {fileID: 0}
-  pointB: {fileID: 0}
-  takeoffSpeed: 2
-  moveSpeed: 5
-  landingSpeed: 2
-  circleRadius: 20
+  takeOffPos: {fileID: 0}
+  targetSalvage: {fileID: 0}
+  droneSpeed: 150
+  salvageRate: 1
+  loadSpeed: 1
+  unloadRate: 10
+  currentDroneState: 0
+  salvagePerc: 0
   circleSpeed: 1
-  spreadRadius: 20
-  canMove: 0
-  currentState: 0
+--- !u!65 &2988448279827811070
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6958235264443975524}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 21.802103, y: 17.495281, z: 30.1292}
+  m_Center: {x: -4.288642, y: 1.5348587, z: 0.93776894}
+--- !u!114 &8203713666829710028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6958235264443975524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63674552465dd934a8d0ad552e8b0c37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxStorage: 100
+  currentStorage: 0
+  tmpAmounts: 
 --- !u!1001 &4197458527658641460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -113,6 +131,18 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -154,10 +184,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4278635974626498965, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4278635974626498965, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -2816575871155357938, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
     - target: {fileID: -4278635974626498965, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 188604662202002027, guid: 34aece85d5a294442a4531666209b9b7, type: 3}
+    - target: {fileID: -4278635974626498965, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: ebfe58a6a9b8f33468c18c6a057dbd04, type: 2}
     - target: {fileID: 919132149155446097, guid: f21bd93ab28fc2a4d917ea3561f1ee7a, type: 3}
       propertyPath: m_Name
       value: ScrapDrone_Mesh

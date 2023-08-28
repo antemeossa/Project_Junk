@@ -1,8 +1,10 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_RecipeListElement : MonoBehaviour
@@ -80,6 +82,8 @@ public class UI_RecipeListElement : MonoBehaviour
         PC.getSelectedBuilding.GetComponent<BuildingScript>().setSelectedRecipe(recipe);
         smallDetails = FindFirstObjectByType<UI_SmallDetails>();
         smallDetails.setSmallDetailsPanel(PC.getSelectedBuilding);
+        transform.DOScale(1.4f, 0.2f);
+        transform.DOScale(new Vector3(1, 1, 1), .2f);
     }
 
 
@@ -101,4 +105,20 @@ public class UI_RecipeListElement : MonoBehaviour
 
         return formattedString;
     }
+
+    
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+       
+        transform.DOScale(1.1f, .5f);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        transform.DOScale(1f, .5f);
+    }
+
+    
+
+        
 }

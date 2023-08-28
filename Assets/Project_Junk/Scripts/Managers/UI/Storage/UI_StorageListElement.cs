@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -64,11 +65,15 @@ public class UI_StorageListElement : MonoBehaviour, IPointerEnterHandler, IPoint
 
     [SerializeField]
     GameObject hoverPanelText;
+
+    private Vector3 localScale = Vector3.one;
     public void OnPointerEnter(PointerEventData eventData)
     {
         
         hoverPanel.SetActive(true);
         hoverPanelText.GetComponent<TextMeshProUGUI>().text = itemName;
+        localScale = transform.localScale;
+        transform.DOScale(transform.localScale * 1.1f, .5f);
         /*
         transform.parent.transform.parent.transform.parent.GetComponent<UI_StorageDetails>().getHoverPanel.SetActive(true);
         transform.parent.transform.parent.transform.parent.GetComponent<UI_StorageDetails>().getHoverPanel.transform.position = hoverPanel.transform.position;
@@ -78,6 +83,7 @@ public class UI_StorageListElement : MonoBehaviour, IPointerEnterHandler, IPoint
     public void OnPointerExit(PointerEventData eventData)
     {
         hoverPanel.SetActive(false);
+        transform.DOScale(localScale, .5f);
         //transform.parent.transform.parent.transform.parent.GetComponent<UI_StorageDetails>().getHoverPanel.SetActive(false);
     }
 }

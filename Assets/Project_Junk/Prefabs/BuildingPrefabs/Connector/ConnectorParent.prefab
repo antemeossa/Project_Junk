@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1127883265080668941}
   - component: {fileID: -2284360947311871607}
   - component: {fileID: 2579392894734300548}
+  - component: {fileID: 3249270862780721423}
   m_Layer: 0
   m_Name: ConnectorParent
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-2284360947311871607
 MonoBehaviour:
@@ -58,6 +59,7 @@ MonoBehaviour:
       outputAmount: 0
     productionTime: 0
     isUnlocked: 0
+    price: 0
 --- !u!114 &2579392894734300548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,3 +75,20 @@ MonoBehaviour:
   connectorsList: []
   t: 0.075
   height: 10
+--- !u!114 &3249270862780721423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7810780155718410388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c9e039ed31f544cb11c20e3cb06913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectorData:
+    ID: 0
+    connectorNodeCount: 0
+    nodePositions: []
+    nodeRotations: []
