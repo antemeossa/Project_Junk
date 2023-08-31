@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class SmelterScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    TransferItemsScript transfer;
+
+    private void Start()
     {
-        
+        transfer = GetComponent<TransferItemsScript>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        transfer.setFacilities(GameManager.Instance.mothership, gameObject);
     }
 }

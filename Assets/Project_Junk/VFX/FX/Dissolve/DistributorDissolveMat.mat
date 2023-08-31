@@ -45,7 +45,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DissolveAmount: -0.011737943
+    - _DissolveAmount: -0.0012019873
     - _EdgeThickness: 0.034
     - _QueueControl: 0
     - _QueueOffset: 0

@@ -13,8 +13,17 @@ public class ConnectorSaveData : MonoBehaviour
     {
         connectorData.connectorNodeCount = transform.childCount;
 
-        connectorData.inFacility = GetComponent<TransferItemsScript>().getInFacilityID();
-        connectorData.outFacility = GetComponent<TransferItemsScript>().getOutFacilityID();
+        if(GetComponent<TransferItemsScript>().getInFacility != null)
+        {
+            connectorData.inFacility = GetComponent<TransferItemsScript>().getInFacilityID();
+
+        }
+
+        if (GetComponent<TransferItemsScript>().getOutFacility != null)
+        {
+            connectorData.outFacility = GetComponent<TransferItemsScript>().getOutFacilityID();
+
+        }
 
         for (int i = 0; i < transform.childCount; i++)
         {

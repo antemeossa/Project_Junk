@@ -80,6 +80,24 @@ public class SwarmElement : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        InventoryScript targetInventory = mothership.GetComponent<InventoryScript>();
+
+        for (int i = 0; i < GameManager.Instance.getAllRecipes.Count; i++)
+        {
+            if (droneInventory.getInventory.ContainsKey(GameManager.Instance.getAllRecipes[i].outputProduct.outputType))
+            {
+                if (droneInventory.getInventory[GameManager.Instance.getAllRecipes[i].outputProduct.outputType] > 0 && targetInventory.getCurrentStorage() < targetInventory.getMaxStorage())
+                {
+                    targetInventory.addItem(GameManager.Instance.getAllRecipes[i].outputProduct.outputType, droneInventory.getInventory[GameManager.Instance.getAllRecipes[i].outputProduct.outputType]);
+                    droneInventory.removeItem(GameManager.Instance.getAllRecipes[i].outputProduct.outputType, droneInventory.getInventory[GameManager.Instance.getAllRecipes[i].outputProduct.outputType]);
+                }
+            }
+
+        }
+    }
+
     #region movementOperations
     private void droneTakeOff(Transform end)
     {
@@ -135,7 +153,7 @@ public class SwarmElement : MonoBehaviour
     private void ReturnFromWreck(Transform end)
     {
         float step = Time.deltaTime * droneSpeed;
-
+        ray = new Ray(transform.position, transform.forward);
         if (Physics.Raycast(ray, out hit, 500f))
         {
 
@@ -170,12 +188,13 @@ public class SwarmElement : MonoBehaviour
     private void moveToTheWreck(Transform end)
     {
         float step = Time.deltaTime * droneSpeed;
-
+        ray = new Ray(transform.position, transform.forward);
         if (Physics.Raycast(ray, out hit, 500f))
         {
 
             if (hit.transform != null && hit.transform.CompareTag("Landscape"))
             {
+                Debug.Log("hit");
                 if (Vector3.Distance(transform.position, end.position) > 200f)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, transform.position + new Vector3(0f, 100f, 0f), step);
@@ -263,7 +282,7 @@ public class SwarmElement : MonoBehaviour
     {
 
         
-        if (droneInventory.getCurrentStorage() == 0)
+        if (droneInventory.getCurrentStorage() <= 0)
         {
             currentDroneState = DroneStates.TakeOff;
         }

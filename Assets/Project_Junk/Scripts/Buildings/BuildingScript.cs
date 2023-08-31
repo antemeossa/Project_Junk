@@ -14,6 +14,8 @@ public class BuildingScript : MonoBehaviour
     [SerializeField]
     private List<buildingTypesEnum> connectableIntakeTypes;
     [SerializeField]
+    private int buildingCost;
+    [SerializeField]
     private int powerConsumption, intakeCount, outputCount;
     [SerializeField]
     private List<GameObject> connectedOutputs = new List<GameObject>();
@@ -31,6 +33,8 @@ public class BuildingScript : MonoBehaviour
 
     public int uniqueID;
     public bool placedDown = false;
+
+   
 
 
     #endregion
@@ -160,6 +164,8 @@ public class BuildingScript : MonoBehaviour
     public GameObject getOuttakeConnectorTransform { get { return connectedOutputs[outputOccupied]; } }
 
     public GameObject getBuildingFactory { get { return factory; } }
+
+    public int getBuildingCost { get { return buildingCost; } }
     #endregion
 
 }

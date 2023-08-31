@@ -9,9 +9,12 @@ public class SaveData
 
     //public BuldingData buildingData = new BuldingData();
     public bool isSaved;
+    public MothershipData mothership = new MothershipData();
+    public PlayerData playerData = new PlayerData();
     public List<BuldingData> buildingDataList = new List<BuldingData>();
     public List<ConnectorData> connectorDataList = new List<ConnectorData>();
     public List<WreckageData> wreckageDataList = new List<WreckageData>();
+    
 
     public void getAllBuildingData()
     {
@@ -38,6 +41,20 @@ public class SaveData
             wreckageDataList.Add(GameManager.Instance.wreckageManager.allWreckages[i].GetComponent<WreckageSaveData>().wreckageData);
 
         }
+    }
+
+    public void savePlayerData()
+    {
+        GameManager.Instance.saveDataObj.GetComponent<PlayerSaveData>().setPlayerData();
+        playerData = GameManager.Instance.saveDataObj.GetComponent<PlayerSaveData>().playerData;
+
+
+    }
+
+    public void saveMothershipData()
+    {
+        GameManager.Instance.mothership.GetComponent<MothershipSaveData>().setMothershipData();
+        mothership = GameManager.Instance.mothership.GetComponent<MothershipSaveData>().mothershipData;
     }
 
 

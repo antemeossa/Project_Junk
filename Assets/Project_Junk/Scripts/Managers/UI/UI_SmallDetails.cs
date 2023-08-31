@@ -59,7 +59,7 @@ public class UI_SmallDetails : MonoBehaviour
     private void setRarityBorder(CraftRecipe obj)
     {
         if (obj != null)
-        {
+        {            
             if (obj.craftRarity.Equals(Rarity.Primitive))
             {
                 SDRarityBorder.color = Color.gray;

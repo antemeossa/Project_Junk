@@ -47,6 +47,8 @@ GameObject:
   - component: {fileID: -3268437104646161994}
   - component: {fileID: 5121487246780191560}
   - component: {fileID: 5515853976677953957}
+  - component: {fileID: -6857339657041056375}
+  - component: {fileID: 505627466829760581}
   m_Layer: 0
   m_Name: Distributor
   m_TagString: Selectable
@@ -85,6 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingType: 0
   connectableIntakeTypes: 
+  buildingCost: 0
   powerConsumption: 0
   intakeCount: 0
   outputCount: 3
@@ -95,6 +98,8 @@ MonoBehaviour:
   vfxplayer: {fileID: 4692417300587739236}
   factory: {fileID: 0}
   connectedIntakes: []
+  uniqueID: 0
+  placedDown: 0
 --- !u!114 &2028523019583299564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,7 +112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63674552465dd934a8d0ad552e8b0c37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxStorage: 0
+  maxStorage: 5000
+  currentStorage: 0
+  tmpAmounts: 
 --- !u!114 &813832577730342423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,6 +161,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: c25bfd392ab1a7c4c9a4e1ab8237434c, type: 2}
   - {fileID: 2100000, guid: b620c7503fcb07341b2107cb24a1c81d, type: 2}
   - {fileID: 2100000, guid: dd3cdaf7e0f3a174ab9631711483eb4d, type: 2}
+  dropBoom: {fileID: 8300000, guid: 31afaef158435814b8f994d40561846c, type: 3}
 --- !u!65 &5121487246780191560
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -202,6 +210,128 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!82 &-6857339657041056375
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8131159905027689746}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &505627466829760581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8131159905027689746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ebade087c3437a4191ccdf35b8da320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inFacility: {fileID: 0}
+  outFacility: {fileID: 0}
+  transferRate: 0
+  selectedRecipe:
+    img: {fileID: 0}
+    craftRarity: 0
+    building: 0
+    inputRequirements: []
+    outputProduct:
+      outputType: 0
+      outputAmount: 0
+    productionTime: 0
+    isUnlocked: 0
+    price: 0
 --- !u!1001 &3227398293717869883
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,22 +7,22 @@ using UnityEngine;
 
 public class UI_RecipeList : MonoBehaviour
 {
-    private UI_Manager UI_M;
     public Transform listContainer; // Reference to the container object that holds the list
     public GameObject listItemPrefab; // Prefab for the list item
 
     [SerializeField]
     private List<GameObject> spawnedElements = new List<GameObject>(); // List to store the items
-    private RecipeManager RM;
 
     private int buildingIndex;
     private void Awake()
     {
-        UI_M = FindFirstObjectByType<UI_Manager>();
-        RM = FindFirstObjectByType<RecipeManager>();
+        
+    }
+    private void Start()
+    {
+        
     }
 
-    
     private void getClickedBuildingType(GameObject obj)
     {
 
@@ -56,6 +56,8 @@ public class UI_RecipeList : MonoBehaviour
 
     private void createListElements(List<CraftRecipe> list)
     {
+        RecipeManager RM = GameManager.Instance.recipeManager;
+
         for (int i = 0; i < list.Count; i++)
         {
             spawnedElements.Add(Instantiate(listItemPrefab, listContainer, false));
@@ -66,10 +68,20 @@ public class UI_RecipeList : MonoBehaviour
             spawnedElements[i].transform.SetParent(listContainer.transform, false);
             spawnedElements[i].GetComponent<UI_RecipeListElement>().SetListItem(RM.FormatEnumWithSpaces(list[i].outputProduct.outputType), list[i].inputRequirements, list[i], list[i].img);
         }
+
+        for(int i = 0;i < spawnedElements.Count; i++)
+        {
+            spawnedElements[i].SetActive(true);
+            if (!spawnedElements[i].GetComponent<UI_RecipeListElement>().getListElementRecipe.isUnlocked)
+            {
+                spawnedElements[i].SetActive(false);
+            }
+        }
     }
 
     public void setList(GameObject clickedObject)
     {
+        RecipeManager RM = GameManager.Instance.recipeManager;
         destroyRecipeList();
         getClickedBuildingType(clickedObject);
         if(buildingIndex == 1)

@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
 using TMPro;
-using UnityEditor.Build.Reporting;
-using UnityEditor.ShaderKeywordFilter;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -32,7 +31,7 @@ public class Building
 {
 
     public buildingTypesEnum buildingType;
-    public List<buildRequirements> buildRequirements;
+    public int buildCost;
     public GameObject buildingBlueprint;
 
 
@@ -152,6 +151,9 @@ public class BuildSystemManager : MonoBehaviour
 
     public void buildObjectOnClick(GameObject BP)
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
+
         if (prefab_BP == null)
         {
             prefab_BP = Instantiate(BP);
@@ -201,6 +203,11 @@ public class BuildSystemManager : MonoBehaviour
                 {
                     if (placeableObj.checkCanBuild())
                     {
+                        if(GameManager.Instance.economyManager.currentMoney < prefab_Built.GetComponent<BuildingScript>().getBuildingCost)
+                        {
+                            GameManager.Instance.UI_M.notEnoughMonetNotification();
+                            return;
+                        }
                         obj = Instantiate(prefab_Built, prefab_BP.transform.position + new Vector3(0, 20, 0), prefab_BP.transform.rotation);
                         obj.transform.parent = currentFactory.transform;
                         obj.GetComponent<PlaceDownScript>().dissolve(obj.GetComponent<PlaceDownScript>().buildTime);
@@ -209,6 +216,7 @@ public class BuildSystemManager : MonoBehaviour
                         isBuilding = false;
                         currentFactory.transform.parent.GetComponent<FactoryScript>().updateBuildingList();
                         PM.setAllBuildingsInWorld(currentFactory.transform);
+                        GameManager.Instance.economyManager.currentMoney -= prefab_Built.GetComponent<BuildingScript>().getBuildingCost;
                     }
                 }
             }

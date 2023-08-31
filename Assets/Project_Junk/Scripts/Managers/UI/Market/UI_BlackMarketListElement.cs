@@ -83,6 +83,7 @@ public class UI_BlackMarketListElement : MonoBehaviour
 
     public void acceptOnClick()
     {
+        GameManager.Instance.soundManager.playBtnSound();
 
         isActive = true;
         transform.DOScale(1.1f, .5f);
@@ -103,6 +104,8 @@ public class UI_BlackMarketListElement : MonoBehaviour
     }
     public void buyBtnOnClick()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         activeSlider.maxValue -= activeSlider.value;
         sliderMaxText.text = activeSlider.maxValue.ToString();
         GameManager.Instance.mothership.GetComponent<InventoryScript>().addItem(blackMarketItemRecipe.outputProduct.outputType, (int)activeSlider.value);
@@ -112,6 +115,8 @@ public class UI_BlackMarketListElement : MonoBehaviour
 
     public void sellBtnOnClick()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         activeSlider.maxValue -= activeSlider.value;
         sliderMaxText.text = activeSlider.maxValue.ToString();
         GameManager.Instance.mothership.GetComponent<InventoryScript>().removeItem(blackMarketItemRecipe.outputProduct.outputType, (int)activeSlider.value);
@@ -124,7 +129,7 @@ public class UI_BlackMarketListElement : MonoBehaviour
         buyBtn.SetActive(true);
         sellBtn.SetActive(false);
         activeSlider.maxValue = buyMaxValue;
-        activeSlider.value = 0;
+        activeSlider.value = 1;
     }
 
     public void switchToSellMode()
@@ -133,7 +138,7 @@ public class UI_BlackMarketListElement : MonoBehaviour
         sellBtn.SetActive(true);
         sellMaxValue = GameManager.Instance.mothership.GetComponent<InventoryScript>().getInventory[blackMarketItemRecipe.outputProduct.outputType];
         activeSlider.maxValue = sellMaxValue;
-        activeSlider.value = 0;
+        activeSlider.value = 1;
     }
     public void OnPointerEnter(PointerEventData eventData)
     {

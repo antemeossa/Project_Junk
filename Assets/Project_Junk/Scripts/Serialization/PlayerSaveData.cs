@@ -3,11 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[System.Serializable]
-public class PlayerSaveData
+public class PlayerSaveData : MonoBehaviour
 {
-    public string mothershipname;
-    public int mothershipLvl;
-    public int currentMoneyAmount;
-    public int currentMaxDroneAmount;
+    public PlayerData playerData = new PlayerData();
+
+    public void setPlayerData()
+    {
+        playerData.money = GameManager.Instance.economyManager.currentMoney;
+        playerData.maxDroneCount = GameManager.Instance.droneManager.maxDroneAmount;
+        playerData.availableDroneCount = GameManager.Instance.droneManager.useableDroneAmount;
+        playerData.mothershipLevel = GameManager.Instance.mothership.GetComponent<MothershipLevelScript>().motherShipLevel;
+    }
+
+    
+
+}
+
+[System.Serializable]
+public struct PlayerData
+{
+    public int money;
+    public int maxDroneCount;
+    public int availableDroneCount;
+    public int mothershipLevel;
 }

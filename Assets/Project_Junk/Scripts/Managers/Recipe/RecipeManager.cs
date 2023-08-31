@@ -80,26 +80,19 @@ public enum itemTypes
     GoldHeatSink,
     GoldSensor,
     TitaniumPlate,
+    NanofiberMesh,
+    ReclaimedPowerCore,
+    RetrofittedThruster,
+    HyperchargedCapacitor,
+    FusionEngineCasing,
+    ElectroMagneticCasing,
+    QuantumDataMatrix,
+    OrbitalSensorArray
+
 
 }
 
-public enum OutputType
-{
-    CopperIngot,
-    IronIngot,
-    GoldIngot,
-    TitaniumIngot,
-    PlatinumIngot,
-    CopperWire,
-    CopperCoil,
-    CopperConduit,
-    IronPlate,
-    ReinforcedIron,
-    IronFramework,
-    GoldPlatedCircuitBoard,
-    GoldHeatSink,
-    GoldSensor,
-}
+
 
 #endregion
 
@@ -112,11 +105,14 @@ public class RecipeManager : MonoBehaviour
     public List<CraftRecipe> refinerRecipesList;
     public List<CraftRecipe> assemblerRecipesList;
 
-
+    private void Awake()
+    {
+        sortRecipeLists();
+    }
 
     private void Start()
     {
-        sortRecipeLists();
+        
         
     }
     public void sortRecipeLists()
@@ -137,7 +133,59 @@ public class RecipeManager : MonoBehaviour
         }
     }
 
-  
+    public void unlockRecipes(int x)
+    {
+        if (x < 2)
+        {
+            for (int i = 0; i < craftRecipes.Count; i++)
+            {
+                if (craftRecipes[i].craftRarity.Equals(Rarity.Primitive))
+                {
+                    craftRecipes[i].isUnlocked = true;
+                }
+            }
+        }
+        else if (x < 3)
+        {
+            for (int i = 0; i < craftRecipes.Count; i++)
+            {
+                if (craftRecipes[i].craftRarity.Equals(Rarity.Standard))
+                {
+                    craftRecipes[i].isUnlocked = true;
+                }
+            }
+        }
+        else if (x < 4)
+        {
+            for (int i = 0; i < craftRecipes.Count; i++)
+            {
+                if (craftRecipes[i].craftRarity.Equals(Rarity.Advanced))
+                {
+                    craftRecipes[i].isUnlocked = true;
+                }
+            }
+        }
+        else if (x < 5)
+        {
+            for (int i = 0; i < craftRecipes.Count; i++)
+            {
+                if (craftRecipes[i].craftRarity.Equals(Rarity.Prototype))
+                {
+                    craftRecipes[i].isUnlocked = true;
+                }
+            }
+        }
+        else if (x < 6)
+        {
+            for (int i = 0; i < craftRecipes.Count; i++)
+            {
+                if (craftRecipes[i].craftRarity.Equals(Rarity.CuttingEdge))
+                {
+                    craftRecipes[i].isUnlocked = true;
+                }
+            }
+        }
+    }
     public string FormatEnumWithSpaces<T>(T enumValue)
     {
         string enumString = enumValue.ToString();

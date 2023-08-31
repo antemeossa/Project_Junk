@@ -9,11 +9,14 @@ public class UI_WreckDetails : MonoBehaviour
 {
     [SerializeField]
     private GameObject storageItemPrefab, container;
+    [SerializeField]
+    private TextMeshProUGUI wreckageTypeText, canSalvageText;
     [SerializeField] private DroneSpawnManager droneSpawnManager;
     [SerializeField] private Slider droneAmountSlider;
-    [SerializeField] private GameObject droneAmountText, salvageBtnText;
+    [SerializeField] private GameObject droneAmountText, salvageBtnText, salvageBtn;
 
     public GameObject currentDronesParent;
+    private int sentDrones;
 
     [SerializeField]
     private GameObject selectedWreckage;
@@ -29,8 +32,8 @@ public class UI_WreckDetails : MonoBehaviour
     private void Start()
     {
         allItemsList = GameManager.Instance.getAllRecipes;
-        droneAmountSlider.maxValue = GameManager.Instance.droneManager.maxDroneAmount;
-
+        droneAmountSlider.maxValue = GameManager.Instance.droneManager.maxDroneAmount - 2;
+        
     }
 
     private void Update()
@@ -75,6 +78,18 @@ public class UI_WreckDetails : MonoBehaviour
 
     public void updateGrid()
     {
+        if (selectedWreckage.GetComponent<WreckAreaScript>().isSalvageable)
+        {
+            salvageBtn.GetComponent<Button>().image.color = Color.white;
+            salvageBtnText.GetComponent<TextMeshProUGUI>().text = "Salvage";
+            salvageBtn.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            salvageBtn.GetComponent<Button>().image.color = Color.black;
+            salvageBtnText.GetComponent<TextMeshProUGUI>().text = "LOCKED!";
+            salvageBtn.GetComponent<Button>().interactable = false;
+        }
         for (int i = 0; i < spawnedElementsList.Count; i++)
         {
             spawnedElementsList[i].GetComponent<UI_StorageListElement>().setItemAmount(selectedWreckage.GetComponent<InventoryScript>().getAmountOfSelectedProduct(allItemsList[i].outputProduct.outputType));
@@ -92,6 +107,8 @@ public class UI_WreckDetails : MonoBehaviour
     {
         selectedWreckage = obj;
         droneSpawnManager.targetWreckage = selectedWreckage;
+        wreckageTypeText.text = "Type: " + Utils.enumToString(selectedWreckage.GetComponent<WreckAreaScript>().crashSiteType);
+        canSalvageText.text = "Can Salvage: " + selectedWreckage.GetComponent<WreckAreaScript>().isSalvageable.ToString();
         droneAmountSlider.value = 0;
         if(obj.GetComponent<WreckAreaScript>().beingSalvaged)
         {
@@ -109,24 +126,32 @@ public class UI_WreckDetails : MonoBehaviour
 
     public void salvageButtonOnClick()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
+
         if (!selectedWreckage.GetComponent<WreckAreaScript>().beingSalvaged)
         {
             droneAmountSlider.interactable = false;
             GameManager.Instance.droneManager.activeDroneAmount += (int)droneAmountSlider.value;
+            sentDrones = (int)droneAmountSlider.value;
             droneAmountSlider.maxValue = GameManager.Instance.droneManager.maxDroneAmount - GameManager.Instance.droneManager.activeDroneAmount;
             droneSpawnManager.sendDrones((int)droneAmountSlider.value);
             selectedWreckage.GetComponent<WreckAreaScript>().beingSalvaged = true;
             salvageBtnText.GetComponent<TextMeshProUGUI>().text = "SALVAGING!";
-            
+            GameManager.Instance.UI_M.updateDroneText();
+
         }
         else
         {
-            GameManager.Instance.droneManager.activeDroneAmount -= (int)droneAmountSlider.value;
+            GameManager.Instance.droneManager.activeDroneAmount -= sentDrones;
             droneAmountSlider.maxValue = GameManager.Instance.droneManager.maxDroneAmount - GameManager.Instance.droneManager.activeDroneAmount;
             droneSpawnManager.cancelSalvage(selectedWreckage);
             selectedWreckage.GetComponent<WreckAreaScript>().beingSalvaged = false;
             salvageBtnText.GetComponent<TextMeshProUGUI>().text = "SALVAGE";
-            
+            droneAmountSlider.value = 0;
+            droneAmountSlider.interactable = true;
+            GameManager.Instance.UI_M.updateDroneText();
+
         }
 
     }

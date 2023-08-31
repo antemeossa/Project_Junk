@@ -27,8 +27,11 @@ public class GameManager : MonoBehaviour
     public DroneManager droneManager;
     public FactionManager factionManager;
     public WreckageManager wreckageManager;
+    public SoundManager soundManager;
     public GameObject mothership;
-    
+    public GameObject saveDataObj;
+
+    public bool gameStarted;
 
     public currentModeType currentMode;
     public static GameManager Instance { get; private set; }
@@ -44,17 +47,23 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
-    }
 
-    private void Start()
-    {
         if (SaveGameManager.currentSaveData.isSaved)
         {
+            GetComponent<SaveGameMono>().loadMothershipData();
+            GetComponent<SaveGameMono>().loadPlayerData();
             GetComponent<SaveGameMono>().loadOperationsBuildings();
             productionManager.setAllBuildingsInWorld(mothership.transform.GetChild(1).GetChild(2).GetChild(3));
             GetComponent<SaveGameMono>().loadOperationsConnectors();
             GetComponent<SaveGameMono>().loadOperationsWreckages();
+
         }
+    }
+
+    
+    private void Start()
+    {
+        
         
     }
     #region load and save actions
@@ -92,3 +101,5 @@ public class GameManager : MonoBehaviour
 
 
 }
+
+

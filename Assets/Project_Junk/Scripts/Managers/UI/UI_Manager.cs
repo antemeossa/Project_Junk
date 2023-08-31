@@ -1,22 +1,32 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
 public class UI_Manager : MonoBehaviour
 {
     [SerializeField]
+    private GameObject InGameOverlay, MainMenuOverlay;
+    [SerializeField]
     private GameObject buildPanel, smallDetailsPanel, recipeListPanel, storagePanel,
-        deleteNotificationPanel, buildButtonPrefab, wreckPanel, contractsPanel, blackmarketPanel;
+        deleteNotificationPanel, buildButtonPrefab, wreckPanel, contractsPanel, blackmarketPanel, mothershipPanel, settingsPanel, mainMenuPanel;
 
-    public TextMeshProUGUI currentMoneyText;
+    [SerializeField]
+    private GameObject notEnoughNotification;
+
+    [SerializeField]
+    private GameObject[] tutorialPanels;
+
+    public TextMeshProUGUI currentMoneyText, droneAmountText;
 
     public BuildSystemManager BS_M;
-    public GameManager GameManager;
+    public GameManager gameManager;
 
     private PlayerController playerController;
 
@@ -33,9 +43,84 @@ public class UI_Manager : MonoBehaviour
         deactivateAllPanels();
         playerController = FindFirstObjectByType<PlayerController>();
         setBuildPanel(buildButtonPrefab);
+        droneAmountText.text = GameManager.Instance.droneManager.maxDroneAmount - GameManager.Instance.droneManager.activeDroneAmount + "/" + GameManager.Instance.droneManager.maxDroneAmount;
+
+
 
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            if (buildPanel.activeInHierarchy)
+            {
+                tutorialPanels[6].SetActive(true);
+                showBuildModeHelp();
+            }
+            else if (smallDetailsPanel.activeInHierarchy)
+            {
+                tutorialPanels[6].SetActive(true);
+                showSmallDetailsModeHelp();
+            }
+            else if (wreckPanel.activeInHierarchy)
+            {
+                tutorialPanels[6].SetActive(true);
+                showCrashSiteHelp();
+            }
+            else if (blackmarketPanel.activeInHierarchy)
+            {
+                tutorialPanels[6].SetActive(true);
+                showBlackmarketHelp();
+            }
+            else if (contractsPanel.activeInHierarchy)
+            {
+                tutorialPanels[6].SetActive(true);
+                showContractsHelp();
+            }
+            else
+            {
+                tutorialPanels[6].SetActive(true);
+                showBasicHelp();
+            }
+
+        }
+        else if (Input.GetKeyUp(KeyCode.F1))
+        {
+            tutorialPanels[6].SetActive(false);
+            hideBasicHelp();
+            hideBlackmarketHelp();
+            hideBuildModeHelp();
+            hideContractsHelp();
+            hideCrashSiteHelp();
+        }
+    }
+
+    public void updateDroneText()
+    {
+        droneAmountText.text = GameManager.Instance.droneManager.maxDroneAmount - GameManager.Instance.droneManager.activeDroneAmount + "/" + GameManager.Instance.droneManager.maxDroneAmount;
+
+    }
+    public void newGameBtnOnClick()
+    {
+        GameManager.Instance.soundManager.playBtnSound();
+        SceneManager.LoadScene("MainLevel");
+    }
+
+
+    public void switchMenuOverlay()
+    {
+        if (InGameOverlay.activeInHierarchy)
+        {
+            InGameOverlay.SetActive(false);
+            MainMenuOverlay.SetActive(true);
+        }
+        else
+        {
+            InGameOverlay.SetActive(true);
+            MainMenuOverlay.SetActive(false);
+        }
+    }
     public void deactivateAllPanels()
     {
         smallDetailsPanel.SetActive(false);
@@ -45,13 +130,94 @@ public class UI_Manager : MonoBehaviour
         wreckPanel.SetActive(false);
         contractsPanel.SetActive(false);
         blackmarketPanel.SetActive(false);
+        mothershipPanel.SetActive(false);
 
 
 
     }
+
+    #region tutorial
+
+    public void showBasicHelp()
+    {
+        tutorialPanels[0].SetActive(true);
+    }
+
+    public void hideBasicHelp()
+    {
+        tutorialPanels[0].SetActive(false);
+    }
+
+    public void showBuildModeHelp()
+    {
+        tutorialPanels[1].SetActive(true);
+    }
+
+    public void hideBuildModeHelp()
+    {
+        tutorialPanels[1].SetActive(false);
+    }
+
+    public void showSmallDetailsModeHelp()
+    {
+        tutorialPanels[2].SetActive(true);
+    }
+    public void hideSmallDetailsModeHelp()
+    {
+        tutorialPanels[2].SetActive(false);
+    }
+
+    public void showCrashSiteHelp()
+    {
+        tutorialPanels[3].SetActive(true);
+    }
+
+    public void hideCrashSiteHelp()
+    {
+        tutorialPanels[3].SetActive(false);
+    }
+
+    public void showBlackmarketHelp()
+    {
+        tutorialPanels[4].SetActive(true);
+    }
+
+    public void hideBlackmarketHelp()
+    {
+        tutorialPanels[4].SetActive(false);
+    }
+
+    public void showContractsHelp()
+    {
+        tutorialPanels[5].SetActive(true);
+    }
+
+    public void hideContractsHelp()
+    {
+        tutorialPanels[5].SetActive(false);
+    }
+
+
+    #endregion
+
+
+    #region panelActions
+    public void activateMothershipPanel()
+    {
+        GameManager.Instance.soundManager.playBtnSound();
+        mothershipPanel.SetActive(true);
+    }
+
+    public void deactivateMothershipPanel()
+    {
+        mothershipPanel.SetActive(false);
+    }
+
+
     public void activateSmallDetailsPanel()
     {
 
+        GameManager.Instance.soundManager.playBtnSound();
 
         recipeListPanel.GetComponent<UI_RecipeList>().setList(playerController.getSelectedBuilding);
         smallDetailsPanel.GetComponent<UI_SmallDetails>().setSmallDetailsPanel(playerController.getSelectedBuilding);
@@ -80,6 +246,8 @@ public class UI_Manager : MonoBehaviour
 
     public void recipeListBtnOnClick()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         buildingScr = playerController.getSelectedBuilding.GetComponent<BuildingScript>();
         if (!recipeListPanel.activeSelf)
         {
@@ -102,22 +270,27 @@ public class UI_Manager : MonoBehaviour
         if (buildPanel.activeSelf)
         {
             buildPanel.SetActive(false);
-            GameManager.currentMode = currentModeType.PlayMode;
+            gameManager.currentMode = currentModeType.PlayMode;
 
 
         }
         else
         {
+            GameManager.Instance.soundManager.playBtnSound();
+
             buildPanel.SetActive(true);
             deactivateSmallDetailsPanel();
-            GameManager.currentMode = currentModeType.BuildMode;
+            gameManager.currentMode = currentModeType.BuildMode;
 
         }
     }
 
     public void switchConnectionMode()
     {
-        if (GameManager.currentMode == currentModeType.BuildMode)
+        GameManager.Instance.soundManager.playBtnSound();
+
+
+        if (gameManager.currentMode == currentModeType.BuildMode)
         {
             switchBuildPanel();
             BS_M.cancelBuildAction();
@@ -127,6 +300,8 @@ public class UI_Manager : MonoBehaviour
 
     public void activateContractsPanel()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         contractsPanel.SetActive(true);
     }
 
@@ -147,6 +322,8 @@ public class UI_Manager : MonoBehaviour
 
     public void activateBlackMarketPanel()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         blackmarketPanel.SetActive(true);
     }
 
@@ -185,9 +362,19 @@ public class UI_Manager : MonoBehaviour
 
     public void activateStoragePanel()
     {
+        GameManager.Instance.soundManager.playBtnSound();
 
         storagePanel.SetActive(true);
-        storagePanel.GetComponent<UI_StorageDetails>().setSelectedStorage(playerController.getSelectedBuilding.transform.parent.transform.parent.transform.parent.gameObject);
+        if(playerController.getSelectedBuilding.GetComponent<MainBuldingScript>() != null)
+        {
+            storagePanel.GetComponent<UI_StorageDetails>().setSelectedStorage(GameManager.Instance.mothership);
+
+        }
+        else
+        {
+            storagePanel.GetComponent<UI_StorageDetails>().setSelectedStorage(playerController.getSelectedBuilding);
+
+        }
         storagePanel.GetComponent<UI_StorageDetails>().createGrid();
         storagePanel.GetComponent<UI_StorageDetails>().updateGrid();
         focusedOnBuilding = true;
@@ -200,6 +387,8 @@ public class UI_Manager : MonoBehaviour
 
     public void activateWreckPanel()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         wreckPanel.SetActive(true);
         wreckPanel.GetComponent<UI_WreckDetails>().setSelectedWreckage(playerController.getSelectedBuilding);
         wreckPanel.GetComponent<UI_WreckDetails>().createGrid();
@@ -207,11 +396,34 @@ public class UI_Manager : MonoBehaviour
         focusedOnBuilding = true;
     }
 
+    public void activateSettingsPanel()
+    {
+        if (MainMenuOverlay.activeInHierarchy)
+        {
+            mainMenuPanel.SetActive(false);
+        }
+       
+        settingsPanel.SetActive(true);
+    }
+
+    public void deactivateSettingsPanel()
+    {
+        settingsPanel.SetActive(false);
+        if (MainMenuOverlay.activeInHierarchy)
+        {
+            mainMenuPanel.SetActive(true);
+        }
+    }
+
+    public void exitGameOnClick()
+    {
+
+    }
     public void deactivateWreckPanel()
     {
         wreckPanel.SetActive(false);
     }
-
+    #endregion
 
     #region deleteNotification
     public void activateDeleteNotification()
@@ -228,6 +440,13 @@ public class UI_Manager : MonoBehaviour
     public void declineDelete()
     {
         deleteNotificationPanel.SetActive(false);
+    }
+
+    public void notEnoughMonetNotification()
+    {
+        GameManager.Instance.soundManager.playDeclineSound();
+
+        notEnoughNotification.SetActive(true);
     }
 
     #endregion

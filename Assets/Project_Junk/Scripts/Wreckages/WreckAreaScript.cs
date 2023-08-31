@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
+public enum crashSiteTypes
+{
+    NeonFighters,
+    HeavyCargoShip,
+    Freighter
+
+}
 public class WreckAreaScript : MonoBehaviour
 {
 
@@ -18,6 +26,7 @@ public class WreckAreaScript : MonoBehaviour
     [SerializeField]
     private List<int> wreckageItemAmounts = new List<int>();
 
+    public crashSiteTypes crashSiteType; 
     public float salvageRadius;
     public float circleHeight, circleRadius;
     public bool isSalvageable = true;
@@ -31,9 +40,12 @@ public class WreckAreaScript : MonoBehaviour
 
     public GameObject sentDronesParent;
 
+
+
     private void Start()
     {
         // wreckageInventory = GetComponent<InventoryScript>();
+        wreckageInventory = GetComponent<InventoryScript>();
         setWreckageInventory();
         setWreckParts();
         nextWreckPartToDissolve = wreckParts[nextWreckPartIndex];
@@ -49,7 +61,11 @@ public class WreckAreaScript : MonoBehaviour
 
     private void Update()
     {
-        updateWreckParts();
+        if (beingSalvaged)
+        {
+            updateWreckParts();
+        }
+
     }
 
 
@@ -66,28 +82,32 @@ public class WreckAreaScript : MonoBehaviour
         if (wreckageInventory.getCurrentStorage() >= (wreckageInventory.getMaxStorage() / divider) * (divider - (nextWreckPartIndex + 1)))
         {
             wreckParts[nextWreckPartIndex].GetComponent<WreckPartDissolveScript>().updateDissolveAmount();
-        }else if(wreckageInventory.getCurrentStorage() < (wreckageInventory.getMaxStorage() / divider) * (divider - (nextWreckPartIndex + 1)))
+        }
+        else if (wreckageInventory.getCurrentStorage() < (wreckageInventory.getMaxStorage() / divider) * (divider - (nextWreckPartIndex + 1)))
         {
             wreckParts[nextWreckPartIndex].SetActive(false);
             nextWreckPartIndex++;
-            
-        }else if(wreckageInventory.getCurrentStorage() == 0)
+
+        }
+        else if (wreckageInventory.getCurrentStorage() == 0)
         {
             Destroy(gameObject);
         }
 
     }
 
-  
+
     public void setWreckageInventory()
     {
+        
+
         for (int i = 0; i < wreckageItems.Count; i++)
         {
             wreckageInventory.addItem(wreckageItems[i], wreckageItemAmounts[i]);
         }
     }
     public InventoryScript getWreckageInventory { get { return wreckageInventory; } }
-    
+
 
 
 }

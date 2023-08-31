@@ -86,6 +86,8 @@ public class UI_ContractElemetnScript : MonoBehaviour
 
     public void acceptOnClick()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         GameManager.Instance.economyManager.addContract(this);
         isActive = true;
         transform.DOScale(1.1f, .5f);
@@ -117,6 +119,8 @@ public class UI_ContractElemetnScript : MonoBehaviour
     }
     public void handInBtnOnClick()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         if (GameManager.Instance.mothership.GetComponent<InventoryScript>().getAmountOfSelectedProduct(contractRecipe.outputProduct.outputType) >= reqItemAmount)
         {
             GameManager.Instance.economyManager.completeContract(this, contractRecipe.outputProduct.outputType, reqItemAmount);
@@ -131,7 +135,9 @@ public class UI_ContractElemetnScript : MonoBehaviour
     }
     public void declineOnClick()
     {
-        Destroy(gameObject);
+        GameManager.Instance.soundManager.playBtnSound();
+
+        gameObject.SetActive(false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

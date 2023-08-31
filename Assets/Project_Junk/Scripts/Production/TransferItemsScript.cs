@@ -10,6 +10,7 @@ public class TransferItemsScript : MonoBehaviour
     public int transferRate;
     private bool facilitiesSet;
     public CraftRecipe selectedRecipe;
+    public bool transferAny = false;
 
     private void Start()
     {
@@ -33,7 +34,7 @@ public class TransferItemsScript : MonoBehaviour
         facilitiesSet = true;
     }
 
-    public void setInFacility( GameObject inFac)
+    public void setInFacility(GameObject inFac)
     {
         inFacility = inFac;
         SetSelectedRecipe(inFac.GetComponent<BuildingScript>());
@@ -41,7 +42,7 @@ public class TransferItemsScript : MonoBehaviour
 
     public void setOutFacility(GameObject outFac)
     {
-        outFacility = outFac;        
+        outFacility = outFac;
     }
 
 
@@ -55,10 +56,7 @@ public class TransferItemsScript : MonoBehaviour
             {
                 if (outFacility.GetComponent<InventoryScript>().getInventory.ContainsKey(selectedRecipe.inputRequirements[i].inputType))
                 {
-                    if (outFacility.GetComponent<BuildingScript>().getBuildingType == buildingTypesEnum.Storage)
-                    {
-                        outFacility.GetComponent<StorageScript>().setContainersActive();
-                    }
+
                     outFacility.GetComponent<InventoryScript>().transferItem(selectedRecipe.inputRequirements[i].inputType,
                         selectedRecipe.inputRequirements[i].requiredAmount,
                         inFacility.GetComponent<InventoryScript>());
@@ -68,7 +66,14 @@ public class TransferItemsScript : MonoBehaviour
 
             }
         }
+
+
+
+
+
     }
+
+
 
     private void SetSelectedRecipe(BuildingScript facility)
     {
@@ -85,6 +90,9 @@ public class TransferItemsScript : MonoBehaviour
     {
         return outFacility.GetComponent<BuildingScript>().uniqueID;
     }
+
+    public GameObject getInFacility { get { return inFacility; } }
+    public GameObject getOutFacility { get { return outFacility; } }
 
     public void setFacilitiesBool(bool value) { facilitiesSet = value; }
 }

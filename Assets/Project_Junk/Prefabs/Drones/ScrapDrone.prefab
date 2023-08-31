@@ -80,7 +80,7 @@ MonoBehaviour:
   droneSpeed: 150
   salvageRate: 1
   loadSpeed: 1
-  unloadRate: 10
+  unloadRate: 1
   currentDroneState: 0
   salvagePerc: 0
   circleSpeed: 1
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63674552465dd934a8d0ad552e8b0c37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxStorage: 100
+  maxStorage: 50
   currentStorage: 0
   tmpAmounts: 
 --- !u!1001 &4197458527658641460

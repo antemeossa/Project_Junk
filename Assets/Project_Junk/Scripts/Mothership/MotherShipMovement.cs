@@ -21,16 +21,19 @@ public class MotherShipMovement : MonoBehaviour
 
     private void Start()
     {
-        landMothership(Vector3.zero, landingTime);
-
-    }
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.Space))
+        
+        if (hasLanded)
         {
-            landMothership(Vector3.zero, landingTime);
+            transform.position = Vector3.zero;
+            landingGear.transform.DOScale(1f, 0.1f);
         }
+        else
+        {
+            transform.position = new Vector3(0, 5000, 0);
+        }
+        landMothership(Vector3.zero, landingTime);
     }
+    
 
     public void landMothership(Vector3 landingTarget, float time)
     {

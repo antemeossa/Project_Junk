@@ -61,7 +61,7 @@ public class UI_StorageDetails : MonoBehaviour
 
 
     }
-
+    
     public void updateGrid()
     {
         for (int i = 0; i < spawnedElementsList.Count; i++)

@@ -55,9 +55,14 @@ public class SwarmManager : MonoBehaviour
             currentT += Time.deltaTime;
             yield return null;
         }
-        startMovement(droneIndex);
-        if (droneIndex < drones.Count - 1)
+
+        if (droneIndex < drones.Count)
         {
+            startMovement(droneIndex);
+            
+        }
+        if (droneIndex < drones.Count)
+        {            
             droneIndex++;
             StartCoroutine(sendDrones());
         }

@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
                     if(selectedBuilding.GetComponent<MainBuldingScript>() != null)
                     {
                         UI_M.activateStoragePanel();
+                        UI_M.activateMothershipPanel();
                     }
 
                 }
@@ -96,14 +97,23 @@ public class PlayerController : MonoBehaviour
                     if (selectedBuilding.GetComponent<BuildingScript>() != null)
                     {
                         BS_M.setCurrentFactory(selectedBuilding.transform.parent.gameObject);
-                        if (selectedBuilding.GetComponent<StorageScript>() == null)
+                        if (selectedBuilding.GetComponent<MainBuldingScript>() == null)
                         {
-                            UI_M.activateSmallDetailsPanel();
+                            if(selectedBuilding.GetComponent<StorageScript>() != null)
+                            {
+                                UI_M.activateStoragePanel();
+                            }
+                            else
+                            {
+                                UI_M.activateSmallDetailsPanel();
+                            }
+                            
 
                         }
                         else
                         {
                             UI_M.activateStoragePanel();
+                            UI_M.activateMothershipPanel();
                         }
 
 
@@ -116,6 +126,7 @@ public class PlayerController : MonoBehaviour
                     if (selectedBuilding.GetComponent<MainBuldingScript>() != null)
                     {
                         UI_M.activateStoragePanel();
+                        UI_M.activateMothershipPanel();
                     }
                 }
 
@@ -231,6 +242,11 @@ public class PlayerController : MonoBehaviour
             {
                 UI_M.activateDeleteNotification();
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            UI_M.switchMenuOverlay();
         }
     }
 

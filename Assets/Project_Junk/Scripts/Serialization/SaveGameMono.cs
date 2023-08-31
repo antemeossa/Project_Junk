@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SaveGameMono : MonoBehaviour
 {
@@ -15,10 +16,14 @@ public class SaveGameMono : MonoBehaviour
     public Transform factoryPrefab;
     public void saveGameOnClick()
     {
+        Debug.Log("saved");
+        GameManager.Instance.soundManager.playBtnSound();
 
+        SaveGameManager.currentSaveData.saveMothershipData();
         SaveGameManager.currentSaveData.getAllBuildingData();
         SaveGameManager.currentSaveData.saveConnectors();
         SaveGameManager.currentSaveData.saveCrashSites();
+        SaveGameManager.currentSaveData.savePlayerData();
         SaveGameManager.currentSaveData.isSaved = true;
         SaveGameManager.Save();
     }
@@ -26,9 +31,40 @@ public class SaveGameMono : MonoBehaviour
     public void loadGameOnClick()
     {
         SaveGameManager.Load();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainLevel");
+        GameManager.Instance.soundManager.playBtnSound();
 
         //loadOperationsBuildings();
+    }
+
+    public void loadPlayerData()
+    {
+        if (SaveGameManager.currentSaveData.isSaved)
+        {
+            PlayerData crntData = SaveGameManager.currentSaveData.playerData;
+            GameManager.Instance.economyManager.currentMoney = crntData.money;
+            GameManager.Instance.droneManager.maxDroneAmount = crntData.maxDroneCount;
+            GameManager.Instance.droneManager.useableDroneAmount = crntData.availableDroneCount;
+            GameManager.Instance.mothership.GetComponent<MothershipLevelScript>().motherShipLevel = crntData.mothershipLevel;
+            
+        }
+    }
+
+    public void loadMothershipData()
+    {
+        MothershipData crntData = SaveGameManager.currentSaveData.mothership;
+
+        GameManager.Instance.mothership.GetComponent<MotherShipMovement>().hasLanded = crntData.hasLanded;
+
+        for (int k = 0; k < crntData.itemAmountList.Count; k++)
+        {
+            itemTypes tmpKey;
+            if (Enum.TryParse(crntData.itemNamesList[k], out tmpKey))
+            {
+                GameManager.Instance.mothership.GetComponent<InventoryScript>().addItem(tmpKey, crntData.itemAmountList[k]);
+            }
+
+        }
     }
 
     public void loadOperationsBuildings()
@@ -144,9 +180,9 @@ public class SaveGameMono : MonoBehaviour
     public void loadOperationsWreckages()
     {
 
-        for (int i = 0; i < GameManager.Instance.wreckageManager.allWreckages.Count; i++)
+        for (int i = 0; i < GameManager.Instance.wreckageManager.wreckageParent.transform.childCount; i++)
         {
-            Destroy(GameManager.Instance.wreckageManager.allWreckages[i].gameObject);
+            Destroy(GameManager.Instance.wreckageManager.wreckageParent.transform.GetChild(i).gameObject);
         }
         if (SaveGameManager.currentSaveData.isSaved)
         {
@@ -171,6 +207,33 @@ public class SaveGameMono : MonoBehaviour
                     case 3:
                         index = 3;
                         break;
+                    case 4:
+                        index = 4;
+                        break;
+                    case 5:
+                        index = 5;
+                        break;
+                    case 6:
+                        index = 6;
+                        break;
+                    case 7:
+                        index = 7;
+                        break;
+                    case 8:
+                        index = 8;
+                        break;
+                    case 9:
+                        index = 9;
+                        break;
+                    case 10:
+                        index = 10;
+                        break;
+                    case 11:
+                        index = 11;
+                        break;
+                    case 12:
+                        index = 12;
+                        break;
                     default:
                         index = 0;
                         break;
@@ -181,6 +244,7 @@ public class SaveGameMono : MonoBehaviour
                 spwn.transform.position = crntData.position;
                 spwn.transform.rotation = crntData.rotation;
                 spwn.GetComponent<InventoryScript>().setMaxStorage(crntData.maxStorage);
+                spwn.transform.SetParent(GameManager.Instance.wreckageManager.wreckageParent.transform, true);
                 for (int k = 0; k < crntData.itemAmounts.Count; k++)
                 {
                     itemTypes tmpKey;

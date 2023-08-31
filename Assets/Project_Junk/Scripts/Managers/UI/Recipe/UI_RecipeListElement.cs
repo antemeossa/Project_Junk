@@ -12,20 +12,24 @@ public class UI_RecipeListElement : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI nameText, inputsText;
 
-    private CraftRecipe recipe;
+    private CraftRecipe recipe, previousRecipe;
 
     [SerializeField]
     private Image imag, rarityBorder;
 
+    private AudioSource audioSrc;
 
     private PlayerController PC;
 
     private UI_SmallDetails smallDetails;
 
-    
 
 
-    
+    private void Start()
+    {
+        audioSrc = GetComponent<AudioSource>();
+    }
+
     public void SetListItem(string name, List<InputRequirement> inputs, CraftRecipe recipeToSelect, Sprite img)
     {
         nameText.text = name;
@@ -76,14 +80,46 @@ public class UI_RecipeListElement : MonoBehaviour
             rarityBorder.color = Color.magenta;
         }
     }
+
     public void selectProductionOnClick()
     {
-        PC = FindFirstObjectByType<PlayerController>();
-        PC.getSelectedBuilding.GetComponent<BuildingScript>().setSelectedRecipe(recipe);
-        smallDetails = FindFirstObjectByType<UI_SmallDetails>();
-        smallDetails.setSmallDetailsPanel(PC.getSelectedBuilding);
-        transform.DOScale(1.4f, 0.2f);
-        transform.DOScale(new Vector3(1, 1, 1), .2f);
+        GameManager.Instance.soundManager.playBtnSound();
+
+        PC = GameManager.Instance.playerController;
+        if (PC.getSelectedBuilding.GetComponent<BuildingScript>().getSelectedRecipe == recipe)
+        {
+            
+            PC.getSelectedBuilding.GetComponent<BuildingScript>().setSelectedRecipe(recipe);
+            smallDetails = FindFirstObjectByType<UI_SmallDetails>();
+            smallDetails.setSmallDetailsPanel(PC.getSelectedBuilding);
+            transform.DOScale(1.4f, 0.2f);
+            transform.DOScale(new Vector3(1, 1, 1), .2f);
+        }
+        else
+        {
+            for (int i = 0; i < GameManager.Instance.getAllRecipes.Count; i++)
+            {
+                if (PC.getSelectedBuilding.GetComponent<InventoryScript>().getInventory.ContainsKey(GameManager.Instance.getAllRecipes[i].outputProduct.outputType))
+                {
+                    if (PC.getSelectedBuilding.GetComponent<InventoryScript>().getInventory[GameManager.Instance.getAllRecipes[i].outputProduct.outputType] > 0)
+                    {
+                        PC.getSelectedBuilding.GetComponent<InventoryScript>().transferItem(
+                            GameManager.Instance.getAllRecipes[i].outputProduct.outputType,
+                            PC.getSelectedBuilding.GetComponent<InventoryScript>().getInventory[GameManager.Instance.getAllRecipes[i].outputProduct.outputType],
+                            GameManager.Instance.mothership.GetComponent<InventoryScript>());
+                    }
+                }
+                
+            }
+            
+            PC.getSelectedBuilding.GetComponent<BuildingScript>().setSelectedRecipe(recipe);
+            smallDetails = FindFirstObjectByType<UI_SmallDetails>();
+            smallDetails.setSmallDetailsPanel(PC.getSelectedBuilding);
+            transform.DOScale(1.4f, 0.2f);
+            audioSrc.Play();
+            transform.DOScale(new Vector3(1, 1, 1), .2f);
+        }
+        
     }
 
 
@@ -111,6 +147,8 @@ public class UI_RecipeListElement : MonoBehaviour
     {
        
         transform.DOScale(1.1f, .5f);
+        audioSrc.Play();
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -118,7 +156,7 @@ public class UI_RecipeListElement : MonoBehaviour
         transform.DOScale(1f, .5f);
     }
 
-    
+    public CraftRecipe getListElementRecipe { get { return recipe; }}
 
         
 }

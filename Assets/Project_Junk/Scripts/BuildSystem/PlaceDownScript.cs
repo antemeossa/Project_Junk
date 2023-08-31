@@ -26,13 +26,19 @@ public class PlaceDownScript : MonoBehaviour
     [SerializeField]
     private List<Material> defaultMaterials = new List<Material>();
 
+    [SerializeField]
+    private AudioClip dropBoom, assembleSound;
+    private AudioSource audioSource;
+
     private void Awake()
     {
         objRenderer = LOD0.GetComponent<Renderer>();
     }
     private void Start()
     {
-
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = assembleSound;
+        audioSource.Play();
         objRenderer = LOD0.GetComponent<Renderer>();
         //dissolve(buildTime);
 
@@ -45,6 +51,7 @@ public class PlaceDownScript : MonoBehaviour
     {
         float y = transform.position.y;
 
+        audioSource.clip = dropBoom;
 
         obj.transform.DOMoveY(y - dropHeight, dropTime, false).OnComplete(() =>
         {
@@ -53,6 +60,8 @@ public class PlaceDownScript : MonoBehaviour
             StartCoroutine(changeColor());
             GameManager.Instance.Utils.camShake(shakeDuration, shakeStrength);
             GetComponent<BuildingScript>().placedDown = true;
+            audioSource.clip = dropBoom;
+            audioSource.Play();
 
         });
 

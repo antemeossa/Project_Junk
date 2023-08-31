@@ -79,6 +79,8 @@ public class UI_BlackMarketScript : MonoBehaviour
 
     public void buyModeBtnOnClick()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         for (int i = 0; i < contentPanel.transform.childCount; i++)
         {
             contentPanel.transform.GetChild(i).gameObject.SetActive(true);
@@ -93,6 +95,8 @@ public class UI_BlackMarketScript : MonoBehaviour
 
     public void sellModeBtnOnClick()
     {
+        GameManager.Instance.soundManager.playBtnSound();
+
         for (int i = 0; i < contentPanel.transform.childCount; i++)
         {
             contentPanel.transform.GetChild(i).gameObject.SetActive(true);
@@ -156,25 +160,7 @@ public class UI_BlackMarketScript : MonoBehaviour
         int multiplier = 1;
         int totalCost;
 
-        switch (recipe.craftRarity)
-        {
-            case Rarity.Primitive:
-                baseCost = 100;
-                break;
-            case Rarity.Standard:
-                baseCost = 1000;
-                break;
-            case Rarity.Advanced:
-                baseCost = 10000;
-                break;
-            case Rarity.Prototype:
-                baseCost = 100000;
-                break;
-            case Rarity.CuttingEdge:
-                baseCost = 1000000;
-                break;
-            default: break;
-        }
+        
 
         switch (recipe.building)
         {

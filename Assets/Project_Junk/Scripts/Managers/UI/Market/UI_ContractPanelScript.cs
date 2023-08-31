@@ -68,6 +68,7 @@ public class UI_ContractPanelScript : MonoBehaviour
         {
             if (contractsList[i] != null && !contractsList[i].isActive)
             {
+                
                 int rnd = Random.Range(0, factions.Count);
                 Faction f = factions[rnd];
                 CraftRecipe r = getRandomUnlockedRecipe();
@@ -77,6 +78,7 @@ public class UI_ContractPanelScript : MonoBehaviour
                     contractsList[i].setContractElementDetails(r, f.factionLogo, f.factionTitle, f.factionRelations,
                     r.img, r.craftRarity, r.outputProduct.outputType, rndAmount, calculateReward(rndAmount, r));
                 }
+                contractsList[i].gameObject.SetActive(true);
             }
             else
             {
@@ -131,28 +133,9 @@ public class UI_ContractPanelScript : MonoBehaviour
     }
     private int calculateReward(int x, CraftRecipe recipe)
     {
-        int multiplier = 1;
-        switch (recipe.craftRarity)
-        {
-            case Rarity.Primitive:
-                multiplier = 1;
-                break;
-            case Rarity.Standard:
-                multiplier = 10;
-                break;
-            case Rarity.Advanced:
-                multiplier = 100;
-                break;
-            case Rarity.Prototype:
-                multiplier = 1000;
-                break;
-            case Rarity.CuttingEdge:
-                multiplier = 10000;
-                break;
-            default: break;
-        }
+        
 
-        return x * multiplier;
+        return x *  recipe.price;
     }
     private CraftRecipe getRandomUnlockedRecipe()
     {

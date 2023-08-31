@@ -515,6 +515,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: eb1a850641c49734b89932258d4b499a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1931311276350526554}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: eb1a850641c49734b89932258d4b499a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1571276359606206569}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: eb1a850641c49734b89932258d4b499a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 147066361958429796}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: eb1a850641c49734b89932258d4b499a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8233992176922421941}
   m_SourcePrefab: {fileID: 100100000, guid: eb1a850641c49734b89932258d4b499a, type: 3}
 --- !u!1 &5918771684289802314 stripped
 GameObject:
@@ -540,6 +549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingType: 1
   connectableIntakeTypes: 00000000
+  buildingCost: 0
   powerConsumption: 10
   intakeCount: 1
   outputCount: 3
@@ -549,6 +559,8 @@ MonoBehaviour:
   factory: {fileID: 0}
   connectedIntakes:
   - {fileID: 4670660596417753146}
+  uniqueID: 0
+  placedDown: 0
 --- !u!114 &3559176541113279758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -690,6 +702,8 @@ MonoBehaviour:
   - {fileID: -2816575871155357938, guid: 536b185790f0e8d41a104dc007103118, type: 3}
   - {fileID: 2100000, guid: 9c03286ee54f61e4e859bf6497b972fc, type: 2}
   - {fileID: 2100000, guid: 8092ff9f9a9a4b84baab7201c9a47b2c, type: 2}
+  dropBoom: {fileID: 8300000, guid: b4b6fb2216035e345a59d07de6eb6293, type: 3}
+  assembleSound: {fileID: 8300000, guid: 72c39c7d13fee754a8728ed97bd8521e, type: 3}
 --- !u!114 &1931311276350526554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -700,6 +714,148 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d17d4465c971b41409a08186444108fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bldData:
+    ID: 0
+    buildingType: 
+    placedDown: 0
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    currentRecipe: 
+--- !u!82 &-1571276359606206569
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7342088094140500187}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: b9415b0f86f5bad428e46808a1d9c522, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 800
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.464
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &147066361958429796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7342088094140500187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ebade087c3437a4191ccdf35b8da320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inFacility: {fileID: 0}
+  outFacility: {fileID: 0}
+  transferRate: 10
+  selectedRecipe:
+    img: {fileID: 0}
+    craftRarity: 0
+    building: 0
+    inputRequirements: []
+    outputProduct:
+      outputType: 0
+      outputAmount: 0
+    productionTime: 0
+    isUnlocked: 0
+    price: 0
+  transferAny: 0
+--- !u!114 &8233992176922421941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7342088094140500187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c3f25a60802824386df3e0141aee75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &7975741435887407713 stripped

@@ -56,7 +56,6 @@ public class improvedConnectorNodeScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Selectable"))
         {
-            Debug.Log("Colliging");
             canPlace = false;
             for (int i = 0; i < transform.childCount; i++)
             {
@@ -76,7 +75,6 @@ public class improvedConnectorNodeScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Selectable"))
         {
-            Debug.Log("Colliging");
             canPlace = false;
             for (int i = 0; i < transform.childCount; i++)
             {

@@ -65,6 +65,8 @@ public class PlaceableObject : MonoBehaviour
         }
         setColors();
         rotateObject();
+        
+
     }
 
 
@@ -198,7 +200,11 @@ public class PlaceableObject : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Selectable"))
         {
-            colliding = true;
+            if(other.gameObject.GetComponent<BuildingScript>() != null || other.gameObject.GetComponent<StorageScript>() != null)
+            {
+                colliding = true;
+            }
+            
             hoveredObject = other.gameObject;
 
             connectionPoint = transform.position;

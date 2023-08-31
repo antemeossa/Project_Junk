@@ -15,7 +15,6 @@ public class StorageScript : MonoBehaviour
     private int maxStorage;
     private int currentStorage;
 
-    public Dictionary<OutputType, int> storedItems = new Dictionary<OutputType, int>();
 
 
     private List<GameObject> containers = new List<GameObject>();
@@ -26,17 +25,28 @@ public class StorageScript : MonoBehaviour
     [SerializeField]
     Transform containerStartPos;
 
+    private InventoryScript inventory;
+
 
     private void Start()
     {
         setValues();
-        //setStorageUnits(20);
+        transfer = GetComponent<TransferItemsScript>();
+        transfer.setInFacility(gameObject);
+        transfer.setOutFacility(GameManager.Instance.mothership);
+        transfer.transferAny = true;
+        transfer.setFacilitiesBool(true);
         //setContainersActive();
     }
+    private TransferItemsScript transfer;
+
+   
 
     private void Update()
     {
+        
     }
+   
     private void setValues()
     {
         maxStorage = GetComponent<InventoryScript>().getMaxStorage();
@@ -44,19 +54,9 @@ public class StorageScript : MonoBehaviour
         
     }
 
-    public void setContainersActive()
-    {
-        currentStorage = GetComponent<InventoryScript>().getCurrentStorage();
-        int storageUnitCount = (currentStorage / containerCapacity);
-        for (int i = 0; i < containers.Count; i++)
-        {
-            containers[i].SetActive(false);
-        }
-        for (int i = 0; i < storageUnitCount; i++)
-        {
-            containers[i].SetActive(true);
-        }
-    }
+    
+
+    
     private void setStorageUnits(int amount)
     {
         int maxContainerCount = maxStorage / amount;
