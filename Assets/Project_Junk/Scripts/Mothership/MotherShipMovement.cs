@@ -14,6 +14,7 @@ public class MotherShipMovement : MonoBehaviour
     public float landingShakeDuration, timeAfterLanding;
     public Material forceFieldMat, jetEngineMat;
     public Transform apexPoint;
+    public GameObject factoryGround;
    
 
     private Color guardColor = new Color(0,0,0,1);

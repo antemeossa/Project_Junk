@@ -113,7 +113,11 @@ public class UI_Manager : MonoBehaviour
         if (InGameOverlay.activeInHierarchy)
         {
             InGameOverlay.SetActive(false);
+            settingsPanel.SetActive(false);
+            
             MainMenuOverlay.SetActive(true);
+            mainMenuPanel.SetActive(true);
+
         }
         else
         {
@@ -267,7 +271,7 @@ public class UI_Manager : MonoBehaviour
 
     public void switchBuildPanel()
     {
-        if (buildPanel.activeSelf)
+        if (buildPanel.activeInHierarchy)
         {
             buildPanel.SetActive(false);
             gameManager.currentMode = currentModeType.PlayMode;
@@ -317,7 +321,7 @@ public class UI_Manager : MonoBehaviour
 
     public void updateContractsCycle()
     {
-        contractsPanel.GetComponent<UI_ContractPanelScript>().updateCycleCounter(20 - (cycle % 20));
+        contractsPanel.GetComponent<UI_ContractPanelScript>().updateCycleCounter(100 - (cycle % 100));
     }
 
     public void activateBlackMarketPanel()
@@ -325,6 +329,11 @@ public class UI_Manager : MonoBehaviour
         GameManager.Instance.soundManager.playBtnSound();
 
         blackmarketPanel.SetActive(true);
+    }
+
+    public void updateBlackMarketPanel()
+    {
+        blackmarketPanel.GetComponent<UI_BlackMarketScript>().refreshList();
     }
 
     public void deactivateBlackMarketPanel()
@@ -433,6 +442,10 @@ public class UI_Manager : MonoBehaviour
 
     public void confirmDelete()
     {
+        if(playerController.getSelectedBuilding.GetComponent<BuildingScript>() != null)
+        {
+            GameManager.Instance.productionManager.allBuildings.Remove(playerController.getSelectedBuilding);
+        }
         Destroy(playerController.getSelectedBuilding.gameObject);
         deleteNotificationPanel.SetActive(false);
     }

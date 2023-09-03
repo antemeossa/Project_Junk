@@ -124,9 +124,14 @@ public class CamManager : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                camTransition(CameraModeEnum.Explore);
+                if (GameManager.Instance.currentMode != currentModeType.BuildMode)
+                {
+                    camTransition(CameraModeEnum.Explore);
 
-                GameManager.Instance.currentMode = currentModeType.SalvageMode;
+                    GameManager.Instance.currentMode = currentModeType.SalvageMode;
+                }
+                
+                
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {

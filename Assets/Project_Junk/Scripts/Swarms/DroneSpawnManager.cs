@@ -88,24 +88,7 @@ public class DroneSpawnManager : MonoBehaviour
             transform.parent.gameObject
             );
             }
-            else
-            {
-                currentSwarmParent = targetWreckage.GetComponent<WreckAreaScript>().sentDronesParent;
-                for (int i = 0; i < numberOfDrones; i++)
-                {
-                    GameObject drone = Instantiate(dronePrefab, spawnPositions[0]);
-                    drone.transform.SetParent(targetWreckage.GetComponent<WreckAreaScript>().sentDronesParent.transform, false);
-                    targetWreckage.GetComponent<WreckAreaScript>().sentDronesParent.GetComponent<SwarmManager>().drones.Add(drone);
-                    drone.transform.position = currentSpawnPos.position;
-
-                }
-
-                currentSwarmParent.GetComponent<SwarmManager>().setSwarmManagerDetails(
-            currentStartPos,
-            targetWreckage,
-            transform.parent.gameObject
-            );
-            }
+            
 
 
         }

@@ -31,7 +31,7 @@ public class UI_ContractElemetnScript : MonoBehaviour
 
     private void Start()
     {
-
+        activeSlider.minValue = 1;
     }
 
     private void OnEnable()

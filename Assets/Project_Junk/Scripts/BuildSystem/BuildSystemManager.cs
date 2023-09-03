@@ -209,6 +209,7 @@ public class BuildSystemManager : MonoBehaviour
                             return;
                         }
                         obj = Instantiate(prefab_Built, prefab_BP.transform.position + new Vector3(0, 20, 0), prefab_BP.transform.rotation);
+                        GameManager.Instance.economyManager.removeMoney(prefab_Built.GetComponent<BuildingScript>().getBuildingCost);
                         obj.transform.parent = currentFactory.transform;
                         obj.GetComponent<PlaceDownScript>().dissolve(obj.GetComponent<PlaceDownScript>().buildTime);
                         Destroy(prefab_BP.gameObject);
@@ -216,7 +217,7 @@ public class BuildSystemManager : MonoBehaviour
                         isBuilding = false;
                         currentFactory.transform.parent.GetComponent<FactoryScript>().updateBuildingList();
                         PM.setAllBuildingsInWorld(currentFactory.transform);
-                        GameManager.Instance.economyManager.currentMoney -= prefab_Built.GetComponent<BuildingScript>().getBuildingCost;
+                        
                     }
                 }
             }

@@ -156,4 +156,22 @@ public class UI_SmallDetails : MonoBehaviour
         }
     }
 
+    public void storeItemsBtnOnClick()
+    {
+        for (int i = 0; i < GameManager.Instance.getAllRecipes.Count; i++)
+        {
+            if (GameManager.Instance.playerController.getSelectedBuilding.GetComponent<InventoryScript>().getInventory.ContainsKey(GameManager.Instance.getAllRecipes[i].outputProduct.outputType))
+            {
+                if (GameManager.Instance.playerController.getSelectedBuilding.GetComponent<InventoryScript>().getInventory[GameManager.Instance.getAllRecipes[i].outputProduct.outputType] > 0)
+                {
+                    GameManager.Instance.playerController.getSelectedBuilding.GetComponent<InventoryScript>().transferItem(
+                        GameManager.Instance.getAllRecipes[i].outputProduct.outputType,
+                        GameManager.Instance.playerController.getSelectedBuilding.GetComponent<InventoryScript>().getInventory[GameManager.Instance.getAllRecipes[i].outputProduct.outputType],
+                        GameManager.Instance.mothership.GetComponent<InventoryScript>());
+                }
+            }
+
+        }
+    }
+
 }

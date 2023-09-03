@@ -74,7 +74,7 @@ public class MothershipLevelScript : MonoBehaviour
 
     public void levelUp()
     {
-        if(motherShipLevel + 1 <= maxLevel)
+        if(motherShipLevel + 1 <= maxLevel && GameManager.Instance.economyManager.currentMoney >= nextLevelCost[motherShipLevel])
         {
             GameManager.Instance.soundManager.playLevelUpSound();
             motherShipLevel = Mathf.Clamp(motherShipLevel + 1, 1, 5);
@@ -99,6 +99,7 @@ public class MothershipLevelScript : MonoBehaviour
             }
             GameManager.Instance.economyManager.removeMoney(nextLevelCost[motherShipLevel ]);
             GameManager.Instance.droneManager.maxDroneAmount = droneRewards[motherShipLevel];
+            GameManager.Instance.UI_M.updateDroneText();
             GameManager.Instance.mothership.GetComponent<InventoryScript>().setMaxStorage(storageRewards[motherShipLevel]);
             checkLevels();
         }

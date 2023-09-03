@@ -21,7 +21,7 @@ public class UI_BlackMarketScript : MonoBehaviour
         allRecipes = GameManager.Instance.getAllRecipes;
 
         createContractElemets();
-        setContractDetailsForList();
+        setDealDetailsForList();
         UpdateUIPositions();
     }
 
@@ -40,8 +40,10 @@ public class UI_BlackMarketScript : MonoBehaviour
     public void refreshList()
     {
 
-        setContractDetailsForList();
-        UpdateUIPositions();
+        for (int i = 0; i < blackMarketList.Count; i++)
+        {
+            blackMarketList[i].resetSliders();
+        }
     }
     private void createContractElemets()
     {
@@ -54,18 +56,22 @@ public class UI_BlackMarketScript : MonoBehaviour
         }
     }
 
-    private void setContractDetailsForList()
+    private void setDealDetailsForList()
     {
         for (int i = 0; i < blackMarketList.Count; i++)
         {
             if (blackMarketList[i] != null && !blackMarketList[i].isActive)
             {
+
+
                 CraftRecipe r = allRecipes[i];
+                
                 if (r != null)
                 {
                     blackMarketList[i].setBlackMarketItemDetails(r,
                     r.img, r.craftRarity, r.outputProduct.outputType, calculatePrice(r));
                 }
+                blackMarketList[i].gameObject.SetActive(true);
             }
             else
             {
@@ -75,6 +81,7 @@ public class UI_BlackMarketScript : MonoBehaviour
 
         }
     }
+
 
 
     public void buyModeBtnOnClick()
@@ -113,6 +120,10 @@ public class UI_BlackMarketScript : MonoBehaviour
 
     }
 
+    public void updateList()
+    {
+       
+    }
     private void sortContractsByActive()
     {
 
@@ -165,13 +176,13 @@ public class UI_BlackMarketScript : MonoBehaviour
         switch (recipe.building)
         {
             case productionBuilding.Smelter:
-                multiplier = 1;
+                multiplier = 2;
                 break;
             case productionBuilding.Refiner:
-                multiplier = 10;
+                multiplier = 8;
                 break;
             case productionBuilding.Assembler:
-                multiplier = 100;
+                multiplier = 64;
                 break;
             default:
                 break;

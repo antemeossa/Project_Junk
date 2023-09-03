@@ -92,6 +92,8 @@ public class ImprovedConnectorScript : MonoBehaviour
                     endBuilding = connectorPointerTmp.GetComponent<PlaceableObject>().getHoveredBuilding;
                     startBuilding.GetComponent<BuildingScript>().addOuttakeBuilding(endBuilding);
                     connectorParentTmp.GetComponent<TransferItemsScript>().setFacilities(startBuilding, endBuilding);
+                    startBuilding.GetComponent<BuildingScript>().connectedConnector = connectorParentTmp;
+                    endBuilding.GetComponent<BuildingScript>().connectedConnector = connectorParentTmp;
                     connectorParentTmp.transform.name = "Connector_" + connectorCount;
                     connectorParentTmp.transform.SetParent(BS_M.getCurrentFactory.transform.parent.GetComponent<FactoryScript>().getAllConnectorsTransform, true);
                     connectorFinished = true;

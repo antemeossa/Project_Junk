@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class EconomyManager : MonoBehaviour
 {
-    public int currentMoney = 1000;
+    public int currentMoney = 0;
     public int currentDebt;
     public UI_Manager UI_M;
     public List<UI_ContractElemetnScript> activeContracts = new List<UI_ContractElemetnScript> ();
 
     private void Start()
     {
-        addMoney(100000);
+        addMoney(10000);
         UI_M.currentMoneyText.text = currentMoney + "";
 
     }

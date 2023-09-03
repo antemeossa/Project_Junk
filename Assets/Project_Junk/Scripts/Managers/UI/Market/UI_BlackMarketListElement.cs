@@ -27,11 +27,14 @@ public class UI_BlackMarketListElement : MonoBehaviour
     private int sellMaxValue;
     private CraftRecipe blackMarketItemRecipe;
 
+    private int defaultItemCost, sellModeItemCost, buyModeItemCost;
 
     private void Start()
     {
         activeSlider.maxValue = buyMaxValue;
         sliderMaxText.text = "" + buyMaxValue;
+        activeSlider.minValue = 1;
+        defaultItemCost = itemCost;
     }
 
     private void OnEnable()
@@ -52,9 +55,15 @@ public class UI_BlackMarketListElement : MonoBehaviour
         itemCost = priceAmount;
         setRarityBorder(rarity, rarityBorder);
         itemType = rec.outputProduct.outputType;
+        defaultItemCost = itemCost;
+        sellModeItemCost = defaultItemCost / 2;
+        buyModeItemCost = defaultItemCost * 2;
     }
 
-
+    public void updatePriceText()
+    {
+        //priceText.text = "ITEM PRICE: " + activeSlider.value * 
+    }
     private void setRarityBorder(Rarity rarity, Image img)
     {
         switch (rarity)
@@ -126,18 +135,22 @@ public class UI_BlackMarketListElement : MonoBehaviour
 
     public void switchToBuyMode()
     {
+        itemCost = buyModeItemCost;
         buyBtn.SetActive(true);
         sellBtn.SetActive(false);
         activeSlider.maxValue = buyMaxValue;
+        sliderMaxText.text = buyMaxValue.ToString();
         activeSlider.value = 1;
     }
 
     public void switchToSellMode()
     {
+        itemCost = sellModeItemCost;
         buyBtn.SetActive(false);
         sellBtn.SetActive(true);
         sellMaxValue = GameManager.Instance.mothership.GetComponent<InventoryScript>().getInventory[blackMarketItemRecipe.outputProduct.outputType];
         activeSlider.maxValue = sellMaxValue;
+        sliderMaxText.text = sellMaxValue.ToString();
         activeSlider.value = 1;
     }
     public void OnPointerEnter(PointerEventData eventData)
@@ -148,5 +161,10 @@ public class UI_BlackMarketListElement : MonoBehaviour
     public void OnPointerExit(PointerEventData eventData)
     {
         transform.DOScale(1f, .5f);
+    }
+
+    public void resetSliders()
+    {
+        activeSlider.maxValue = 1000;
     }
 }

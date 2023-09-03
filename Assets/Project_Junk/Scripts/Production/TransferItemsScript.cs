@@ -18,6 +18,10 @@ public class TransferItemsScript : MonoBehaviour
         facilitiesSet = false;
     }
 
+    private void Update()
+    {
+        
+    }
     private void process()
     {
         if (inFacility != null)

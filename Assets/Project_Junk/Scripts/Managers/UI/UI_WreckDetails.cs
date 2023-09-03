@@ -32,7 +32,7 @@ public class UI_WreckDetails : MonoBehaviour
     private void Start()
     {
         allItemsList = GameManager.Instance.getAllRecipes;
-        droneAmountSlider.maxValue = GameManager.Instance.droneManager.maxDroneAmount - 2;
+        droneAmountSlider.maxValue = GameManager.Instance.droneManager.maxDroneAmount;
         
     }
 
@@ -131,11 +131,11 @@ public class UI_WreckDetails : MonoBehaviour
 
         if (!selectedWreckage.GetComponent<WreckAreaScript>().beingSalvaged)
         {
+            droneSpawnManager.sendDrones((int)droneAmountSlider.value);
             droneAmountSlider.interactable = false;
             GameManager.Instance.droneManager.activeDroneAmount += (int)droneAmountSlider.value;
             sentDrones = (int)droneAmountSlider.value;
-            droneAmountSlider.maxValue = GameManager.Instance.droneManager.maxDroneAmount - GameManager.Instance.droneManager.activeDroneAmount;
-            droneSpawnManager.sendDrones((int)droneAmountSlider.value);
+            droneAmountSlider.maxValue = GameManager.Instance.droneManager.maxDroneAmount - GameManager.Instance.droneManager.activeDroneAmount;            
             selectedWreckage.GetComponent<WreckAreaScript>().beingSalvaged = true;
             salvageBtnText.GetComponent<TextMeshProUGUI>().text = "SALVAGING!";
             GameManager.Instance.UI_M.updateDroneText();

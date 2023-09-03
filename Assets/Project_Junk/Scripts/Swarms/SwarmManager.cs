@@ -59,10 +59,6 @@ public class SwarmManager : MonoBehaviour
         if (droneIndex < drones.Count)
         {
             startMovement(droneIndex);
-            
-        }
-        if (droneIndex < drones.Count)
-        {            
             droneIndex++;
             StartCoroutine(sendDrones());
         }

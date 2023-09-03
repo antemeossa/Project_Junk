@@ -16,7 +16,6 @@ public class SaveGameMono : MonoBehaviour
     public Transform factoryPrefab;
     public void saveGameOnClick()
     {
-        Debug.Log("saved");
         GameManager.Instance.soundManager.playBtnSound();
 
         SaveGameManager.currentSaveData.saveMothershipData();
@@ -46,7 +45,7 @@ public class SaveGameMono : MonoBehaviour
             GameManager.Instance.droneManager.maxDroneAmount = crntData.maxDroneCount;
             GameManager.Instance.droneManager.useableDroneAmount = crntData.availableDroneCount;
             GameManager.Instance.mothership.GetComponent<MothershipLevelScript>().motherShipLevel = crntData.mothershipLevel;
-            
+
         }
     }
 
@@ -117,18 +116,12 @@ public class SaveGameMono : MonoBehaviour
 
                 }
 
-                Ray ray = new Ray(spwn.transform.position, Vector3.down);
-                RaycastHit hit;
 
-                if (Physics.Raycast(ray, out hit))
-                {
-                    if (hit.transform.gameObject.CompareTag("Factory"))
-                    {
-                        Debug.Log(hit.transform.gameObject);
-                        spwn.transform.SetParent(hit.transform.parent.GetChild(3), true);
 
-                    }
-                }
+
+                //spwn.transform.SetParent(GameManager.Instance.mothership.GetComponent<MotherShipMovement>().factoryGround.transform, true);
+
+
                 //spwn.transform.SetParent(GameManager.Instance.PM.factoriesList[0].transform);
             }
         }
@@ -189,6 +182,8 @@ public class SaveGameMono : MonoBehaviour
             GameObject obj;
             int index;
             WreckageData crntData = new WreckageData();
+            GameManager.Instance.wreckageManager.allWreckages.Clear();
+
             for (int i = 0; i < SaveGameManager.currentSaveData.wreckageDataList.Count; i++)
             {
                 crntData = SaveGameManager.currentSaveData.wreckageDataList[i];
@@ -256,6 +251,8 @@ public class SaveGameMono : MonoBehaviour
                 }
 
             }
+
+            GameManager.Instance.wreckageManager.setWreckageList();
 
         }
     }

@@ -26,7 +26,7 @@ public class ProductionManager : MonoBehaviour
         if(currentCycle + 1 < defaultCycle)
         {
             currentCycle++;
-            if(cycleCounter < 20)
+            if(cycleCounter < 100)
             {
                 cycleCounter++;
                 GameManager.Instance.UI_M.cycle = cycleCounter;
@@ -36,6 +36,7 @@ public class ProductionManager : MonoBehaviour
             {
                 GameManager.Instance.UI_M.updateContractsCycle();
                 GameManager.Instance.UI_M.updateContractsPanel();
+                GameManager.Instance.UI_M.updateBlackMarketPanel();
                 cycleCounter = 0;
             }
         }

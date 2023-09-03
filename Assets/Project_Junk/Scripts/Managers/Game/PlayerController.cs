@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         inputActions();
+       
         //Debug.Log((selectedBuilding == null && !EventSystem.current.IsPointerOverGameObject() && (GM.currentMode.Equals(currentModeType.PlayMode) || (GM.currentMode.Equals(currentModeType.SalvageMode)))));
     }
 
@@ -225,7 +226,10 @@ public class PlayerController : MonoBehaviour
                 }
 
             }
-            else
+            else if(GM.currentMode == currentModeType.SalvageMode)
+            {
+
+            }else
             {
                 UI_M.switchBuildPanel();
                 BS_M.activateCurrentGrid(false);
@@ -248,6 +252,11 @@ public class PlayerController : MonoBehaviour
         {
             UI_M.switchMenuOverlay();
         }
+    }
+
+    public void stateActions()
+    {
+        
     }
 
 

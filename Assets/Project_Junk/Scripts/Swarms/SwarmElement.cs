@@ -194,7 +194,6 @@ public class SwarmElement : MonoBehaviour
 
             if (hit.transform != null && hit.transform.CompareTag("Landscape"))
             {
-                Debug.Log("hit");
                 if (Vector3.Distance(transform.position, end.position) > 200f)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, transform.position + new Vector3(0f, 100f, 0f), step);

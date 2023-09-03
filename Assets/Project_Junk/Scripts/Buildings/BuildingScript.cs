@@ -31,24 +31,26 @@ public class BuildingScript : MonoBehaviour
     [SerializeField]
     private List<GameObject> connectedIntakes = new List<GameObject>();
 
+    public GameObject connectedConnector;
+
     public int uniqueID;
     public bool placedDown = false;
 
-   
+
 
 
     #endregion
 
-    private void Awake()
+    private void OnDestroy()
     {
-        
+        Destroy(connectedConnector.gameObject);
     }
 
     private void Start()
     {
-        factory = transform.parent.gameObject;
-
-        if(uniqueID == 0)
+        factory = GameManager.Instance.mothership.GetComponent<MotherShipMovement>().factoryGround;
+        transform.parent = GameManager.Instance.mothership.GetComponent<MotherShipMovement>().factoryGround.transform;
+        if (uniqueID == 0)
         {
             int timestamp = (int)(System.DateTime.UtcNow - new System.DateTime(1970, 1, 1)).TotalSeconds;
             int randomNum = Random.Range(0, 1000); // You can adjust the range as needed
