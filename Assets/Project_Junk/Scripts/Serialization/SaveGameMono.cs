@@ -173,16 +173,17 @@ public class SaveGameMono : MonoBehaviour
     public void loadOperationsWreckages()
     {
 
-        for (int i = 0; i < GameManager.Instance.wreckageManager.wreckageParent.transform.childCount; i++)
+       for (int i = 0; i < GameManager.Instance.wreckageManager.wreckageParent.transform.childCount; i++)
         {
             Destroy(GameManager.Instance.wreckageManager.wreckageParent.transform.GetChild(i).gameObject);
         }
+        GameManager.Instance.wreckageManager.allWreckages.Clear();
+
         if (SaveGameManager.currentSaveData.isSaved)
         {
             GameObject obj;
             int index;
             WreckageData crntData = new WreckageData();
-            GameManager.Instance.wreckageManager.allWreckages.Clear();
 
             for (int i = 0; i < SaveGameManager.currentSaveData.wreckageDataList.Count; i++)
             {
@@ -229,6 +230,12 @@ public class SaveGameMono : MonoBehaviour
                     case 12:
                         index = 12;
                         break;
+                    case 13:
+                        index = 13;
+                        break;
+                    case 14:
+                        index = 14;
+                        break;
                     default:
                         index = 0;
                         break;
@@ -240,6 +247,17 @@ public class SaveGameMono : MonoBehaviour
                 spwn.transform.rotation = crntData.rotation;
                 spwn.GetComponent<InventoryScript>().setMaxStorage(crntData.maxStorage);
                 spwn.transform.SetParent(GameManager.Instance.wreckageManager.wreckageParent.transform, true);
+
+                for (int k = 0; k < crntData.itemAmounts.Count; k++)
+                {
+                    itemTypes tmpKey;
+                    if (Enum.TryParse(crntData.itemNames[k], out tmpKey))
+                    {
+                        spwn.GetComponent<InventoryScript>().getInventory[tmpKey] = 0;
+                    }
+
+                }
+
                 for (int k = 0; k < crntData.itemAmounts.Count; k++)
                 {
                     itemTypes tmpKey;
@@ -252,7 +270,7 @@ public class SaveGameMono : MonoBehaviour
 
             }
 
-            GameManager.Instance.wreckageManager.setWreckageList();
+            //GameManager.Instance.wreckageManager.setWreckageList();
 
         }
     }

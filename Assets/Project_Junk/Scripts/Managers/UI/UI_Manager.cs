@@ -15,10 +15,11 @@ public class UI_Manager : MonoBehaviour
     private GameObject InGameOverlay, MainMenuOverlay;
     [SerializeField]
     private GameObject buildPanel, smallDetailsPanel, recipeListPanel, storagePanel,
-        deleteNotificationPanel, buildButtonPrefab, wreckPanel, contractsPanel, blackmarketPanel, mothershipPanel, settingsPanel, mainMenuPanel;
+        deleteNotificationPanel, buildButtonPrefab, wreckPanel, contractsPanel, blackmarketPanel, mothershipPanel, settingsPanel,
+        mainMenuPanel;
 
     [SerializeField]
-    private GameObject notEnoughNotification;
+    private GameObject notEnoughNotification, saveGameNotification, exitGameNotification;
 
     [SerializeField]
     private GameObject[] tutorialPanels;
@@ -206,6 +207,34 @@ public class UI_Manager : MonoBehaviour
 
 
     #region panelActions
+
+    public void activateSaveGameNotification()
+    {
+        InGameOverlay.SetActive(true);
+        MainMenuOverlay.SetActive(false);
+        saveGameNotification.SetActive(true);
+    }
+
+    public void deactivateSaveGameNotification()
+    {
+        InGameOverlay.SetActive(false);
+        MainMenuOverlay.SetActive(true);
+        saveGameNotification.SetActive(false);
+    }
+
+    public void activateExitGameNotification()
+    {
+        InGameOverlay.SetActive(true);
+        MainMenuOverlay.SetActive(false);
+        exitGameNotification.SetActive(true);
+    }
+
+    public void deactivateExitGameNotification()
+    {
+        InGameOverlay.SetActive(false);
+        MainMenuOverlay.SetActive(true);
+        exitGameNotification.SetActive(false);
+    }
     public void activateMothershipPanel()
     {
         GameManager.Instance.soundManager.playBtnSound();
@@ -358,7 +387,8 @@ public class UI_Manager : MonoBehaviour
         {
 
             buildButtonsList[i].name = Utils.enumToString(BS_M.buildableObjects[i].buildingType) + "Button";
-            buildButtonsList[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Utils.enumToString(BS_M.buildableObjects[i].buildingType);
+            
+            buildButtonsList[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Utils.enumToString(BS_M.buildableObjects[i].buildingType) + "\nCost: " + BS_M.buildableObjects[i].buildCost;
 
         }
 
@@ -426,7 +456,7 @@ public class UI_Manager : MonoBehaviour
 
     public void exitGameOnClick()
     {
-
+        Application.Quit();
     }
     public void deactivateWreckPanel()
     {

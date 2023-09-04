@@ -19,7 +19,7 @@ public static class SaveGameManager
             Directory.CreateDirectory(dir);
         }
 
-        string json = JsonUtility.ToJson(currentSaveData, true);
+        string json = JsonUtility.ToJson(currentSaveData, true);        
         File.WriteAllText(dir + FileName, json);
         GUIUtility.systemCopyBuffer = dir;
         return true;

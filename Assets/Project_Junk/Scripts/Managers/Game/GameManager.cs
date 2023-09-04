@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
             productionManager.setAllBuildingsInWorld(mothership.transform.GetChild(1).GetChild(2).GetChild(3));
             GetComponent<SaveGameMono>().loadOperationsConnectors();
             GetComponent<SaveGameMono>().loadOperationsWreckages();
+           
 
         }
     }

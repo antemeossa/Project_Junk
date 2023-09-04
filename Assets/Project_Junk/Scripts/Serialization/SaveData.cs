@@ -14,33 +14,53 @@ public class SaveData
     public List<BuldingData> buildingDataList = new List<BuldingData>();
     public List<ConnectorData> connectorDataList = new List<ConnectorData>();
     public List<WreckageData> wreckageDataList = new List<WreckageData>();
-    
+
 
     public void getAllBuildingData()
     {
+        List<BuldingData> buildingDataListtmp = new List<BuldingData>();
+
         for (int i = 0; i < GameManager.Instance.productionManager.allBuildings.Count; i++)
         {
-            buildingDataList.Add(GameManager.Instance.productionManager.allBuildings[i].GetComponent<BuildingSaveData>().bldData);
+
+            buildingDataListtmp.Add(GameManager.Instance.productionManager.allBuildings[i].GetComponent<BuildingSaveData>().bldData);
+
         }
+
+        buildingDataList = buildingDataListtmp;
     }
 
     public void saveConnectors()
     {
+        List<ConnectorData> connectorDataListtmp = new List<ConnectorData>();
+
         for (int i = 0; i < GameManager.Instance.productionManager.connectorParent.transform.childCount; i++)
         {
             GameManager.Instance.productionManager.connectorParent.transform.GetChild(i).GetComponent<ConnectorSaveData>().setNodesPosRot();
-            connectorDataList.Add(GameManager.Instance.productionManager.connectorParent.transform.GetChild(i).GetComponent<ConnectorSaveData>().connectorData);
+            connectorDataListtmp.Add(GameManager.Instance.productionManager.connectorParent.transform.GetChild(i).GetComponent<ConnectorSaveData>().connectorData);
+
         }
+
+        connectorDataList = connectorDataListtmp;
     }
 
     public void saveCrashSites()
     {
+        List<WreckageData> wreckageDataListtmp = new List<WreckageData>();
+
         for (int i = 0; i < GameManager.Instance.wreckageManager.allWreckages.Count; i++)
         {
             GameManager.Instance.wreckageManager.allWreckages[i].GetComponent<WreckageSaveData>().setWreckageItems();
-            wreckageDataList.Add(GameManager.Instance.wreckageManager.allWreckages[i].GetComponent<WreckageSaveData>().wreckageData);
+
+            wreckageDataListtmp.Add(GameManager.Instance.wreckageManager.allWreckages[i].GetComponent<WreckageSaveData>().wreckageData);
+
+
+
 
         }
+        wreckageDataList = wreckageDataListtmp;
+
+
     }
 
     public void savePlayerData()
