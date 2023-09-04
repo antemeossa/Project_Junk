@@ -34,7 +34,7 @@ Transform:
   m_Children:
   - {fileID: 6752004669756812187}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -20.797, y: 0, z: 0}
 --- !u!54 &1997508028340995284
 Rigidbody:
@@ -79,6 +79,7 @@ MonoBehaviour:
   crashSiteIndex: 2
   wreckageItems: 
   wreckageItemAmounts: 
+  crashSiteType: 0
   salvageRadius: 300
   circleHeight: 200
   circleRadius: 300

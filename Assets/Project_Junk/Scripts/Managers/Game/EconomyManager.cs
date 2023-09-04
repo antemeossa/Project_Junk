@@ -11,7 +11,6 @@ public class EconomyManager : MonoBehaviour
 
     private void Start()
     {
-        addMoney(10000);
         UI_M.currentMoneyText.text = currentMoney + "";
 
     }

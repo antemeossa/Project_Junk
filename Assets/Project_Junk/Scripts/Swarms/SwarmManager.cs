@@ -19,7 +19,26 @@ public class SwarmManager : MonoBehaviour
         StartCoroutine(sendDrones());
     }
 
+    private void Update()
+    {
+        checkTarget();
+    }
 
+    public void checkTarget()
+    {
+        if(salvageTarget.GetComponent<WreckAreaScript>() != null)
+        {
+            if(salvageTarget.GetComponent<InventoryScript>().getCurrentStorage() <= 0)
+            {
+                for(int i = 0; i < drones.Count; i++)
+                {
+                    Destroy(drones[i]);
+                }
+
+                Destroy(gameObject);
+            }
+        }
+    }
     public void setSwarmManagerDetails(Transform takeoff, GameObject target, GameObject mothership)
     {
 
