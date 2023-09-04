@@ -26,7 +26,7 @@ public class DroneSpawnManager : MonoBehaviour
 
     }
 
-
+    //Checking the start positions of the drones according to the crashsite's position relative to the mothership
     public Transform setSpawnPos()
     {
         if (Utils.checkPositonOfObjectXZ(targetWreckage) == 1)
@@ -59,6 +59,9 @@ public class DroneSpawnManager : MonoBehaviour
         }
     }
 
+    /*The right way to do it would be spawning some chunks of drones and utilizing them by
+    activating and deactivating them. But due to deadline I didn't have the time to do that way
+    and fix the bugs. Instantiating and destroying is quite performance heavy but it works without any bugs.*/
     public void sendDrones(int numberOfDrones)
     {
         setSpawnPos();
