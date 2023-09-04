@@ -34,7 +34,7 @@ public class UI_BlackMarketListElement : MonoBehaviour
         activeSlider.maxValue = buyMaxValue;
         sliderMaxText.text = "" + buyMaxValue;
         activeSlider.minValue = 1;
-        defaultItemCost = itemCost;
+
     }
 
     private void OnEnable()
@@ -103,8 +103,8 @@ public class UI_BlackMarketListElement : MonoBehaviour
     }
 
 
-    
-    
+
+
 
     public void calculateCurrentPrice()
     {
@@ -113,24 +113,42 @@ public class UI_BlackMarketListElement : MonoBehaviour
     }
     public void buyBtnOnClick()
     {
-        GameManager.Instance.soundManager.playBtnSound();
+        if (GameManager.Instance.economyManager.currentMoney > (int)activeSlider.value * itemCost)
+        {
 
-        activeSlider.maxValue -= activeSlider.value;
-        sliderMaxText.text = activeSlider.maxValue.ToString();
-        GameManager.Instance.mothership.GetComponent<InventoryScript>().addItem(blackMarketItemRecipe.outputProduct.outputType, (int)activeSlider.value);
-        GameManager.Instance.economyManager.removeMoney((int)activeSlider.value);
-        activeSlider.value = 0;
+            GameManager.Instance.soundManager.playBtnSound();
+            GameManager.Instance.economyManager.removeMoney(itemCost * (int)activeSlider.value);
+            activeSlider.maxValue -= activeSlider.value;
+            sliderMaxText.text = activeSlider.maxValue.ToString();
+            GameManager.Instance.mothership.GetComponent<InventoryScript>().addItem(blackMarketItemRecipe.outputProduct.outputType, (int)activeSlider.value);
+            activeSlider.value = 0;
+        }
+        else
+        {
+            GameManager.Instance.soundManager.playDeclineSound();
+        }
+
     }
 
     public void sellBtnOnClick()
     {
-        GameManager.Instance.soundManager.playBtnSound();
 
-        activeSlider.maxValue -= activeSlider.value;
-        sliderMaxText.text = activeSlider.maxValue.ToString();
-        GameManager.Instance.mothership.GetComponent<InventoryScript>().removeItem(blackMarketItemRecipe.outputProduct.outputType, (int)activeSlider.value);
-        GameManager.Instance.economyManager.addMoney(itemCost * (int)activeSlider.value);
-        activeSlider.value = 0;
+        if (activeSlider.maxValue > 0)
+        {
+            GameManager.Instance.soundManager.playBtnSound();
+            GameManager.Instance.economyManager.addMoney(itemCost * (int)activeSlider.value);
+            activeSlider.maxValue -= activeSlider.value;
+            sliderMaxText.text = activeSlider.maxValue.ToString();
+            GameManager.Instance.mothership.GetComponent<InventoryScript>().removeItem(blackMarketItemRecipe.outputProduct.outputType, (int)activeSlider.value);
+
+            activeSlider.value = 0;
+        }
+        else
+        {
+            GameManager.Instance.soundManager.playDeclineSound();
+
+        }
+
     }
 
     public void switchToBuyMode()

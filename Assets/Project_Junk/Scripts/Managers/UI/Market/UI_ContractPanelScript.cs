@@ -47,28 +47,36 @@ public class UI_ContractPanelScript : MonoBehaviour
     }
     public void refreshList()
     {
-        
+
         setContractDetailsForList();
         UpdateUIPositions();
     }
     private void createContractElemets()
     {
-        
+
 
         for (int i = 0; i < 20; i++)
         {
-            GameObject obj = Instantiate(contractPrefab, contentPanel.transform, false);
-            contractsList.Add(obj.GetComponent<UI_ContractElemetnScript>());
+            if (contractsList.Count < 20)
+            {
+                GameObject obj = Instantiate(contractPrefab, contentPanel.transform, false);
+                contractsList.Add(obj.GetComponent<UI_ContractElemetnScript>());
+            }
+
         }
+
+
     }
 
     private void setContractDetailsForList()
     {
+        createContractElemets();
+
         for (int i = 0; i < contractsList.Count; i++)
         {
             if (contractsList[i] != null && !contractsList[i].isActive)
             {
-                
+
                 int rnd = Random.Range(0, factions.Count);
                 Faction f = factions[rnd];
                 CraftRecipe r = getRandomUnlockedRecipe();
@@ -88,7 +96,7 @@ public class UI_ContractPanelScript : MonoBehaviour
 
         }
     }
-   
+
 
     private void sortContractsByActive()
     {
@@ -108,7 +116,7 @@ public class UI_ContractPanelScript : MonoBehaviour
         });
 
         // Reorder elements in the layout
-        
+
         foreach (UI_ContractElemetnScript element in contractsList)
         {
             element.transform.SetParent(layoutGroup.transform);
@@ -116,8 +124,8 @@ public class UI_ContractPanelScript : MonoBehaviour
 
         // Force layout update
         LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.transform as RectTransform);
-    
-}
+
+    }
 
     private void UpdateUIPositions()
     {
@@ -133,9 +141,9 @@ public class UI_ContractPanelScript : MonoBehaviour
     }
     private int calculateReward(int x, CraftRecipe recipe)
     {
-        
 
-        return x *  recipe.price;
+
+        return x * recipe.price;
     }
     private CraftRecipe getRandomUnlockedRecipe()
     {
