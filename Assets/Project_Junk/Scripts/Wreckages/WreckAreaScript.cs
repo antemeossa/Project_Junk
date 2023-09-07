@@ -31,6 +31,7 @@ public class WreckAreaScript : MonoBehaviour
     public float circleHeight, circleRadius;
     public bool isSalvageable = true;
     public bool beingSalvaged = false;
+    public int sentDronesToWreckage = 0;
     public Transform currentSalvagePos;
 
     [SerializeField] private List<GameObject> wreckParts = new List<GameObject>();

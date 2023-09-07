@@ -15,9 +15,7 @@ public class DroneManager : MonoBehaviour
 
     
     public List<GameObject> allDronesList = new List<GameObject>();
-    public List<GameObject> transportDronesList = new List<GameObject>();
-    public List<GameObject> scrapDronesList = new List<GameObject>();
-    public List<GameObject> fighterDronesList = new List<GameObject>();
+   
 
 
     

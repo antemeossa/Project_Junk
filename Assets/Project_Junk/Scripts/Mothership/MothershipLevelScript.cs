@@ -13,8 +13,11 @@ public class MothershipLevelScript : MonoBehaviour
 
     private void Start()
     {
+        motherShipLevel = 1;
         GameManager.Instance.recipeManager.unlockRecipes(motherShipLevel);
         GameManager.Instance.wreckageManager.unlockCrashSites(1);
+        GameManager.Instance.droneManager.maxDroneAmount = droneRewards[motherShipLevel];
+        GameManager.Instance.UI_M.updateDroneText();
         if (motherShipLevel == 2)
         {
             mainBuildingLv1.SetActive(true);
@@ -24,8 +27,7 @@ public class MothershipLevelScript : MonoBehaviour
         {
             circle1.SetActive(true);
             mainBuildingLv1.SetActive(false);
-            mainBuildingLv2.SetActive(true);
-            GameManager.Instance.wreckageManager.unlockCrashSites(2);
+            mainBuildingLv2.SetActive(true);            
         }
         else if (motherShipLevel == 4)
         {
@@ -33,6 +35,7 @@ public class MothershipLevelScript : MonoBehaviour
             mainBuildingLv1.SetActive(false);
             mainBuildingLv2.SetActive(true);
             circle2.SetActive(true);
+            GameManager.Instance.wreckageManager.unlockCrashSites(3);
         }
         else if (motherShipLevel == 5)
         {
@@ -42,7 +45,7 @@ public class MothershipLevelScript : MonoBehaviour
             circle2.SetActive(true);
             mainBuildingLv2.SetActive(false);
             mainBuildingLv3.SetActive(true);
-            GameManager.Instance.wreckageManager.unlockCrashSites(3);
+            
         }
     }
     public void checkLevels()
@@ -100,7 +103,7 @@ public class MothershipLevelScript : MonoBehaviour
             GameManager.Instance.economyManager.removeMoney(nextLevelCost[motherShipLevel ]);
             GameManager.Instance.droneManager.maxDroneAmount = droneRewards[motherShipLevel];
             GameManager.Instance.UI_M.updateDroneText();
-            GameManager.Instance.mothership.GetComponent<InventoryScript>().setMaxStorage(storageRewards[motherShipLevel]);
+            //GameManager.Instance.mothership.GetComponent<InventoryScript>().setMaxStorage(storageRewards[motherShipLevel]);
             checkLevels();
         }
     }

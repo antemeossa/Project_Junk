@@ -30,6 +30,10 @@ public class SwarmManager : MonoBehaviour
         {
             if(salvageTarget.GetComponent<InventoryScript>().getCurrentStorage() <= 0)
             {
+                GameManager.Instance.droneManager.activeDroneAmount -= drones.Count;
+                GameManager.Instance.UI_M.updateDroneText();
+                salvageTarget.gameObject.SetActive(false);
+
                 for(int i = 0; i < drones.Count; i++)
                 {
                     Destroy(drones[i]);

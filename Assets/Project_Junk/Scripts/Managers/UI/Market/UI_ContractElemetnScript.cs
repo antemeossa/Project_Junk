@@ -111,6 +111,12 @@ public class UI_ContractElemetnScript : MonoBehaviour
                     handinBtn.SetActive(true);
                     activeSlider.gameObject.SetActive(false);
                 }
+                else
+                {
+                    handinBtn.SetActive(false);
+                    activeSlider.gameObject.SetActive(true);
+                    activeSlider.value = GameManager.Instance.mothership.GetComponent<InventoryScript>().getInventory[contractRecipe.outputProduct.outputType];
+                }
             }
             
         }

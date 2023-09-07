@@ -99,7 +99,8 @@ public class UI_Manager : MonoBehaviour
 
     public void updateDroneText()
     {
-        droneAmountText.text = GameManager.Instance.droneManager.maxDroneAmount - GameManager.Instance.droneManager.activeDroneAmount + "/" + GameManager.Instance.droneManager.maxDroneAmount;
+        droneAmountText.text = Mathf.Clamp((GameManager.Instance.droneManager.maxDroneAmount - GameManager.Instance.droneManager.activeDroneAmount), 0, GameManager.Instance.droneManager.maxDroneAmount)
+            + "/" + GameManager.Instance.droneManager.maxDroneAmount;
 
     }
     public void newGameBtnOnClick()
@@ -115,7 +116,7 @@ public class UI_Manager : MonoBehaviour
         {
             InGameOverlay.SetActive(false);
             settingsPanel.SetActive(false);
-            
+
             MainMenuOverlay.SetActive(true);
             mainMenuPanel.SetActive(true);
 
@@ -387,7 +388,7 @@ public class UI_Manager : MonoBehaviour
         {
 
             buildButtonsList[i].name = Utils.enumToString(BS_M.buildableObjects[i].buildingType) + "Button";
-            
+
             buildButtonsList[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = Utils.enumToString(BS_M.buildableObjects[i].buildingType) + "\nCost: " + BS_M.buildableObjects[i].buildCost;
 
         }
@@ -404,7 +405,7 @@ public class UI_Manager : MonoBehaviour
         GameManager.Instance.soundManager.playBtnSound();
 
         storagePanel.SetActive(true);
-        if(playerController.getSelectedBuilding.GetComponent<MainBuldingScript>() != null)
+        if (playerController.getSelectedBuilding.GetComponent<MainBuldingScript>() != null)
         {
             storagePanel.GetComponent<UI_StorageDetails>().setSelectedStorage(GameManager.Instance.mothership);
 
@@ -427,11 +428,13 @@ public class UI_Manager : MonoBehaviour
     public void activateWreckPanel()
     {
         GameManager.Instance.soundManager.playBtnSound();
-
-        wreckPanel.SetActive(true);
         wreckPanel.GetComponent<UI_WreckDetails>().setSelectedWreckage(playerController.getSelectedBuilding);
         wreckPanel.GetComponent<UI_WreckDetails>().createGrid();
         wreckPanel.GetComponent<UI_WreckDetails>().updateGrid();
+        wreckPanel.SetActive(false);
+        wreckPanel.SetActive(true);
+
+
         focusedOnBuilding = true;
     }
 
@@ -441,7 +444,7 @@ public class UI_Manager : MonoBehaviour
         {
             mainMenuPanel.SetActive(false);
         }
-       
+
         settingsPanel.SetActive(true);
     }
 
@@ -472,7 +475,7 @@ public class UI_Manager : MonoBehaviour
 
     public void confirmDelete()
     {
-        if(playerController.getSelectedBuilding.GetComponent<BuildingScript>() != null)
+        if (playerController.getSelectedBuilding.GetComponent<BuildingScript>() != null)
         {
             GameManager.Instance.productionManager.allBuildings.Remove(playerController.getSelectedBuilding);
         }

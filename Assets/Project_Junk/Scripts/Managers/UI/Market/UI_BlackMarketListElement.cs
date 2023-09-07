@@ -26,6 +26,7 @@ public class UI_BlackMarketListElement : MonoBehaviour
     private int buyMaxValue = 1000;
     private int sellMaxValue;
     private CraftRecipe blackMarketItemRecipe;
+    private bool buyMode = true;
 
     private int defaultItemCost, sellModeItemCost, buyModeItemCost;
 
@@ -39,6 +40,14 @@ public class UI_BlackMarketListElement : MonoBehaviour
 
     private void OnEnable()
     {
+        if(buyMode)
+        {
+            switchToBuyMode();
+        }
+        else
+        {
+            switchToSellMode();
+        }
     }
 
     private void Update()
@@ -132,14 +141,15 @@ public class UI_BlackMarketListElement : MonoBehaviour
 
     public void sellBtnOnClick()
     {
-
+        int value = 0;
         if (activeSlider.maxValue > 0)
         {
             GameManager.Instance.soundManager.playBtnSound();
             GameManager.Instance.economyManager.addMoney(itemCost * (int)activeSlider.value);
+            GameManager.Instance.mothership.GetComponent<InventoryScript>().removeItem(blackMarketItemRecipe.outputProduct.outputType, (int)activeSlider.value);
             activeSlider.maxValue -= activeSlider.value;
             sliderMaxText.text = activeSlider.maxValue.ToString();
-            GameManager.Instance.mothership.GetComponent<InventoryScript>().removeItem(blackMarketItemRecipe.outputProduct.outputType, (int)activeSlider.value);
+            
 
             activeSlider.value = 0;
         }
@@ -153,6 +163,7 @@ public class UI_BlackMarketListElement : MonoBehaviour
 
     public void switchToBuyMode()
     {
+        buyMode = true;
         itemCost = buyModeItemCost;
         buyBtn.SetActive(true);
         sellBtn.SetActive(false);
@@ -163,6 +174,7 @@ public class UI_BlackMarketListElement : MonoBehaviour
 
     public void switchToSellMode()
     {
+        buyMode= false;
         itemCost = sellModeItemCost;
         buyBtn.SetActive(false);
         sellBtn.SetActive(true);
